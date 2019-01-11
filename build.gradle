@@ -7,6 +7,8 @@ plugins {
 group 'frc.team3238'
 version '1.0.0-alpha'
 
+def ROBOT_MAIN_CLASS = "frc.team3238.robot.Main"
+
 deploy {
     targets {
         roboRIO("roborio") {
@@ -24,7 +26,12 @@ deploy {
             directory = '/home/lvuser/deploy'
         }
     }
-    
+
+}
+
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
 }
 
 dependencies {
@@ -34,6 +41,6 @@ dependencies {
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 }
 
-wrapper { 
-    gradleVersion = 5.0
+wrapper {
+    gradleVersion = '5.0'
 }
