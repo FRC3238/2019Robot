@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * @author Loren
@@ -53,5 +54,10 @@ public class Robot extends TimedRobot {
         //Might need to limit the values within a specific range.
         //For now, they're being used raw.
         drivePlatform.arcadeDrive(joystick.getY(), joystick.getTwist());
+
+        //Debugging output to SmartDashboard. Will help for figuring out the ranges of values from the joystick.
+        SmartDashboard.putNumber("Joystick X", joystick.getX());
+        SmartDashboard.putNumber("Joystick Y", joystick.getY());
+        SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
     }
 }
