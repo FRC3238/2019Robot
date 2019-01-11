@@ -9,18 +9,31 @@ version '1.0.0-alpha'
 
 deploy {
     targets {
-        target('roborio', RoboRIO) {
-            team = getTeamOrDefault(3238)
+        roboRIO("roborio") {
+            team = frc.getTeamNumber()
         }
     }
     artifacts {
-        artifact('robotCode', FRCJavaArtifact) {
-            targets << 'roborio' 
+        frcJavaArtifact("roborio") {
+            targets << "roborio"
+            debug = frc.getDebugOrDefault(false)
+        }
+        fileTreeArtifact('frcStaticFileDeploy') {
+            files = fileTree(dir: 'src/main/deploy')
+            targets << 'roborio'
+            directory = '/home/lvuser/deploy'
         }
     }
+    
 }
 
-jar {
-    from configurations.compile.collect { it.isDirectory() ?  it : zipTree(it)}
-    manifest GradleRIOPlugin.javaManifest('frc.team3238.Robot')
+dependencies {
+    compile wpi.deps.wpilib()
+    compile wpi.deps.vendor.java()
+    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
+    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+}
+
+wrapper { 
+    gradleVersion = 5.0
 }
