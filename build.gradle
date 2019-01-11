@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'edu.wpi.first.GradleRIO' version '2019.1.1'
+}
+
+group 'frc.team3238'
+version '1.0.0-alpha'
+
+deploy {
+    targets {
+        target('roborio', RoboRIO) {
+            team = getTeamOrDefault(3238)
+        }
+    }
+    artifacts {
+        artifact('robotCode', FRCJavaArtifact) {
+            targets << 'roborio' 
+        }
+    }
+}
+
+jar {
+    from configurations.compile.collect { it.isDirectory() ?  it : zipTree(it)}
+    manifest GradleRIOPlugin.javaManifest('frc.team3238.Robot')
+}
