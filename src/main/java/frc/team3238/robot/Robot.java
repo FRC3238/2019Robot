@@ -22,6 +22,8 @@ public class Robot extends TimedRobot {
 
     private static final int RIGHT_SLAVE_TALON_DEVICE_NUM = 3;
 
+    private static final boolean REVERSE_DRIVE_TALONS = false;
+
     /**
      * The driver station's joystick.
      * <p>
@@ -49,6 +51,12 @@ public class Robot extends TimedRobot {
         var rightMasterTalon = new WPI_TalonSRX(RIGHT_MASTER_TALON_DEVICE_NUM);
         var leftSlaveTalon = new WPI_TalonSRX(LEFT_SLAVE_TALON_DEVICE_NUM);
         var rightSlaveTalon = new WPI_TalonSRX(RIGHT_SLAVE_TALON_DEVICE_NUM);
+
+        //Setting all the drive talons to the same forward direction
+        leftMasterTalon.setInverted(REVERSE_DRIVE_TALONS);
+        rightMasterTalon.setInverted(REVERSE_DRIVE_TALONS);
+        leftSlaveTalon.setInverted(REVERSE_DRIVE_TALONS);
+        rightSlaveTalon.setInverted(REVERSE_DRIVE_TALONS);
 
         //Setting slave talons to follow their masters
         leftSlaveTalon.follow(leftMasterTalon, FollowerType.PercentOutput);
