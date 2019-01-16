@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         //Might need to limit the values within a specific range.
         //For now, they're being used raw.
-        drivePlatform.arcadeDrive(joystick.getY(), joystick.getTwist());
+        drivePlatform.arcadeDrive(-joystick.getY(), joystick.getTwist());
 
         //Debugging output to SmartDashboard. Will help for figuring out the ranges of values from the joystick.
         SmartDashboard.putNumber("Joystick X", joystick.getX());
