@@ -1,5 +1,6 @@
 package frc.team3238.robot;
 
+import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -16,6 +17,12 @@ public class Robot extends TimedRobot {
     private static final int LEFT_MASTER_TALON_DEVICE_NUM = 0;
 
     private static final int RIGHT_MASTER_TALON_DEVICE_NUM = 1;
+
+    private static final int LEFT_SLAVE_TALON_DEVICE_NUM = 2;
+
+    private static final int RIGHT_SLAVE_TALON_DEVICE_NUM = 3;
+
+    private static final boolean REVERSE_DRIVE_TALONS = false;
 
     /**
      * The driver station's joystick.
@@ -39,10 +46,21 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         joystick = new Joystick(JOYSTICK_USB_PORT_NUM);
 
-        //My understanding is that there are two talons on each side. One, master, the other, slave. So, we should
-        //only tell the master what to do. Hence, there are only declarations for the master talons here.
-        WPI_TalonSRX leftMasterTalon = new WPI_TalonSRX(LEFT_MASTER_TALON_DEVICE_NUM);
-        WPI_TalonSRX rightMasterTalon = new WPI_TalonSRX(RIGHT_MASTER_TALON_DEVICE_NUM);
+        //Declaring all the TalonSRXs for the West Cost Drive
+        var leftMasterTalon = new WPI_TalonSRX(LEFT_MASTER_TALON_DEVICE_NUM);
+        var rightMasterTalon = new WPI_TalonSRX(RIGHT_MASTER_TALON_DEVICE_NUM);
+        var leftSlaveTalon = new WPI_TalonSRX(LEFT_SLAVE_TALON_DEVICE_NUM);
+        var rightSlaveTalon = new WPI_TalonSRX(RIGHT_SLAVE_TALON_DEVICE_NUM);
+
+        //Setting all the drive talons to the same forward direction
+        leftMasterTalon.setInverted(REVERSE_DRIVE_TALONS);
+        rightMasterTalon.setInverted(REVERSE_DRIVE_TALONS);
+        leftSlaveTalon.setInverted(REVERSE_DRIVE_TALONS);
+        rightSlaveTalon.setInverted(REVERSE_DRIVE_TALONS);
+
+        //Setting slave talons to follow their masters
+        leftSlaveTalon.follow(leftMasterTalon, FollowerType.PercentOutput);
+        rightSlaveTalon.follow(rightMasterTalon, FollowerType.PercentOutput);
 
         //Differential drive is the WPI class for the West Coast Drive that we use.
         drivePlatform = new DifferentialDrive(leftMasterTalon, rightMasterTalon);
