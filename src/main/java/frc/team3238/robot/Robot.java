@@ -3,6 +3,7 @@ package frc.team3238.robot;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,10 +38,6 @@ public class Robot extends TimedRobot {
      * We're using a West Coast Drive.
      */
     private DifferentialDrive drivePlatform;
-
-    public Robot() {
-        super(20);
-    }
 
     @Override
     public void robotInit() {
@@ -77,5 +74,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Joystick X", joystick.getX());
         SmartDashboard.putNumber("Joystick Y", joystick.getY());
         SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
+    }
+
+    public static void main(String[] args) {
+        RobotBase.startRobot(Robot::new);
     }
 }
