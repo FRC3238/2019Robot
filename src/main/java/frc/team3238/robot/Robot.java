@@ -51,6 +51,8 @@ public class Robot extends TimedRobot {
 
     private static final double  SPUD_SPEED                 = 1.00;
 
+    private static final double SPUD_ROLLER_SPEED           = 1.00;
+
 //Joysticks ------------------------------------------------------------------------------
 
     private Joystick driveJoystick;
@@ -86,6 +88,10 @@ public class Robot extends TimedRobot {
     private static final int SPUDS_UP_BUTTON   = 5;
 
     private static final int SPUDS_DOWN_BUTTON = 3;
+
+    private static final int SPUD_ROLLER_FORWARD = 1;
+
+    private static final int SPUD_ROLLER_BACKWARD = 2;
 
 //Robot Control Loop Methods -------------------------------------------------------------
 
@@ -156,10 +162,26 @@ public class Robot extends TimedRobot {
                 //Spuds stop
                 spudDriveTalon.set(0);
             }
+
+            //Move the spud roller
+            if(driveJoystick.getRawButton(SPUD_ROLLER_FORWARD)) {
+                //Roll forward
+                spudRollerTalon.set(SPUD_ROLLER_SPEED);
+
+            } else if(driveJoystick.getRawButton(SPUD_ROLLER_BACKWARD)) {
+                //Roll back
+                spudRollerTalon.set(-SPUD_ROLLER_SPEED);
+
+            } else {
+                //Stop the roll
+                spudRollerTalon.set(0);
+            }
+
         } else {
 
-            //Make sure the spuds are off
+            //Stop all safety enabled components
             spudDriveTalon.set(0);
+            spudRollerTalon.set(0);
         }
 
     }
