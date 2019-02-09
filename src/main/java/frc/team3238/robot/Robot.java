@@ -49,6 +49,8 @@ public class Robot extends TimedRobot {
 
     private static final boolean REVERSE_ARM_ACTUATOR       = false;
 
+    private static final double  SPUD_SPEED                 = 1.00;
+
 //Joysticks ------------------------------------------------------------------------------
 
     private Joystick driveJoystick;
@@ -78,6 +80,12 @@ public class Robot extends TimedRobot {
     private WPI_TalonSRX armSlaveTalon;
 
     private WPI_TalonSRX liftActuatorTalon;
+
+//Joystick Button Numbers ----------------------------------------------------------------
+
+    private static final int SPUDS_UP_BUTTON   = 5;
+
+    private static final int SPUDS_DOWN_BUTTON = 3;
 
 //Robot Control Loop Methods -------------------------------------------------------------
 
@@ -132,6 +140,28 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drive.arcadeDrive(-driveJoystick.getY(), driveJoystick.getTwist());
+
+        if(driveJoystick.getRawButton(8)) { //Check that the safety is off
+
+            //Move the spuds
+            if(driveJoystick.getRawButton(SPUDS_DOWN_BUTTON)) {
+                //Spuds go down
+                spudDriveTalon.set(SPUD_SPEED);
+
+            } else if(driveJoystick.getRawButton(SPUDS_UP_BUTTON)) {
+                //Spuds go up
+                spudDriveTalon.set(-SPUD_SPEED);
+
+            } else {
+                //Spuds stop
+                spudDriveTalon.set(0);
+            }
+        } else {
+
+            //Make sure the spuds are off
+            spudDriveTalon.set(0);
+        }
+
     }
 
     public static void main(String[] args) {
