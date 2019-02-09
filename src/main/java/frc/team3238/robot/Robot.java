@@ -15,27 +15,29 @@ public class Robot extends TimedRobot {
 
 //Joystick Constants ---------------------------------------------------------------------
 
-    private static final int DRIVE_JOYSTICK_PORT        = 0;
+    private static final int DRIVE_JOYSTICK_PORT         = 0;
 
-    private static final int MANIPULATION_JOYSTICK_PORT = 1;
+    private static final int MANIPULATION_JOYSTICK_PORT  = 1;
 
 //Talon SRX Constants --------------------------------------------------------------------
 
-    private static final int  LEFT_MASTER_DRIVE_NUM   = 0;
+    private static final int  LEFT_MASTER_DRIVE_NUM      = 0;
 
-    private static final int RIGHT_MASTER_DRIVE_NUM   = 1;
+    private static final int RIGHT_MASTER_DRIVE_NUM      = 1;
 
-    private static final int   LEFT_SLAVE_DRIVE_NUM   = 2;
+    private static final int   LEFT_SLAVE_DRIVE_NUM      = 2;
 
-    private static final int  RIGHT_SLAVE_DRIVE_NUM   = 3;
+    private static final int  RIGHT_SLAVE_DRIVE_NUM      = 3;
 
-    private static final int         SPUD_DRIVE_NUM   = 4;
+    private static final int         SPUD_DRIVE_NUM      = 4;
 
-    private static final int         SPUD_ROLLER_NUM  = 5;
+    private static final int         SPUD_ROLLER_NUM     = 5;
 
-    private static final int          ARM_MASTER_NUM  = 6;
+    private static final int          ARM_MASTER_NUM     = 6;
 
-    private static final int           ARM_SLAVE_NUM  = 7;
+    private static final int           ARM_SLAVE_NUM     = 7;
+
+    private static final int        LIFT_ACTUATOR_NUM    = 8;
 
     private static final boolean REVERSE_DRIVE_TALONS       = false;
 
@@ -44,6 +46,8 @@ public class Robot extends TimedRobot {
     private static final boolean REVERSE_SPUD_DRIVE_TALON   = false;
 
     private static final boolean REVERSE_SPUD_ROLLER_TALON  = false;
+
+    private static final boolean REVERSE_ARM_ACTUATOR       = false;
 
 //Joysticks ------------------------------------------------------------------------------
 
@@ -73,6 +77,8 @@ public class Robot extends TimedRobot {
 
     private WPI_TalonSRX armSlaveTalon;
 
+    private WPI_TalonSRX liftActuatorTalon;
+
 //Robot Control Loop Methods -------------------------------------------------------------
 
     @Override
@@ -88,6 +94,7 @@ public class Robot extends TimedRobot {
         spudRollerTalon        = new WPI_TalonSRX(SPUD_ROLLER_NUM);
         armMasterTalon         = new WPI_TalonSRX(ARM_MASTER_NUM);
         armSlaveTalon          = new WPI_TalonSRX(ARM_SLAVE_NUM);
+        liftActuatorTalon      = new WPI_TalonSRX(LIFT_ACTUATOR_NUM);
 
 
         // Configure all the Talon Directions --------------------------------
@@ -100,6 +107,7 @@ public class Robot extends TimedRobot {
         spudRollerTalon.setInverted       (REVERSE_SPUD_ROLLER_TALON);
         armMasterTalon.setInverted        (REVERSE_ARM_TALONS);
         armSlaveTalon.setInverted         (REVERSE_ARM_TALONS);
+        liftActuatorTalon.setInverted     (REVERSE_ARM_ACTUATOR);
 
 
         //Pairing up Talons ---------------------------------------------------------------------
