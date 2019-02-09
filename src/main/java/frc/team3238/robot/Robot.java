@@ -158,6 +158,11 @@ public class Robot extends TimedRobot {
         drive = new DifferentialDrive(leftMasterDriveTalon, rightMasterDriveTalon);
         drive.setSafetyEnabled(true);
 
+        //Setting up Camera Servos
+
+        panServo = new Servo(0);
+        tiltServo = new Servo(1);
+
         //Setting up Servo Direction
         panServo.setAngle(panAngle);
         tiltServo.setAngle(tiltAngle); //May need to be changed.
