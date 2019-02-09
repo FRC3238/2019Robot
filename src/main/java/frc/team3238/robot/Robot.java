@@ -4,7 +4,10 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -83,6 +86,28 @@ public class Robot extends TimedRobot {
 
     private WPI_TalonSRX liftActuatorTalon;
 
+//Camera Servos -------------------------------------------------------------------------
+
+    private Servo panServo;
+
+    private Servo tiltServo;
+  
+//Servo Angles --------------------------------------------------------------------------
+
+    private double panAngle =  90;
+
+    private double tiltAngle = 60;
+
+//POV Button Angles ---------------------------------------------------------------------
+
+   private Button upPOV;
+
+   private Button rightPOV;
+
+   private Button downPOV;
+
+   private Button leftPOV;
+
 //Joystick Button Numbers ----------------------------------------------------------------
 
     private static final int SPUDS_UP_BUTTON   = 5;
@@ -92,6 +117,7 @@ public class Robot extends TimedRobot {
     private static final int SPUD_ROLLER_FORWARD = 1;
 
     private static final int SPUD_ROLLER_BACKWARD = 2;
+
 
 //Robot Control Loop Methods -------------------------------------------------------------
 
@@ -136,16 +162,51 @@ public class Robot extends TimedRobot {
         driveJoystick        = new Joystick(DRIVE_JOYSTICK_PORT);
         manipulatorJoystick  = new Joystick(MANIPULATION_JOYSTICK_PORT);
 
+        //Setting up POV Buttons-----------------------------------------------------------------
+
+        upPOV = new POVButton(manipulatorJoystick,0);
+        rightPOV = new POVButton(manipulatorJoystick,90);
+        downPOV = new POVButton(manipulatorJoystick, 180);
+        leftPOV = new POVButton(manipulatorJoystick,270);
 
         //Setting up the DifferentialDrive ------------------------------------------------------
 
         drive = new DifferentialDrive(leftMasterDriveTalon, rightMasterDriveTalon);
         drive.setSafetyEnabled(true);
+
+        //Setting up Camera Servos --------------------------------------------------------------
+
+        panServo = new Servo(0);
+        tiltServo = new Servo(1);
+
+        //Setting up Servo Direction ------------------------------------------------------------
+      
+        panServo.setAngle(panAngle);
+        tiltServo.setAngle(tiltAngle);
+
     }
 
     @Override
     public void teleopPeriodic() {
         drive.arcadeDrive(-driveJoystick.getY(), driveJoystick.getTwist());
+
+        //Adjusting camera pan angle
+        if(leftPOV.get() && panAngle > 0) {
+            panAngle -= 1;
+        }else if(rightPOV.get() && panAngle < 180) {
+            panAngle += 1;
+        }
+      
+        //Adjusting camera tilt angle
+        if(upPOV.get() && tiltAngle < 180) {
+            tiltAngle += 1;
+        } else if(downPOV.get() && tiltAngle > 0) {
+            tiltAngle -= 1;
+        }
+      
+        //Moving the camera to its new position
+        panServo.setAngle(panAngle);
+        tiltServo.setAngle(tiltAngle);
 
         if(driveJoystick.getRawButton(8)) { //Check that the safety is off
 
@@ -183,7 +244,6 @@ public class Robot extends TimedRobot {
             spudDriveTalon.set(0);
             spudRollerTalon.set(0);
         }
-
     }
 
     public static void main(String[] args) {
