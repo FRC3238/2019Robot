@@ -52,6 +52,10 @@ public class Robot extends TimedRobot {
 
     private static final boolean REVERSE_ARM_ACTUATOR       = false;
 
+    private static final double  SPUD_SPEED                 = 1.00;
+
+    private static final double SPUD_ROLLER_SPEED           = 1.00;
+
 //Joysticks ------------------------------------------------------------------------------
 
     private Joystick driveJoystick;
@@ -82,11 +86,13 @@ public class Robot extends TimedRobot {
 
     private WPI_TalonSRX liftActuatorTalon;
 
-//Camera Servo Constants------------------------------------------------------------------
+//Camera Servos -------------------------------------------------------------------------
 
     private Servo panServo;
 
     private Servo tiltServo;
+  
+//Servo Angles --------------------------------------------------------------------------
 
     private double panAngle =  90;
 
@@ -101,6 +107,16 @@ public class Robot extends TimedRobot {
    private Button downPOV;
 
    private Button leftPOV;
+
+//Joystick Button Numbers ----------------------------------------------------------------
+
+    private static final int SPUDS_UP_BUTTON   = 5;
+
+    private static final int SPUDS_DOWN_BUTTON = 3;
+
+    private static final int SPUD_ROLLER_FORWARD = 1;
+
+    private static final int SPUD_ROLLER_BACKWARD = 2;
 
 
 //Robot Control Loop Methods -------------------------------------------------------------
@@ -158,14 +174,15 @@ public class Robot extends TimedRobot {
         drive = new DifferentialDrive(leftMasterDriveTalon, rightMasterDriveTalon);
         drive.setSafetyEnabled(true);
 
-        //Setting up Camera Servos
+        //Setting up Camera Servos --------------------------------------------------------------
 
         panServo = new Servo(0);
         tiltServo = new Servo(1);
 
-        //Setting up Servo Direction
+        //Setting up Servo Direction ------------------------------------------------------------
+      
         panServo.setAngle(panAngle);
-        tiltServo.setAngle(tiltAngle); //May need to be changed.
+        tiltServo.setAngle(tiltAngle);
 
     }
 
@@ -173,18 +190,60 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         drive.arcadeDrive(-driveJoystick.getY(), driveJoystick.getTwist());
 
+        //Adjusting camera pan angle
         if(leftPOV.get() && panAngle > 0) {
             panAngle -= 1;
         }else if(rightPOV.get() && panAngle < 180) {
             panAngle += 1;
         }
+      
+        //Adjusting camera tilt angle
         if(upPOV.get() && tiltAngle < 180) {
             tiltAngle += 1;
         } else if(downPOV.get() && tiltAngle > 0) {
             tiltAngle -= 1;
         }
+      
+        //Moving the camera to its new position
         panServo.setAngle(panAngle);
         tiltServo.setAngle(tiltAngle);
+
+        if(driveJoystick.getRawButton(8)) { //Check that the safety is off
+
+            //Move the spuds
+            if(driveJoystick.getRawButton(SPUDS_DOWN_BUTTON)) {
+                //Spuds go down
+                spudDriveTalon.set(SPUD_SPEED);
+
+            } else if(driveJoystick.getRawButton(SPUDS_UP_BUTTON)) {
+                //Spuds go up
+                spudDriveTalon.set(-SPUD_SPEED);
+
+            } else {
+                //Spuds stop
+                spudDriveTalon.set(0);
+            }
+
+            //Move the spud roller
+            if(driveJoystick.getRawButton(SPUD_ROLLER_FORWARD)) {
+                //Roll forward
+                spudRollerTalon.set(SPUD_ROLLER_SPEED);
+
+            } else if(driveJoystick.getRawButton(SPUD_ROLLER_BACKWARD)) {
+                //Roll back
+                spudRollerTalon.set(-SPUD_ROLLER_SPEED);
+
+            } else {
+                //Stop the roll
+                spudRollerTalon.set(0);
+            }
+
+        } else {
+
+            //Stop all safety enabled components
+            spudDriveTalon.set(0);
+            spudRollerTalon.set(0);
+        }
     }
 
     public static void main(String[] args) {
