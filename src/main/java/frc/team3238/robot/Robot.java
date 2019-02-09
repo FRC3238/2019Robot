@@ -13,67 +13,117 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-    private static final int JOYSTICK_USB_PORT_NUM = 0;
+//Joystick Constants ---------------------------------------------------------------------
 
-    private static final int LEFT_MASTER_TALON_DEVICE_NUM = 0;
+    private static final int DRIVE_JOYSTICK_PORT        = 0;
 
-    private static final int RIGHT_MASTER_TALON_DEVICE_NUM = 1;
+    private static final int MANIPULATION_JOYSTICK_PORT = 1;
 
-    private static final int LEFT_SLAVE_TALON_DEVICE_NUM = 2;
+//Talon SRX Constants --------------------------------------------------------------------
 
-    private static final int RIGHT_SLAVE_TALON_DEVICE_NUM = 3;
+    private static final int  LEFT_MASTER_DRIVE_NUM   = 0;
 
-    private static final boolean REVERSE_DRIVE_TALONS = false;
+    private static final int RIGHT_MASTER_DRIVE_NUM   = 1;
 
-    /**
-     * The driver station's joystick.
-     * <p>
-     * Used to get input from the driver.
-     */
-    private Joystick joystick;
+    private static final int   LEFT_SLAVE_DRIVE_NUM   = 2;
 
-    /**
-     * The robot's drive train.
-     * <p>
-     * We're using a West Coast Drive.
-     */
-    private DifferentialDrive drivePlatform;
+    private static final int  RIGHT_SLAVE_DRIVE_NUM   = 3;
+
+    private static final int         SPUD_DRIVE_NUM   = 4;
+
+    private static final int         SPUD_ROLLER_NUM  = 5;
+
+    private static final int          ARM_MASTER_NUM  = 6;
+
+    private static final int           ARM_SLAVE_NUM  = 7;
+
+    private static final boolean REVERSE_DRIVE_TALONS       = false;
+
+    private static final boolean REVERSE_ARM_TALONS         = false;
+
+    private static final boolean REVERSE_SPUD_DRIVE_TALON   = false;
+
+    private static final boolean REVERSE_SPUD_ROLLER_TALON  = false;
+
+//Joysticks ------------------------------------------------------------------------------
+
+    private Joystick driveJoystick;
+
+    private Joystick manipulatorJoystick;
+
+//Drive ----------------------------------------------------------------------------------
+
+    private DifferentialDrive drive;
+
+//Talons ---------------------------------------------------------------------------------
+
+    private WPI_TalonSRX leftMasterDriveTalon;
+
+    private WPI_TalonSRX rightMasterDriveTalon;
+
+    private WPI_TalonSRX leftSlaveDriveTalon;
+
+    private WPI_TalonSRX rightSlaveDriveTalon;
+
+    private WPI_TalonSRX spudDriveTalon;
+
+    private WPI_TalonSRX spudRollerTalon;
+
+    private WPI_TalonSRX armMasterTalon;
+
+    private WPI_TalonSRX armSlaveTalon;
+
+//Robot Control Loop Methods -------------------------------------------------------------
 
     @Override
     public void robotInit() {
-        joystick = new Joystick(JOYSTICK_USB_PORT_NUM);
 
-        //Declaring all the TalonSRXs for the West Cost Drive
-        var leftMasterTalon = new WPI_TalonSRX(LEFT_MASTER_TALON_DEVICE_NUM);
-        var rightMasterTalon = new WPI_TalonSRX(RIGHT_MASTER_TALON_DEVICE_NUM);
-        var leftSlaveTalon = new WPI_TalonSRX(LEFT_SLAVE_TALON_DEVICE_NUM);
-        var rightSlaveTalon = new WPI_TalonSRX(RIGHT_SLAVE_TALON_DEVICE_NUM);
+        //Initialize all the Talons ------------------------------------------
 
-        //Setting all the drive talons to the same forward direction
-        leftMasterTalon.setInverted(REVERSE_DRIVE_TALONS);
-        rightMasterTalon.setInverted(REVERSE_DRIVE_TALONS);
-        leftSlaveTalon.setInverted(REVERSE_DRIVE_TALONS);
-        rightSlaveTalon.setInverted(REVERSE_DRIVE_TALONS);
+        leftMasterDriveTalon   = new WPI_TalonSRX(LEFT_MASTER_DRIVE_NUM);
+        rightMasterDriveTalon  = new WPI_TalonSRX(RIGHT_MASTER_DRIVE_NUM);
+        leftSlaveDriveTalon    = new WPI_TalonSRX(LEFT_SLAVE_DRIVE_NUM);
+        rightSlaveDriveTalon   = new WPI_TalonSRX(RIGHT_SLAVE_DRIVE_NUM);
+        spudDriveTalon         = new WPI_TalonSRX(SPUD_DRIVE_NUM);
+        spudRollerTalon        = new WPI_TalonSRX(SPUD_ROLLER_NUM);
+        armMasterTalon         = new WPI_TalonSRX(ARM_MASTER_NUM);
+        armSlaveTalon          = new WPI_TalonSRX(ARM_SLAVE_NUM);
 
-        //Setting slave talons to follow their masters
-        leftSlaveTalon.follow(leftMasterTalon, FollowerType.PercentOutput);
-        rightSlaveTalon.follow(rightMasterTalon, FollowerType.PercentOutput);
 
-        //Differential drive is the WPI class for the West Coast Drive that we use.
-        drivePlatform = new DifferentialDrive(leftMasterTalon, rightMasterTalon);
-        drivePlatform.setSafetyEnabled(true);
+        // Configure all the Talon Directions --------------------------------
+
+        leftMasterDriveTalon.setInverted  (REVERSE_DRIVE_TALONS);
+        rightMasterDriveTalon.setInverted (REVERSE_DRIVE_TALONS);
+        leftSlaveDriveTalon.setInverted   (REVERSE_DRIVE_TALONS);
+        rightSlaveDriveTalon.setInverted  (REVERSE_DRIVE_TALONS);
+        spudDriveTalon.setInverted        (REVERSE_SPUD_DRIVE_TALON);
+        spudRollerTalon.setInverted       (REVERSE_SPUD_ROLLER_TALON);
+        armMasterTalon.setInverted        (REVERSE_ARM_TALONS);
+        armSlaveTalon.setInverted         (REVERSE_ARM_TALONS);
+
+
+        //Pairing up Talons ---------------------------------------------------------------------
+
+        leftSlaveDriveTalon.follow   (leftMasterDriveTalon,   FollowerType.PercentOutput);
+        rightSlaveDriveTalon.follow  (rightMasterDriveTalon,  FollowerType.PercentOutput);
+        armSlaveTalon.follow         (armMasterTalon,         FollowerType.PercentOutput);
+
+
+        //Setting up Joysticks ------------------------------------------------------------------
+
+        driveJoystick        = new Joystick(DRIVE_JOYSTICK_PORT);
+        manipulatorJoystick  = new Joystick(MANIPULATION_JOYSTICK_PORT);
+
+
+        //Setting up the DifferentialDrive ------------------------------------------------------
+
+        drive = new DifferentialDrive(leftMasterDriveTalon, rightMasterDriveTalon);
+        drive.setSafetyEnabled(true);
     }
 
     @Override
     public void teleopPeriodic() {
-        //Might need to limit the values within a specific range.
-        //For now, they're being used raw.
-        drivePlatform.arcadeDrive(-joystick.getY(), joystick.getTwist());
-
-        //Debugging output to SmartDashboard. Will help for figuring out the ranges of values from the joystick.
-        SmartDashboard.putNumber("Joystick X", joystick.getX());
-        SmartDashboard.putNumber("Joystick Y", joystick.getY());
-        SmartDashboard.putNumber("Joystick Twist", joystick.getTwist());
+        drive.arcadeDrive(-driveJoystick.getY(), driveJoystick.getTwist());
     }
 
     public static void main(String[] args) {
