@@ -48,7 +48,7 @@ final class FredXConstants
 
     //Camera default position
     static final int DEFAULT_CAMERA_PAN  = 90;
-    static final int DEFAULT_CAMERA_TILT = 60;
+    static final int DEFAULT_CAMERA_TILT = 120;
 
     //Camera HAT angles
     static final int CAMERA_RIGHT      = 0;
