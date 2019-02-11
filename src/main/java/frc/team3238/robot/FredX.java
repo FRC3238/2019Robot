@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.team3238.robot.motion.PanTiltMount;
+import frc.team3238.robot.motion.ServoPTMount;
 
 import static frc.team3238.robot.FredXConstants.*;
 
@@ -26,17 +28,19 @@ public final class FredX extends TimedRobot
     private WPI_TalonSRX armSlaveTalon;
     private WPI_TalonSRX liftActuatorTalon;
 
+    //Camera Mount ---------------------------------------------------------------------------------
+
+    private PanTiltMount cameraMount;
+
     //FredX Control Loop Methods -------------------------------------------------------------
 
     @Override
-    public void robotInit()
+    public void robotInit ()
     {
-        //Initialize the controls --------------------------------------------
-
+        //Initialize the controls
         controls = new FredXControls();
 
-        //Initialize all the Talons ------------------------------------------
-
+        //Initialize all the Talons
         leftMasterDriveTalon = new WPI_TalonSRX(LEFT_MASTER_DRIVE_NUM);
         rightMasterDriveTalon = new WPI_TalonSRX(RIGHT_MASTER_DRIVE_NUM);
         leftSlaveDriveTalon = new WPI_TalonSRX(LEFT_SLAVE_DRIVE_NUM);
@@ -48,7 +52,7 @@ public final class FredX extends TimedRobot
         liftActuatorTalon = new WPI_TalonSRX(LIFT_ACTUATOR_NUM);
 
 
-        // Configure all the Talon Directions --------------------------------
+        // Configure all the Talon Directions
         leftMasterDriveTalon.setInverted(REVERSE_DRIVE_TALONS);
         rightMasterDriveTalon.setInverted(REVERSE_DRIVE_TALONS);
         leftSlaveDriveTalon.setInverted(REVERSE_DRIVE_TALONS);
@@ -60,38 +64,42 @@ public final class FredX extends TimedRobot
         liftActuatorTalon.setInverted(REVERSE_ARM_ACTUATOR);
 
 
-        //Pairing up Talons ---------------------------------------------------------------------
-
+        //Pairing up Talons
         leftSlaveDriveTalon.follow(leftMasterDriveTalon, FollowerType.PercentOutput);
         rightSlaveDriveTalon.follow(rightMasterDriveTalon, FollowerType.PercentOutput);
         armSlaveTalon.follow(armMasterTalon, FollowerType.PercentOutput);
 
 
-        //Setting up the DifferentialDrive ------------------------------------------------------
+        //Setup camera mount
+        cameraMount = new ServoPTMount(CAMERA_PAN_CHANNEL, CAMERA_TILT_CHANNEL, CAMERA_SPEED, CAMERA_SPEED,
+                                       DEFAULT_CAMERA_PAN, DEFAULT_CAMERA_TILT, CAMERA_MIN_PAN, CAMERA_MAX_PAN,
+                                       CAMERA_MIN_TILT, CAMERA_MAX_TILT);
 
+
+        //Setting up the DifferentialDrive
         drive = new DifferentialDrive(leftMasterDriveTalon, rightMasterDriveTalon);
         drive.setSafetyEnabled(true);
     }
 
     @Override
-    public void robotPeriodic()
+    public void robotPeriodic ()
     {
         controls.updateControls(); //Polls for new control state
     }
 
     @Override
-    public void teleopPeriodic()
+    public void teleopPeriodic ()
     {
         drive.arcadeDrive(controls.getThrottle(), controls.getSteer());
 
-        if ( controls.safetyIsOff() )
+        if (controls.safetyIsOff())
         {
             //Move the spuds
-            if ( controls.spudsShouldGoDown() )
+            if (controls.spudsShouldGoDown())
             {
                 spudDriveTalon.set(SPUD_SPEED);
             }
-            else if ( controls.spudsShouldGoUp() )
+            else if (controls.spudsShouldGoUp())
             {
                 spudDriveTalon.set(-SPUD_SPEED);
             }
@@ -101,11 +109,11 @@ public final class FredX extends TimedRobot
             }
 
             //Move the spud roller
-            if ( controls.spudsShouldRollForward() )
+            if (controls.spudsShouldRollForward())
             {
                 spudRollerTalon.set(SPUD_ROLLER_SPEED);
             }
-            else if ( controls.spudsShouldRollBack() )
+            else if (controls.spudsShouldRollBack())
             {
                 spudRollerTalon.set(-SPUD_ROLLER_SPEED);
             }
@@ -121,5 +129,24 @@ public final class FredX extends TimedRobot
             spudRollerTalon.set(0);
         }
 
+        //Camera Pan Update
+        if (controls.cameraShouldPanRight())
+        {
+            cameraMount.panRight();
+        }
+        else if (controls.cameraShouldPanLeft())
+        {
+            cameraMount.panLeft();
+        }
+
+        //Camera Tilt Update
+        if (controls.cameraShouldTiltUp())
+        {
+            cameraMount.tiltUp();
+        }
+        else if (controls.cameraShouldTiltDown())
+        {
+            cameraMount.tiltDown();
+        }
     }
 }
