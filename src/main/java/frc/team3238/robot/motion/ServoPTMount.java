@@ -7,20 +7,17 @@ import edu.wpi.first.wpilibj.Servo;
  *
  * @author Loren
  */
-public class ServoPTMount extends PanTiltMount
-{
-    public ServoPTMount (Servo panServo, Servo tiltServo, double defaultPanAmount, double defaultTiltAmount,
-                         double startingPanAngle, double startingTiltAngle, double minPanAngle, double maxPanAngle,
-                         double minTiltAngle, double maxTiltAngle)
-    {
+public class ServoPTMount extends PanTiltMount {
+    public ServoPTMount(Servo panServo, Servo tiltServo, double defaultPanAmount, double defaultTiltAmount,
+                        double startingPanAngle, double startingTiltAngle, double minPanAngle, double maxPanAngle,
+                        double minTiltAngle, double maxTiltAngle) {
         super(new ServoTiltMount(panServo, defaultPanAmount, startingPanAngle, minPanAngle, maxPanAngle),
               new ServoTiltMount(tiltServo, defaultTiltAmount, startingTiltAngle, minTiltAngle, maxTiltAngle));
     }
 
-    public ServoPTMount (int panChannel, int tiltChannel, double defaultPanAmount, double defaultTiltAmount,
-                         double startingPanAngle, double startingTiltAngle, double minPanAngle, double maxPanAngle,
-                         double minTiltAngle, double maxTiltAngle)
-    {
+    public ServoPTMount(int panChannel, int tiltChannel, double defaultPanAmount, double defaultTiltAmount,
+                        double startingPanAngle, double startingTiltAngle, double minPanAngle, double maxPanAngle,
+                        double minTiltAngle, double maxTiltAngle) {
         this(new Servo(panChannel), new Servo(tiltChannel), defaultPanAmount, defaultTiltAmount, startingPanAngle,
              startingTiltAngle, minPanAngle, maxPanAngle, minTiltAngle, maxTiltAngle);
     }

@@ -7,15 +7,13 @@ package frc.team3238.robot.motion;
  *
  * @author Loren
  */
-public class PanTiltMount
-{
+public class PanTiltMount {
     private TiltMount panMount;
 
     private TiltMount tiltMount;
 
-    public PanTiltMount (TiltMount panAxis, TiltMount tiltAxis)
-    {
-        panMount = panAxis;
+    public PanTiltMount(TiltMount panAxis, TiltMount tiltAxis) {
+        panMount  = panAxis;
         tiltMount = tiltAxis;
     }
 
@@ -24,8 +22,7 @@ public class PanTiltMount
      *
      * @param degrees The default amount the pan axis moves by.
      */
-    public void setDefaultPanAmount (double degrees)
-    {
+    public void setDefaultPanAmount(double degrees) {
         panMount.setDefaultTiltAmount(degrees);
     }
 
@@ -34,8 +31,7 @@ public class PanTiltMount
      *
      * @param degrees The minimum angle that can be panned to
      */
-    public void setMinimumPanAngle (double degrees)
-    {
+    public void setMinimumPanAngle(double degrees) {
         panMount.setMaximumTiltAngle(degrees);
     }
 
@@ -44,24 +40,21 @@ public class PanTiltMount
      *
      * @param degrees The maximum angle that can be panned to
      */
-    public void setMaximumPanAngle (double degrees)
-    {
+    public void setMaximumPanAngle(double degrees) {
         panMount.setMaximumTiltAngle(degrees);
     }
 
     /**
      * Moves the pan axis rightward by its default amount.
      */
-    public void panRight ()
-    {
+    public void panRight() {
         panMount.tiltUp();
     }
 
     /**
      * Moves the pan axis leftward by its default amount.
      */
-    public void panLeft ()
-    {
+    public void panLeft() {
         panMount.tiltDown();
     }
 
@@ -72,8 +65,7 @@ public class PanTiltMount
      *
      * @param degrees The number of degrees to move the pan axis by
      */
-    public void panBy (double degrees)
-    {
+    public void panBy(double degrees) {
         panMount.tiltBy(degrees);
     }
 
@@ -83,8 +75,7 @@ public class PanTiltMount
      * The effect of this method is such that after it is called, moves which would previously pan left, now will pan
      * right.
      */
-    public void reversePanDirection ()
-    {
+    public void reversePanDirection() {
         panMount.reverseDirections();
     }
 
@@ -93,8 +84,7 @@ public class PanTiltMount
      *
      * @param degrees The default number of degrees that the tilt axis moves by
      */
-    public void setDefaultTiltAmount (double degrees)
-    {
+    public void setDefaultTiltAmount(double degrees) {
         tiltMount.setDefaultTiltAmount(degrees);
     }
 
@@ -103,8 +93,7 @@ public class PanTiltMount
      *
      * @param degrees The minimum that the tilt axis can move to
      */
-   public void setMinimumTiltAngle (double degrees)
-    {
+    public void setMinimumTiltAngle(double degrees) {
         tiltMount.setMinimumTiltAngle(degrees);
     }
 
@@ -113,24 +102,21 @@ public class PanTiltMount
      *
      * @param degrees The maximum angle that the tilt axis can move to
      */
-    public void setMaximumTiltAngle (double degrees)
-    {
+    public void setMaximumTiltAngle(double degrees) {
         tiltMount.setMaximumTiltAngle(degrees);
     }
 
     /**
      * Moves the tilt axis up by its default amount.
      */
-    public void tiltUp ()
-    {
+    public void tiltUp() {
         tiltMount.tiltUp();
     }
 
     /**
      * Moves the tilt axis down by its default amount.
      */
-    public void tiltDown ()
-    {
+    public void tiltDown() {
         tiltMount.tiltDown();
     }
 
@@ -141,8 +127,7 @@ public class PanTiltMount
      *
      * @param degrees The number of degrees by which to move the axis.
      */
-    public void tiltBy (double degrees)
-    {
+    public void tiltBy(double degrees) {
         tiltMount.tiltBy(degrees);
     }
 
@@ -151,8 +136,7 @@ public class PanTiltMount
      * <p>
      * Thus, after this is invoked, tilting down has the effect of tilting up, and vice-versa.
      */
-    public void reverseTiltDirection ()
-    {
+    public void reverseTiltDirection() {
         tiltMount.reverseDirections();
     }
 }

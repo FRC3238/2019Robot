@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.Servo;
  *
  * @author Loren
  */
-public final class ServoTiltMount implements TiltMount
-{
+public final class ServoTiltMount implements TiltMount {
     private Servo   servo;
     private double  angle;
     private double  minTiltAngle;
@@ -16,9 +15,8 @@ public final class ServoTiltMount implements TiltMount
     private double  defaultTiltAmount;
     private boolean isReversed;
 
-    public ServoTiltMount (Servo servo, double defaultTiltAmount, double defaultAngle, double minTiltAngle,
-                           double maxTiltAngle)
-    {
+    public ServoTiltMount(Servo servo, double defaultTiltAmount, double defaultAngle, double minTiltAngle,
+                          double maxTiltAngle) {
         this.servo = servo;
 
         setMinimumTiltAngle(minTiltAngle);
@@ -28,9 +26,8 @@ public final class ServoTiltMount implements TiltMount
         tiltTo(defaultAngle);
     }
 
-    public ServoTiltMount (int servoChannel, double defaultTiltAmount, double defaultAngle, double minTiltAngle,
-                           double maxTiltAngle)
-    {
+    public ServoTiltMount(int servoChannel, double defaultTiltAmount, double defaultAngle, double minTiltAngle,
+                          double maxTiltAngle) {
         this(new Servo(servoChannel), defaultTiltAmount, defaultAngle, minTiltAngle, maxTiltAngle);
     }
 
@@ -39,16 +36,13 @@ public final class ServoTiltMount implements TiltMount
      *
      * @param degrees The angle to which the servo should be turned
      */
-    private void tiltTo (double degrees)
-    {
+    private void tiltTo(double degrees) {
         angle = degrees;
 
-        if (angle < minTiltAngle)
-        {
+        if(angle < minTiltAngle) {
             angle = minTiltAngle;
         }
-        else if (angle > maxTiltAngle)
-        {
+        else if(angle > maxTiltAngle) {
             angle = maxTiltAngle;
         }
 
@@ -56,58 +50,47 @@ public final class ServoTiltMount implements TiltMount
     }
 
     @Override
-    public void setDefaultTiltAmount (double degrees)
-    {
+    public void setDefaultTiltAmount(double degrees) {
         defaultTiltAmount = degrees;
     }
 
     @Override
-    public void setMinimumTiltAngle (double degrees)
-    {
+    public void setMinimumTiltAngle(double degrees) {
         minTiltAngle = degrees;
     }
 
     @Override
-    public void setMaximumTiltAngle (double degrees)
-    {
+    public void setMaximumTiltAngle(double degrees) {
         maxTiltAngle = degrees;
     }
 
     @Override
-    public void tiltBy (double degrees)
-    {
+    public void tiltBy(double degrees) {
         tiltTo(angle + degrees);
     }
 
     @Override
-    public void tiltDown ()
-    {
-        if (isReversed)
-        {
+    public void tiltDown() {
+        if(isReversed) {
             tiltBy(defaultTiltAmount);
         }
-        else
-        {
+        else {
             tiltBy(-defaultTiltAmount);
         }
     }
 
     @Override
-    public void tiltUp ()
-    {
-        if (isReversed)
-        {
+    public void tiltUp() {
+        if(isReversed) {
             tiltBy(-defaultTiltAmount);
         }
-        else
-        {
+        else {
             tiltBy(defaultTiltAmount);
         }
     }
 
     @Override
-    public void reverseDirections ()
-    {
+    public void reverseDirections() {
         isReversed = !isReversed;
     }
 }

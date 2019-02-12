@@ -5,8 +5,7 @@ package frc.team3238.robot;
  *
  * @author Loren
  */
-final class FredXConstants
-{
+final class FredXConstants {
 
     //Joystick port numbers -------------------------------------------------------------
     static final int DRIVE_JOYSTICK_PORT        = 0;
@@ -42,15 +41,15 @@ final class FredXConstants
     static final int SPUD_ROLLER_FORWARD  = 1;
     static final int SPUD_ROLLER_BACKWARD = 2;
 
-    //Servo channels
+    //Servo channels --------------------------------------------------------------------
     static final int CAMERA_PAN_CHANNEL  = 0;
     static final int CAMERA_TILT_CHANNEL = 1;
 
-    //Camera default position
+    //Camera default position -----------------------------------------------------------
     static final int DEFAULT_CAMERA_PAN  = 90;
     static final int DEFAULT_CAMERA_TILT = 120;
 
-    //Camera HAT angles
+    //Camera HAT angles -----------------------------------------------------------------
     static final int CAMERA_RIGHT      = 0;
     static final int CAMERA_RIGHT_UP   = 45;
     static final int CAMERA_UP         = 90;
@@ -60,7 +59,7 @@ final class FredXConstants
     static final int CAMERA_DOWN       = 270;
     static final int CAMERA_RIGHT_DOWN = 315;
 
-    //Servo limits (inclusive)
+    //Servo limits (inclusive) ----------------------------------------------------------
     static final int CAMERA_MAX_PAN  = 180;
     static final int CAMERA_MIN_PAN  = 0;
     static final int CAMERA_MAX_TILT = 180;

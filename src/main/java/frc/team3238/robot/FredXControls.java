@@ -4,8 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.team3238.robot.FredXConstants.*;
 
-final class FredXControls
-{
+final class FredXControls {
 
     private Joystick driveJoystick;
     private Joystick manipulatorJoystick;
@@ -24,30 +23,27 @@ final class FredXControls
     private boolean tiltCameraUp;
     private boolean tiltCameraDown;
 
-    public FredXControls ()
-    {
-        driveJoystick = new Joystick(DRIVE_JOYSTICK_PORT);
+    public FredXControls() {
+        driveJoystick       = new Joystick(DRIVE_JOYSTICK_PORT);
         manipulatorJoystick = new Joystick(MANIPULATION_JOYSTICK_PORT);
     }
 
-    public void updateControls ()
-    {
+    public void updateControls() {
         //Drive controls
         throttle = -driveJoystick.getY();
-        steer = driveJoystick.getTwist();
+        steer    = driveJoystick.getTwist();
 
         //Button checks
-        safetyOff = driveJoystick.getRawButton(SAFETY_BUTTON);
-        spudsGoUp = driveJoystick.getRawButton(SPUDS_UP_BUTTON);
-        spudsGoDown = driveJoystick.getRawButton(SPUDS_DOWN_BUTTON);
+        safetyOff        = driveJoystick.getRawButton(SAFETY_BUTTON);
+        spudsGoUp        = driveJoystick.getRawButton(SPUDS_UP_BUTTON);
+        spudsGoDown      = driveJoystick.getRawButton(SPUDS_DOWN_BUTTON);
         spudsRollForward = driveJoystick.getRawButton(SPUD_ROLLER_FORWARD);
-        spudsRollBack = driveJoystick.getRawButton(SPUD_ROLLER_BACKWARD);
+        spudsRollBack    = driveJoystick.getRawButton(SPUD_ROLLER_BACKWARD);
 
         //TODO: Query if lifer should go up or down
 
         //Camera control check
-        switch (manipulatorJoystick.getPOV())
-        {
+        switch (manipulatorJoystick.getPOV()) {
             case CAMERA_RIGHT:
                 panCameraRight = true;
                 panCameraLeft = false;
@@ -99,68 +95,55 @@ final class FredXControls
         }
     }
 
-    public double getThrottle ()
-    {
+    public double getThrottle() {
         return throttle;
     }
 
-    public double getSteer ()
-    {
+    public double getSteer() {
         return steer;
     }
 
-    public boolean safetyIsOff ()
-    {
+    public boolean safetyIsOff() {
         return safetyOff;
     }
 
-    public boolean spudsShouldGoUp ()
-    {
+    public boolean spudsShouldGoUp() {
         return spudsGoUp;
     }
 
-    public boolean spudsShouldGoDown ()
-    {
+    public boolean spudsShouldGoDown() {
         return spudsGoDown;
     }
 
-    public boolean spudsShouldRollForward ()
-    {
+    public boolean spudsShouldRollForward() {
         return spudsRollForward;
     }
 
-    public boolean spudsShouldRollBack ()
-    {
+    public boolean spudsShouldRollBack() {
         return spudsRollBack;
     }
 
-    public boolean liferShouldGoUp ()
-    {
+    public boolean liferShouldGoUp() {
         return liferGoUp;
     }
 
-    public boolean liferShouldGoDown ()
-    {
+    public boolean liferShouldGoDown() {
         return liferGoDown;
     }
 
-    public boolean cameraShouldPanRight ()
-    {
+    public boolean cameraShouldPanRight() {
         return panCameraRight;
     }
 
-    public boolean cameraShouldPanLeft ()
-    {
+    public boolean cameraShouldPanLeft() {
         return panCameraLeft;
     }
 
-    public boolean cameraShouldTiltUp ()
-    {
+    public boolean cameraShouldTiltUp() {
         return tiltCameraUp;
     }
 
-    public boolean cameraShouldTiltDown ()
-    {
+    public boolean cameraShouldTiltDown() {
         return tiltCameraDown;
     }
 }
