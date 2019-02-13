@@ -43,7 +43,7 @@ final class FredXControls {
         //TODO: Query if lifer should go up or down
 
         //Camera control check
-        switch (manipulatorJoystick.getPOV()) {
+        switch(manipulatorJoystick.getPOV()) {
             case CAMERA_RIGHT:
                 panCameraRight = true;
                 panCameraLeft = false;
