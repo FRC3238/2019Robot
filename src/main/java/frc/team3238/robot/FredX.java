@@ -73,6 +73,7 @@ public final class FredX extends TimedRobot {
 
         //Setting up the DifferentialDrive
         drive = new DifferentialDrive(leftMasterDriveTalon, rightMasterDriveTalon);
+        drive.setDeadband(0);
         drive.setSafetyEnabled(true);
     }
 

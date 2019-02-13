@@ -40,6 +40,13 @@ final class FredXConstants {
     static final int SPUDS_DOWN_BUTTON    = 3;
     static final int SPUD_ROLLER_FORWARD  = 1;
     static final int SPUD_ROLLER_BACKWARD = 2;
+    static final int ARMS_OUT             = 6;
+    static final int ARMS_IN              = 5;
+
+    //Joystick deadbands ----------------------------------------------------------------
+    static final double THROTTLE_DEADBAND = 0.2;
+    static final double STEERING_DEADBAND = 0.2;
+    static final double LIFTING_DEADBAND  = 0.2;
 
     //Servo channels --------------------------------------------------------------------
     static final int CAMERA_PAN_CHANNEL  = 0;

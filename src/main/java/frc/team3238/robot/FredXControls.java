@@ -22,6 +22,8 @@ final class FredXControls {
     private boolean panCameraLeft;
     private boolean tiltCameraUp;
     private boolean tiltCameraDown;
+    private boolean armsGoOut;
+    private boolean armsPullIn;
 
     public FredXControls() {
         driveJoystick       = new Joystick(DRIVE_JOYSTICK_PORT);
@@ -30,8 +32,8 @@ final class FredXControls {
 
     public void updateControls() {
         //Drive controls
-        throttle = -driveJoystick.getY();
-        steer    = driveJoystick.getTwist();
+        throttle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND);
+        steer    = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
 
         //Button checks
         safetyOff        = driveJoystick.getRawButton(SAFETY_BUTTON);
@@ -39,8 +41,15 @@ final class FredXControls {
         spudsGoDown      = driveJoystick.getRawButton(SPUDS_DOWN_BUTTON);
         spudsRollForward = driveJoystick.getRawButton(SPUD_ROLLER_FORWARD);
         spudsRollBack    = driveJoystick.getRawButton(SPUD_ROLLER_BACKWARD);
+        armsGoOut        = driveJoystick.getRawButton(ARMS_OUT);
+        armsPullIn       = driveJoystick.getRawButton(ARMS_IN);
 
-        //TODO: Query if lifer should go up or down
+
+        double mjy = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
+        liferGoUp   = mjy > 0;
+        liferGoDown = mjy < 0;
+
+
 
         //Camera control check
         switch(manipulatorJoystick.getPOV()) {
@@ -145,5 +154,27 @@ final class FredXControls {
 
     public boolean cameraShouldTiltDown() {
         return tiltCameraDown;
+    }
+
+    public boolean armsShouldGoOut() {
+        return armsGoOut;
+    }
+
+    public boolean armsShouldPullIn() {
+        return armsPullIn;
+    }
+
+    /**
+     * Takes a raw value as input and applies a deadband to it.
+     *
+     * @param rawValue [-1, 1] The raw value
+     * @param deadband [0, 1) The amount of deadband to use
+     * @return The deadband-adjusted value
+     */
+    private static double deadbandAdjust(double rawValue, double deadband) {
+        if(Math.abs(rawValue) < deadband)
+            return 0;
+        else
+            return rawValue / (1 - deadband);
     }
 }
