@@ -1,11 +1,13 @@
 package frc.team3238.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.team3238.robot.motion.PanTiltMount;
-import frc.team3238.robot.motion.ServoPTMount;
 
 import static frc.team3238.robot.FredXConstants.*;
 
@@ -15,64 +17,123 @@ public final class FredX extends TimedRobot {
     //FredX Systems --------------------------------------------------------------------------
     private FredXControls     controls;
     private DifferentialDrive drive;
-    private PanTiltMount      cameraMount;
 
     //Talons ---------------------------------------------------------------------------------
-    private WPI_TalonSRX leftMasterDriveTalon;
-    private WPI_TalonSRX rightMasterDriveTalon;
-    private WPI_TalonSRX leftSlaveDriveTalon;
-    private WPI_TalonSRX rightSlaveDriveTalon;
-    private WPI_TalonSRX spudDriveTalon;
-    private WPI_TalonSRX spudRollerTalon;
-    private WPI_TalonSRX armMasterTalon;
-    private WPI_TalonSRX armSlaveTalon;
-    private WPI_TalonSRX liftActuatorTalon;
+    private WPI_TalonSRX driveLeftMasterTalon;
+    private WPI_TalonSRX driveLeftSlaveTalon;
+    private WPI_TalonSRX driveRightMasterTalon;
+    private WPI_TalonSRX driveRightSlaveTalon;
+    private WPI_TalonSRX spudsTalon;
+    private WPI_TalonSRX rollerTalon;
+    private WPI_TalonSRX breacherMasterTalon;
+    private WPI_TalonSRX breacherSlaveTalon;
+    private WPI_TalonSRX liftTalon;
+    private WPI_TalonSRX wristTalon;
+    private WPI_TalonSRX beakTalon;
+
+    //Servos ---------------------------------------------------------------------------------
+    private Servo cameraPanServo;
+    private Servo cameraTiltServo;
 
     //FredX Control Loop Methods -------------------------------------------------------------
 
     @Override
     public void robotInit() {
-        //Initialize the controls
+        //Initialize controls
         controls = new FredXControls();
 
-        //Initialize all the Talons
-        leftMasterDriveTalon  = new WPI_TalonSRX(LEFT_MASTER_DRIVE_NUM);
-        rightMasterDriveTalon = new WPI_TalonSRX(RIGHT_MASTER_DRIVE_NUM);
-        leftSlaveDriveTalon   = new WPI_TalonSRX(LEFT_SLAVE_DRIVE_NUM);
-        rightSlaveDriveTalon  = new WPI_TalonSRX(RIGHT_SLAVE_DRIVE_NUM);
-        spudDriveTalon        = new WPI_TalonSRX(SPUD_DRIVE_NUM);
-        spudRollerTalon       = new WPI_TalonSRX(SPUD_ROLLER_NUM);
-        armMasterTalon        = new WPI_TalonSRX(ARM_MASTER_NUM);
-        armSlaveTalon         = new WPI_TalonSRX(ARM_SLAVE_NUM);
-        liftActuatorTalon     = new WPI_TalonSRX(LIFT_ACTUATOR_NUM);
+        //Initialize talons
+        driveLeftMasterTalon  = new WPI_TalonSRX(DRIVE_LEFT_MASTER_NUM);
+        driveLeftSlaveTalon   = new WPI_TalonSRX(DRIVE_LEFT_SLAVE_NUM);
+        driveRightMasterTalon = new WPI_TalonSRX(DRIVE_RIGHT_MASTER_NUM);
+        driveRightSlaveTalon  = new WPI_TalonSRX(DRIVE_RIGHT_SLAVE_NUM);
+        spudsTalon            = new WPI_TalonSRX(SPUDS_NUM);
+        rollerTalon           = new WPI_TalonSRX(ROLLER_NUM);
+        breacherMasterTalon   = new WPI_TalonSRX(BREACHER_MASTER_NUM);
+        breacherSlaveTalon    = new WPI_TalonSRX(BREACHER_SLAVE_NUM);
+        liftTalon             = new WPI_TalonSRX(LIFT_NUM);
+        wristTalon            = new WPI_TalonSRX(WRIST_NUM);
+        beakTalon             = new WPI_TalonSRX(BEAK_NUM);
 
+        //Initialize servos
+        cameraPanServo  = new Servo(CAMERA_PAN_CHANNEL);
+        cameraTiltServo = new Servo(CAMERA_TILT_CHANNEL);
 
-        // Configure all the Talon Directions
-        leftMasterDriveTalon.setInverted(REVERSE_DRIVE_TALONS);
-        rightMasterDriveTalon.setInverted(REVERSE_DRIVE_TALONS);
-        leftSlaveDriveTalon.setInverted(REVERSE_DRIVE_TALONS);
-        rightSlaveDriveTalon.setInverted(REVERSE_DRIVE_TALONS);
-        spudDriveTalon.setInverted(REVERSE_SPUD_DRIVE_TALON);
-        spudRollerTalon.setInverted(REVERSE_SPUD_ROLLER_TALON);
-        armMasterTalon.setInverted(REVERSE_ARM_TALONS);
-        armSlaveTalon.setInverted(REVERSE_ARM_TALONS);
-        liftActuatorTalon.setInverted(REVERSE_ARM_ACTUATOR);
+        //Apply talon reversals
+        driveLeftMasterTalon.setInverted(REVERSE_DRIVE);
+        driveLeftSlaveTalon.setInverted(REVERSE_DRIVE);
+        driveRightMasterTalon.setInverted(REVERSE_DRIVE);
+        driveRightSlaveTalon.setInverted(REVERSE_DRIVE);
+        spudsTalon.setInverted(REVERSE_SPUDS);
+        rollerTalon.setInverted(REVERSE_ROLLER);
+        breacherMasterTalon.setInverted(REVERSE_BREACHER);
+        breacherSlaveTalon.setInverted(REVERSE_BREACHER); //TODO: Check if breacher needs one talon inverted
+        liftTalon.setInverted(REVERSE_LIFT);
+        wristTalon.setInverted(REVERSE_WRIST);
+        beakTalon.setInverted(REVERSE_BEAK);
 
+        //Configure talon brake state
+        driveLeftMasterTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        driveLeftSlaveTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        driveRightMasterTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        driveRightSlaveTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        spudsTalon.setNeutralMode(SPUDS_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        rollerTalon.setNeutralMode(ROLLER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        breacherMasterTalon.setNeutralMode(BREACHER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        breacherSlaveTalon.setNeutralMode(BREACHER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        liftTalon.setNeutralMode(LIFT_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        wristTalon.setNeutralMode(WRIST_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        beakTalon.setNeutralMode(BEAK_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
 
-        //Pairing up Talons
-        leftSlaveDriveTalon.follow(leftMasterDriveTalon, FollowerType.PercentOutput);
-        rightSlaveDriveTalon.follow(rightMasterDriveTalon, FollowerType.PercentOutput);
-        armSlaveTalon.follow(armMasterTalon, FollowerType.PercentOutput);
+        //Pair up talons
+        driveLeftSlaveTalon.follow(driveLeftMasterTalon, FollowerType.PercentOutput);
+        driveRightSlaveTalon.follow(driveRightMasterTalon, FollowerType.PercentOutput);
+        breacherSlaveTalon.follow(breacherMasterTalon, FollowerType.PercentOutput);
 
+        //Configure feedback sensors
+        spudsTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
+        breacherMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
+        liftTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, TALON_TIMEOUT);
+        wristTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
 
-        //Setup camera mount
-        cameraMount = new ServoPTMount(CAMERA_PAN_CHANNEL, CAMERA_TILT_CHANNEL, CAMERA_SPEED, CAMERA_SPEED,
-                                       DEFAULT_CAMERA_PAN, DEFAULT_CAMERA_TILT, CAMERA_MIN_PAN, CAMERA_MAX_PAN,
-                                       CAMERA_MIN_TILT, CAMERA_MAX_TILT);
+        //Set sensor phase (used to make sensor negative when motion is negative)
+        spudsTalon.setSensorPhase(FLIP_SPUD_SENSOR);
+        breacherMasterTalon.setSensorPhase(FLIP_BREACHER_SENSOR);
+        liftTalon.setSensorPhase(FLIP_LIFT_SENSOR);
+        wristTalon.setSensorPhase(FLIP_WRIST_SENSOR);
 
+        //Set target velocities
+        spudsTalon.configMotionCruiseVelocity(SPUDS_VELOCITY, TALON_TIMEOUT);
+        breacherMasterTalon.configMotionCruiseVelocity(BREACHER_VELOCITY, TALON_TIMEOUT);
+        liftTalon.configMotionCruiseVelocity(LIFT_VELOCITY, TALON_TIMEOUT);
+        wristTalon.configMotionCruiseVelocity(WRIST_VELOCITY, TALON_TIMEOUT);
 
-        //Setting up the DifferentialDrive
-        drive = new DifferentialDrive(leftMasterDriveTalon, rightMasterDriveTalon);
+        //Set target accelerations
+        spudsTalon.configMotionAcceleration(SPUDS_ACCELERATION, TALON_TIMEOUT);
+        breacherMasterTalon.configMotionAcceleration(BREACHER_ACCELERATION, TALON_TIMEOUT);
+        liftTalon.configMotionAcceleration(LIFT_ACCELERATION, TALON_TIMEOUT);
+        wristTalon.configMotionAcceleration(WRIST_ACCELERATION, TALON_TIMEOUT);
+
+        //Putting in PID-F constants
+        spudsTalon.config_kP(0, SPUDS_kP, TALON_TIMEOUT);
+        spudsTalon.config_kI(0, SPUDS_kI, TALON_TIMEOUT);
+        spudsTalon.config_kD(0, SPUDS_kD, TALON_TIMEOUT);
+        spudsTalon.config_kF(0, SPUDS_kF, TALON_TIMEOUT);
+        breacherMasterTalon.config_kP(0, BREACHER_kP, TALON_TIMEOUT);
+        breacherMasterTalon.config_kI(0, BREACHER_kI, TALON_TIMEOUT);
+        breacherMasterTalon.config_kD(0, BREACHER_kD, TALON_TIMEOUT);
+        breacherMasterTalon.config_kF(0, BREACHER_kF, TALON_TIMEOUT);
+        liftTalon.config_kP(0, LIFT_kP, TALON_TIMEOUT);
+        liftTalon.config_kI(0, LIFT_kI, TALON_TIMEOUT);
+        liftTalon.config_kD(0, LIFT_kD, TALON_TIMEOUT);
+        liftTalon.config_kF(0, LIFT_kF, TALON_TIMEOUT);
+        wristTalon.config_kP(0, WRIST_kP, TALON_TIMEOUT);
+        wristTalon.config_kI(0, WRIST_kI, TALON_TIMEOUT);
+        wristTalon.config_kD(0, WRIST_kD, TALON_TIMEOUT);
+        wristTalon.config_kF(0, WRIST_kF, TALON_TIMEOUT);
+
+        //Initialize drive
+        drive = new DifferentialDrive(driveLeftMasterTalon, driveRightSlaveTalon);
         drive.setDeadband(0);
         drive.setSafetyEnabled(true);
     }
@@ -84,51 +145,18 @@ public final class FredX extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        drive.arcadeDrive(controls.getThrottle(), controls.getSteer());
+        //Setting throttles
+        drive.arcadeDrive(controls.getDriveThrottle(), controls.getSteer());
+        rollerTalon.set(ControlMode.PercentOutput, controls.getRollerThrottle());
 
-        if(controls.safetyIsOff()) {
-            //Move the spuds
-            if(controls.spudsShouldGoDown()) {
-                spudDriveTalon.set(SPUD_SPEED);
-            }
-            else if(controls.spudsShouldGoUp()) {
-                spudDriveTalon.set(-SPUD_SPEED);
-            }
-            else {
-                spudDriveTalon.set(0); //Spuds stop
-            }
+        //Setting positions
+        breacherMasterTalon.set(ControlMode.MotionMagic, controls.getBreacherExtension());
+        spudsTalon.set(ControlMode.MotionMagic, controls.getSpudsExtension());
+        liftTalon.set(ControlMode.MotionMagic, controls.getLiftExtension());
+        wristTalon.set(ControlMode.MotionMagic, controls.getWristExtension());
 
-            //Move the spud roller
-            if(controls.spudsShouldRollForward()) {
-                spudRollerTalon.set(SPUD_ROLLER_SPEED);
-            }
-            else if(controls.spudsShouldRollBack()) {
-                spudRollerTalon.set(-SPUD_ROLLER_SPEED);
-            }
-            else {
-                spudRollerTalon.set(0); //Stop rolling
-            }
-        }
-        else {
-            //Stop all safety enabled components
-            spudDriveTalon.set(0);
-            spudRollerTalon.set(0);
-        }
-
-        //Camera Pan Update
-        if(controls.cameraShouldPanRight()) {
-            cameraMount.panRight();
-        }
-        else if(controls.cameraShouldPanLeft()) {
-            cameraMount.panLeft();
-        }
-
-        //Camera Tilt Update
-        if(controls.cameraShouldTiltUp()) {
-            cameraMount.tiltUp();
-        }
-        else if(controls.cameraShouldTiltDown()) {
-            cameraMount.tiltDown();
-        }
+        //Camera position update
+        cameraPanServo.setAngle(controls.getCameraPanAngle());
+        cameraTiltServo.setAngle(controls.getCameraTiltAngle());
     }
 }
