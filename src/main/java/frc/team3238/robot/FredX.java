@@ -159,4 +159,9 @@ public final class FredX extends TimedRobot {
         cameraPanServo.setAngle(controls.getCameraPanAngle());
         cameraTiltServo.setAngle(controls.getCameraTiltAngle());
     }
+
+    @Override
+    public void autonomousPeriodic() {
+        teleopPeriodic();
+    }
 }
