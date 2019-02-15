@@ -133,7 +133,7 @@ public final class FredX extends TimedRobot {
         wristTalon.config_kF(0, WRIST_kF, TALON_TIMEOUT);
 
         //Initialize drive
-        drive = new DifferentialDrive(driveLeftMasterTalon, driveRightSlaveTalon);
+        drive = new DifferentialDrive(driveLeftMasterTalon, driveRightMasterTalon);
         drive.setDeadband(0);
         drive.setSafetyEnabled(true);
     }
