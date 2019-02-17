@@ -1,8 +1,9 @@
 package frc.team3238.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.team3238.robot.settings.talons.BreacherSettings;
 
-import static frc.team3238.robot.FredXConstants.*;
+import static frc.team3238.robot.settings.FredXConstants.*;
 
 final class FredXControls {
 
@@ -82,9 +83,9 @@ final class FredXControls {
 
             //Breacher extension
             if(driveJoystick.getRawButton(BREACHER_EXTEND_BUTTON))
-                setBreacherExtension(breacherExtension + BREACHER_SPEED);
+                setBreacherExtension(breacherExtension + BreacherSettings.manualSpeed);
             else if(driveJoystick.getRawButton(BREACHER_RETRACT_BUTTON))
-                setBreacherExtension(breacherExtension - BREACHER_SPEED);
+                setBreacherExtension(breacherExtension - BreacherSettings.manualSpeed);
         }
         else {
             rollerThrottle = 0;
@@ -147,10 +148,10 @@ final class FredXControls {
     }
 
     private void setBreacherExtension(double nativeUnits) {
-        if(nativeUnits < BREACHER_MIN_EXTEND)
-            breacherExtension = BREACHER_MIN_EXTEND;
-        else if(nativeUnits > BREACHER_MAX_EXTEND)
-            breacherExtension = BREACHER_MAX_EXTEND;
+        if(nativeUnits < BreacherSettings.MIN_EXTENSION)
+            breacherExtension = BreacherSettings.MIN_EXTENSION;
+        else if(nativeUnits > BreacherSettings.MAX_EXTENSION)
+            breacherExtension = BreacherSettings.MAX_EXTENSION;
         else
             breacherExtension = nativeUnits;
     }
