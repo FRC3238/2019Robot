@@ -4,163 +4,208 @@ import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.team3238.robot.FredXConstants.*;
 
-final class FredXControls
-{
+final class FredXControls {
 
     private Joystick driveJoystick;
     private Joystick manipulatorJoystick;
 
-    private double  throttle;
-    private double  steer;
-    private boolean safetyOff;
-    private boolean spudsGoUp;
-    private boolean spudsGoDown;
-    private boolean spudsRollForward;
-    private boolean spudsRollBack;
-    private boolean liferGoUp;
-    private boolean liferGoDown;
-    private boolean panCameraRight;
-    private boolean panCameraLeft;
-    private boolean tiltCameraUp;
-    private boolean tiltCameraDown;
+    private double driveThrottle;
+    private double rollerThrottle;
+    private double steer;
+    private double spudsExtension;
+    private double breacherExtension;
+    private double liftExtension;
+    private double wristExtension;
+    private double beakExtension; //TODO: Implement use of the beak
 
-    public FredXControls ()
-    {
-        driveJoystick = new Joystick(DRIVE_JOYSTICK_PORT);
-        manipulatorJoystick = new Joystick(MANIPULATION_JOYSTICK_PORT);
+    private double cameraPan  = CAMERA_PAN_DEFAULT;
+    private double cameraTilt = CAMERA_TILT_DEFAULT;
+
+    public FredXControls() {
+        driveJoystick       = new Joystick(DRIVE_JOYSTICK_PORT);
+        manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
     }
 
-    public void updateControls ()
-    {
+    public void updateControls() {
         //Drive controls
-        throttle = -driveJoystick.getY();
-        steer = driveJoystick.getTwist();
+        driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND);
+        steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
 
-        //Button checks
-        safetyOff = driveJoystick.getRawButton(SAFETY_BUTTON);
-        spudsGoUp = driveJoystick.getRawButton(SPUDS_UP_BUTTON);
-        spudsGoDown = driveJoystick.getRawButton(SPUDS_DOWN_BUTTON);
-        spudsRollForward = driveJoystick.getRawButton(SPUD_ROLLER_FORWARD);
-        spudsRollBack = driveJoystick.getRawButton(SPUD_ROLLER_BACKWARD);
-
-        //TODO: Query if lifer should go up or down
-
-        //Camera control check
-        switch (manipulatorJoystick.getPOV())
-        {
-            case CAMERA_RIGHT:
-                panCameraRight = true;
-                panCameraLeft = false;
-                tiltCameraUp = false;
-                tiltCameraDown = false;
+        //Adjusting camera position
+        switch(manipulatorJoystick.getPOV()) {
+            case CAMERA_UP:
+                setCameraTilt(cameraTilt + CAMERA_SPEED);
                 break;
             case CAMERA_RIGHT_UP:
-                panCameraRight = true;
-                panCameraLeft = false;
-                tiltCameraUp = true;
-                tiltCameraDown = false;
+                setCameraPan(cameraPan + CAMERA_SPEED);
+                setCameraTilt(cameraTilt + CAMERA_SPEED);
                 break;
-            case CAMERA_UP:
-                panCameraRight = false;
-                panCameraLeft = false;
-                tiltCameraUp = true;
-                tiltCameraDown = false;
-                break;
-            case CAMERA_LEFT_UP:
-                panCameraRight = false;
-                panCameraLeft = true;
-                tiltCameraUp = true;
-                tiltCameraDown = false;
-                break;
-            case CAMERA_LEFT:
-                panCameraRight = false;
-                panCameraLeft = true;
-                tiltCameraUp = false;
-                tiltCameraDown = false;
-                break;
-            case CAMERA_LEFT_DOWN:
-                panCameraRight = false;
-                panCameraLeft = true;
-                tiltCameraUp = false;
-                tiltCameraDown = true;
-                break;
-            case CAMERA_DOWN:
-                panCameraRight = false;
-                panCameraLeft = false;
-                tiltCameraUp = false;
-                tiltCameraDown = true;
+            case CAMERA_RIGHT:
+                setCameraPan(cameraPan + CAMERA_SPEED);
                 break;
             case CAMERA_RIGHT_DOWN:
-                panCameraRight = true;
-                panCameraLeft = false;
-                tiltCameraUp = false;
-                tiltCameraDown = true;
+                setCameraPan(cameraPan + CAMERA_SPEED);
+                setCameraTilt(cameraTilt - CAMERA_SPEED);
+                break;
+            case CAMERA_DOWN:
+                setCameraTilt(cameraTilt - CAMERA_SPEED);
+                break;
+            case CAMERA_LEFT_DOWN:
+                setCameraPan(cameraPan - CAMERA_SPEED);
+                setCameraTilt(cameraTilt - CAMERA_SPEED);
+                break;
+            case CAMERA_LEFT:
+                setCameraPan(cameraPan - CAMERA_SPEED);
+                break;
+            case CAMERA_LEFT_UP:
+                setCameraPan(cameraPan - CAMERA_SPEED);
+                setCameraTilt(cameraTilt + CAMERA_SPEED);
                 break;
         }
+
+        //Configure safety-enabled items
+        if(driveJoystick.getRawButton(SAFETY_BUTTON)) {
+
+            //Roller throttle
+            if(driveJoystick.getRawButton(ROLLER_FORWARD_BUTTON))
+                rollerThrottle = SPUD_ROLLER_SPEED;
+            else if(driveJoystick.getRawButton(ROLLER_BACKWARD_BUTTON))
+                rollerThrottle = -SPUD_ROLLER_SPEED;
+            else
+                rollerThrottle = 0;
+
+            //Spuds extension
+            if(driveJoystick.getRawButton(SPUDS_UP_BUTTON))
+                setSpudsExtension(spudsExtension + SPUD_SPEED);
+            else if(driveJoystick.getRawButton(SPUDS_DOWN_BUTTON))
+                setSpudsExtension(spudsExtension - SPUD_SPEED);
+
+            //Breacher extension
+            if(driveJoystick.getRawButton(BREACHER_EXTEND_BUTTON))
+                setBreacherExtension(breacherExtension + BREACHER_SPEED);
+            else if(driveJoystick.getRawButton(BREACHER_RETRACT_BUTTON))
+                setBreacherExtension(breacherExtension - BREACHER_SPEED);
+        }
+        else {
+            rollerThrottle = 0;
+        }
+
+        //Lift extension adjust
+        double liftThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
+        setLiftExtension(liftExtension + liftThrottle * LIFT_SPEED);
+
+        //Wrist extension adjust
+        if(manipulatorJoystick.getRawButton(WRIST_UP_BUTTON))
+            setWristExtension(wristExtension + WRIST_SPEED);
+        else if(manipulatorJoystick.getRawButton(WRIST_DOWN_BUTTON))
+            setWristExtension(wristExtension - WRIST_SPEED);
     }
 
-    public double getThrottle ()
-    {
-        return throttle;
+    public double getDriveThrottle() {
+        return driveThrottle;
     }
 
-    public double getSteer ()
-    {
+    public double getSteer() {
         return steer;
     }
 
-    public boolean safetyIsOff ()
-    {
-        return safetyOff;
+    public double getRollerThrottle() {
+        return rollerThrottle;
     }
 
-    public boolean spudsShouldGoUp ()
-    {
-        return spudsGoUp;
+    public double getSpudsExtension() {
+        return spudsExtension;
     }
 
-    public boolean spudsShouldGoDown ()
-    {
-        return spudsGoDown;
+    public double getBreacherExtension() {
+        return breacherExtension;
     }
 
-    public boolean spudsShouldRollForward ()
-    {
-        return spudsRollForward;
+    public double getLiftExtension() {
+        return liftExtension;
     }
 
-    public boolean spudsShouldRollBack ()
-    {
-        return spudsRollBack;
+    public double getWristExtension() {
+        return wristExtension;
     }
 
-    public boolean liferShouldGoUp ()
-    {
-        return liferGoUp;
+    public double getCameraPanAngle() {
+        return cameraPan;
     }
 
-    public boolean liferShouldGoDown ()
-    {
-        return liferGoDown;
+    public double getCameraTiltAngle() {
+        return cameraTilt;
     }
 
-    public boolean cameraShouldPanRight ()
-    {
-        return panCameraRight;
+    private void setSpudsExtension(double nativeUnits) {
+        if(nativeUnits < SPUD_MIN_EXTEND)
+            spudsExtension = SPUD_MIN_EXTEND;
+        else if(nativeUnits > SPUDS_MAX_EXTEND)
+            spudsExtension = SPUDS_MAX_EXTEND;
+        else
+            spudsExtension = nativeUnits;
     }
 
-    public boolean cameraShouldPanLeft ()
-    {
-        return panCameraLeft;
+    private void setBreacherExtension(double nativeUnits) {
+        if(nativeUnits < BREACHER_MIN_EXTEND)
+            breacherExtension = BREACHER_MIN_EXTEND;
+        else if(nativeUnits > BREACHER_MAX_EXTEND)
+            breacherExtension = BREACHER_MAX_EXTEND;
+        else
+            breacherExtension = nativeUnits;
     }
 
-    public boolean cameraShouldTiltUp ()
-    {
-        return tiltCameraUp;
+    private void setLiftExtension(double nativeUnits) {
+        if(nativeUnits < LIFT_MIN_EXTEND)
+            liftExtension = LIFT_MIN_EXTEND;
+        else if(nativeUnits > LIFT_MAX_EXTEND)
+            liftExtension = LIFT_MAX_EXTEND;
+        else
+            liftExtension = nativeUnits;
     }
 
-    public boolean cameraShouldTiltDown ()
-    {
-        return tiltCameraDown;
+    private void setWristExtension(double nativeUnits) {
+        if(nativeUnits < WRIST_MIN_EXTEND)
+            wristExtension = WRIST_MIN_EXTEND;
+        else if(nativeUnits > WRIST_MAX_EXTEND)
+            wristExtension = WRIST_MAX_EXTEND;
+        else
+            wristExtension = nativeUnits;
+    }
+
+    private void setCameraPan(double degrees) {
+        if(degrees < CAMERA_MIN_PAN)
+            cameraPan = CAMERA_MIN_PAN;
+        else if(degrees > CAMERA_MAX_PAN)
+            cameraPan = CAMERA_MAX_PAN;
+        else
+            cameraPan = degrees;
+    }
+
+    private void setCameraTilt(double degrees) {
+        if(degrees < CAMERA_MIN_TILT)
+            cameraTilt = CAMERA_MIN_TILT;
+        else if(degrees > CAMERA_MAX_TILT)
+            cameraTilt = CAMERA_MAX_TILT;
+        else
+            cameraTilt = degrees;
+    }
+
+    /**
+     * Takes a raw value as input and applies a deadband to it.
+     *
+     * @param rawValue [-1, 1] The raw value
+     * @param deadband [0, 1) The amount of deadband to use
+     * @return The deadband-adjusted value
+     */
+    private static double deadbandAdjust(double rawValue, double deadband) {
+        if(Math.abs(rawValue) < deadband)
+            return 0;
+        else {
+            if(rawValue < 0)
+                return (rawValue + deadband) / (1 - deadband);
+            else
+                return (rawValue - deadband) / (1 - deadband);
+        }
     }
 }
