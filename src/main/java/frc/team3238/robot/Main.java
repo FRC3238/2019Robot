@@ -12,6 +12,6 @@ import edu.wpi.first.wpilibj.RobotBase;
 public class Main {
 
     public static void main(String[] args) {
-        RobotBase.startRobot(FredX::new);
+        RobotBase.startRobot(FREDDX::new);
     }
 }
