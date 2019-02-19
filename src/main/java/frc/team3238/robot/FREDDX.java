@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -16,7 +17,8 @@ import static frc.team3238.robot.FREDDXConstants.*;
 
 public final class FREDDX extends TimedRobot {
 
-    private FREDDXControls      userControls;
+    private Joystick            driveJoystick;
+    private Joystick            manipulatorJoystick;
     private FREDDXControlScheme controller;
     private DifferentialDrive   drive;
     private WPI_TalonSRX        spudsTalon;
@@ -33,7 +35,8 @@ public final class FREDDX extends TimedRobot {
     @Override
     public void robotInit() {
         //Initialize controls
-        userControls = new FREDDXControls(DRIVE_JOYSTICK_PORT, MANIPULATOR_JOYSTICK_PORT);
+        driveJoystick      = new Joystick(DRIVE_JOYSTICK_PORT);
+        manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
 
         //Initialize talons
         WPI_TalonSRX driveLeftMasterTalon  = new WPI_TalonSRX(DRIVE_LEFT_MASTER_NUM);
@@ -149,8 +152,12 @@ public final class FREDDX extends TimedRobot {
 
     // Getters ---------------------------------------------------------------------------------------------------------
 
-    public FREDDXControls getUserControls() {
-        return userControls;
+    public Joystick getDriverJoystick() {
+        return driveJoystick;
+    }
+
+    public Joystick getManipulatorJoystick() {
+        return manipulatorJoystick;
     }
 
     public DifferentialDrive getDrive() {
