@@ -5,19 +5,23 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.team3238.robot.control.CameraController;
 import frc.team3238.robot.control.FREDDXControlScheme;
 import frc.team3238.robot.control.SwitchableControls;
+import frc.team3238.robot.systems.PodDrive;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
 
 public final class FREDDX extends TimedRobot {
 
-    private FREDDXControls      userControls;
-    private FREDDXControlScheme controller;
+    private Joystick            driveJoystick;
+    private Joystick            manipulatorJoystick;
+    private CameraController    cameraController;
+    private FREDDXControlScheme robotController;
     private DifferentialDrive   drive;
     private WPI_TalonSRX        spudsTalon;
     private WPI_TalonSRX        rollerTalon;
@@ -25,22 +29,15 @@ public final class FREDDX extends TimedRobot {
     private WPI_TalonSRX        liftTalon;
     private WPI_TalonSRX        wristTalon;
     private WPI_TalonSRX        beakTalon;
-    private Servo               cameraPanServo;
-    private Servo               cameraTiltServo;
-
-    //FredX Control Loop Methods -------------------------------------------------------------
 
     @Override
     public void robotInit() {
         //Initialize controls
-        userControls = new FREDDXControls(DRIVE_JOYSTICK_PORT, MANIPULATOR_JOYSTICK_PORT);
+        driveJoystick       = new Joystick(DRIVE_JOYSTICK_PORT);
+        manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
 
         //Initialize talons
-        WPI_TalonSRX driveLeftMasterTalon  = new WPI_TalonSRX(DRIVE_LEFT_MASTER_NUM);
-        WPI_TalonSRX driveLeftSlaveTalon   = new WPI_TalonSRX(DRIVE_LEFT_SLAVE_NUM);
-        WPI_TalonSRX driveRightMasterTalon = new WPI_TalonSRX(DRIVE_RIGHT_MASTER_NUM);
-        WPI_TalonSRX driveRightSlaveTalon  = new WPI_TalonSRX(DRIVE_RIGHT_SLAVE_NUM);
-        WPI_TalonSRX breacherSlaveTalon    = new WPI_TalonSRX(BREACHER_SLAVE_NUM);
+        WPI_TalonSRX breacherSlaveTalon = new WPI_TalonSRX(BREACHER_SLAVE_NUM);
         spudsTalon          = new WPI_TalonSRX(SPUDS_NUM);
         rollerTalon         = new WPI_TalonSRX(ROLLER_NUM);
         breacherMasterTalon = new WPI_TalonSRX(BREACHER_MASTER_NUM);
@@ -48,29 +45,16 @@ public final class FREDDX extends TimedRobot {
         wristTalon          = new WPI_TalonSRX(WRIST_NUM);
         beakTalon           = new WPI_TalonSRX(BEAK_NUM);
 
-        //Initialize servos
-        cameraPanServo  = new Servo(CAMERA_PAN_CHANNEL);
-        cameraTiltServo = new Servo(CAMERA_TILT_CHANNEL);
-
         //Apply talon reversals
-        driveLeftMasterTalon.setInverted(REVERSE_DRIVE);
-        driveLeftSlaveTalon.setInverted(REVERSE_DRIVE);
-        driveRightMasterTalon.setInverted(REVERSE_DRIVE);
-        driveRightSlaveTalon.setInverted(REVERSE_DRIVE);
         spudsTalon.setInverted(REVERSE_SPUDS);
         rollerTalon.setInverted(REVERSE_ROLLER);
         breacherMasterTalon.setInverted(REVERSE_BREACHER);
         breacherSlaveTalon.setInverted(REVERSE_BREACHER);
-
         liftTalon.setInverted(REVERSE_LIFT);
         wristTalon.setInverted(REVERSE_WRIST);
         beakTalon.setInverted(REVERSE_BEAK);
 
         //Configure talon brake state
-        driveLeftMasterTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        driveLeftSlaveTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        driveRightMasterTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        driveRightSlaveTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         spudsTalon.setNeutralMode(SPUDS_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         rollerTalon.setNeutralMode(ROLLER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         breacherMasterTalon.setNeutralMode(BREACHER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
@@ -80,8 +64,6 @@ public final class FREDDX extends TimedRobot {
         beakTalon.setNeutralMode(BEAK_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
 
         //Pair up talons
-        driveLeftSlaveTalon.follow(driveLeftMasterTalon, FollowerType.PercentOutput);
-        driveRightSlaveTalon.follow(driveRightMasterTalon, FollowerType.PercentOutput);
         breacherSlaveTalon.follow(breacherMasterTalon, FollowerType.PercentOutput);
         breacherSlaveTalon.setInverted(InvertType.OpposeMaster);
 
@@ -124,22 +106,29 @@ public final class FREDDX extends TimedRobot {
         wristTalon.config_kD(0, WRIST_kD, TALON_TIMEOUT);
 
         //Initialize drive
-        drive = new DifferentialDrive(driveLeftMasterTalon, driveRightMasterTalon);
+        drive = new PodDrive(DRIVE_LEFT_MASTER_NUM, DRIVE_LEFT_SLAVE_NUM, DRIVE_RIGHT_MASTER_NUM, DRIVE_RIGHT_SLAVE_NUM,
+                             REVERSE_DRIVE, DRIVE_NEUTRAL_BRAKE);
         drive.setDeadband(0);
         drive.setSafetyEnabled(true);
 
-        //Initialize controller
-        controller = new SwitchableControls(this);
+        //Initialize controllers
+        cameraController = new CameraController(manipulatorJoystick);
+        robotController  = new SwitchableControls(this);
     }
 
     @Override
     public void robotPeriodic() {
-        controller.updateControls();
+        robotController.updateControls();
     }
 
     @Override
     public void teleopPeriodic() {
-        controller.teleopPeriodic();
+        //Update and move camera
+        cameraController.updateControls();
+        cameraController.move();
+
+        //Move robot
+        robotController.teleopPeriodic();
     }
 
     @Override
@@ -149,8 +138,12 @@ public final class FREDDX extends TimedRobot {
 
     // Getters ---------------------------------------------------------------------------------------------------------
 
-    public FREDDXControls getUserControls() {
-        return userControls;
+    public Joystick getDriverJoystick() {
+        return driveJoystick;
+    }
+
+    public Joystick getManipulatorJoystick() {
+        return manipulatorJoystick;
     }
 
     public DifferentialDrive getDrive() {
@@ -179,13 +172,5 @@ public final class FREDDX extends TimedRobot {
 
     public WPI_TalonSRX getBeak() {
         return beakTalon;
-    }
-
-    public Servo getCameraPanServo() {
-        return cameraPanServo;
-    }
-
-    public Servo getCameraTiltServo() {
-        return cameraTiltServo;
     }
 }

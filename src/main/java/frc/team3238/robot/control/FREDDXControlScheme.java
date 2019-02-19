@@ -26,8 +26,8 @@ public abstract class FREDDXControlScheme {
 
     public FREDDXControlScheme(FREDDX robot) {
         this.robot          = robot;
-        driveJoystick       = robot.getUserControls().getDriveJoystick();
-        manipulatorJoystick = robot.getUserControls().getManipulatorJoystick();
+        driveJoystick       = robot.getDriverJoystick();
+        manipulatorJoystick = robot.getManipulatorJoystick();
         drive               = robot.getDrive();
         breachers           = robot.getBreacher();
         spuds               = robot.getSpuds();

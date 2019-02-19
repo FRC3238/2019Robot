@@ -54,7 +54,7 @@ public final class FREDDXConstants {
     //Motor speed adjustments -----------------------------------------------------------
     public static final double SPUD_ROLLER_SPEED = 1.00;
     public static final double BEAK_SPEED        = 1.00;
-    public static final double CAMERA_SPEED      = 1.00;
+    public static final int    CAMERA_SPEED      = 1;
 
     //Joystick button ids ---------------------------------------------------------------
     public static final int SPUDS_UP_BUTTON         = 5;
@@ -78,8 +78,8 @@ public final class FREDDXConstants {
     public static final int CAMERA_TILT_CHANNEL = 1;
 
     //Camera default position -----------------------------------------------------------
-    public static final double CAMERA_PAN_DEFAULT  = 90;
-    public static final double CAMERA_TILT_DEFAULT = 120;
+    public static final int CAMERA_PAN_DEFAULT  = 90;
+    public static final int CAMERA_TILT_DEFAULT = 120;
 
     //Travel limits (inclusive) ----------------------------------------------------------
     public static final int    BREACHER_MAX_EXTEND = 4096;
@@ -90,10 +90,10 @@ public final class FREDDXConstants {
     public static final double LIFT_MIN_EXTEND     = 0;
     public static final int    WRIST_MAX_EXTEND    = 720;
     public static final int    WRIST_MIN_EXTEND    = 0;
-    public static final double CAMERA_MAX_PAN      = 180;
-    public static final double CAMERA_MIN_PAN      = 0;
-    public static final double CAMERA_MAX_TILT     = 180;
-    public static final double CAMERA_MIN_TILT     = 0;
+    public static final int    CAMERA_MAX_PAN      = 180;
+    public static final int    CAMERA_MIN_PAN      = 0;
+    public static final int    CAMERA_MAX_TILT     = 180;
+    public static final int    CAMERA_MIN_TILT     = 0;
 
     //Target accelerations (native-units per 100ms per second) --------------------------
     public static final int BREACHER_ACCELERATION = 100;
