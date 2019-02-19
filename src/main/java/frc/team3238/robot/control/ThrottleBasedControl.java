@@ -46,7 +46,7 @@ public class ThrottleBasedControl extends FREDDXControlScheme {
         //Run the roller
         driveTalonFwdRevOrStop(roller,
                                driveJoystick.getRawButton(ROLLER_FORWARD_BUTTON),
-                               false,
+                        false,
                                driverThrottle);
 
         //Run the wrist
