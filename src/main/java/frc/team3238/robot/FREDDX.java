@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.team3238.robot.control.CameraController;
@@ -31,8 +30,6 @@ public final class FREDDX extends TimedRobot {
     private WPI_TalonSRX        wristTalon;
     private WPI_TalonSRX        beakTalon;
 
-    //FredX Control Loop Methods -------------------------------------------------------------
-
     @Override
     public void robotInit() {
         //Initialize controls
@@ -53,7 +50,6 @@ public final class FREDDX extends TimedRobot {
         rollerTalon.setInverted(REVERSE_ROLLER);
         breacherMasterTalon.setInverted(REVERSE_BREACHER);
         breacherSlaveTalon.setInverted(REVERSE_BREACHER);
-
         liftTalon.setInverted(REVERSE_LIFT);
         wristTalon.setInverted(REVERSE_WRIST);
         beakTalon.setInverted(REVERSE_BEAK);
