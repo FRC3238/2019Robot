@@ -18,8 +18,8 @@ public final class FREDDXConstants {
     public static final int DRIVE_RIGHT_SLAVE_NUM  = 3;
     public static final int SPUDS_NUM              = 4;
     public static final int ROLLER_NUM             = 5;
-    public static final int BREACHER_MASTER_NUM    = 6;
-    public static final int BREACHER_SLAVE_NUM     = 7;
+    public static final int BREACHER_MASTER_NUM    = 7;
+    public static final int BREACHER_SLAVE_NUM     = 6;
     public static final int LIFT_NUM               = 8;
     public static final int WRIST_NUM              = 9;
     public static final int BEAK_NUM               = 10;

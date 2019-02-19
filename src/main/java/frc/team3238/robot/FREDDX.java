@@ -2,6 +2,7 @@ package frc.team3238.robot;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Servo;
@@ -59,7 +60,8 @@ public final class FREDDX extends TimedRobot {
         spudsTalon.setInverted(REVERSE_SPUDS);
         rollerTalon.setInverted(REVERSE_ROLLER);
         breacherMasterTalon.setInverted(REVERSE_BREACHER);
-        breacherSlaveTalon.setInverted(!REVERSE_BREACHER);
+        breacherSlaveTalon.setInverted(REVERSE_BREACHER);
+
         liftTalon.setInverted(REVERSE_LIFT);
         wristTalon.setInverted(REVERSE_WRIST);
         beakTalon.setInverted(REVERSE_BEAK);
@@ -81,6 +83,7 @@ public final class FREDDX extends TimedRobot {
         driveLeftSlaveTalon.follow(driveLeftMasterTalon, FollowerType.PercentOutput);
         driveRightSlaveTalon.follow(driveRightMasterTalon, FollowerType.PercentOutput);
         breacherSlaveTalon.follow(breacherMasterTalon, FollowerType.PercentOutput);
+        breacherSlaveTalon.setInverted(InvertType.OpposeMaster);
 
         //Configure feedback sensors
         spudsTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
