@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.team3238.robot.control.CameraController;
 import frc.team3238.robot.control.FREDDXControlScheme;
 import frc.team3238.robot.control.SwitchableControls;
+import frc.team3238.robot.systems.PodDrive;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
@@ -35,15 +36,11 @@ public final class FREDDX extends TimedRobot {
     @Override
     public void robotInit() {
         //Initialize controls
-        driveJoystick      = new Joystick(DRIVE_JOYSTICK_PORT);
+        driveJoystick       = new Joystick(DRIVE_JOYSTICK_PORT);
         manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
 
         //Initialize talons
-        WPI_TalonSRX driveLeftMasterTalon  = new WPI_TalonSRX(DRIVE_LEFT_MASTER_NUM);
-        WPI_TalonSRX driveLeftSlaveTalon   = new WPI_TalonSRX(DRIVE_LEFT_SLAVE_NUM);
-        WPI_TalonSRX driveRightMasterTalon = new WPI_TalonSRX(DRIVE_RIGHT_MASTER_NUM);
-        WPI_TalonSRX driveRightSlaveTalon  = new WPI_TalonSRX(DRIVE_RIGHT_SLAVE_NUM);
-        WPI_TalonSRX breacherSlaveTalon    = new WPI_TalonSRX(BREACHER_SLAVE_NUM);
+        WPI_TalonSRX breacherSlaveTalon = new WPI_TalonSRX(BREACHER_SLAVE_NUM);
         spudsTalon          = new WPI_TalonSRX(SPUDS_NUM);
         rollerTalon         = new WPI_TalonSRX(ROLLER_NUM);
         breacherMasterTalon = new WPI_TalonSRX(BREACHER_MASTER_NUM);
@@ -52,10 +49,6 @@ public final class FREDDX extends TimedRobot {
         beakTalon           = new WPI_TalonSRX(BEAK_NUM);
 
         //Apply talon reversals
-        driveLeftMasterTalon.setInverted(REVERSE_DRIVE);
-        driveLeftSlaveTalon.setInverted(REVERSE_DRIVE);
-        driveRightMasterTalon.setInverted(REVERSE_DRIVE);
-        driveRightSlaveTalon.setInverted(REVERSE_DRIVE);
         spudsTalon.setInverted(REVERSE_SPUDS);
         rollerTalon.setInverted(REVERSE_ROLLER);
         breacherMasterTalon.setInverted(REVERSE_BREACHER);
@@ -66,10 +59,6 @@ public final class FREDDX extends TimedRobot {
         beakTalon.setInverted(REVERSE_BEAK);
 
         //Configure talon brake state
-        driveLeftMasterTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        driveLeftSlaveTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        driveRightMasterTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        driveRightSlaveTalon.setNeutralMode(DRIVE_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         spudsTalon.setNeutralMode(SPUDS_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         rollerTalon.setNeutralMode(ROLLER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         breacherMasterTalon.setNeutralMode(BREACHER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
@@ -79,8 +68,6 @@ public final class FREDDX extends TimedRobot {
         beakTalon.setNeutralMode(BEAK_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
 
         //Pair up talons
-        driveLeftSlaveTalon.follow(driveLeftMasterTalon, FollowerType.PercentOutput);
-        driveRightSlaveTalon.follow(driveRightMasterTalon, FollowerType.PercentOutput);
         breacherSlaveTalon.follow(breacherMasterTalon, FollowerType.PercentOutput);
         breacherSlaveTalon.setInverted(InvertType.OpposeMaster);
 
@@ -123,13 +110,14 @@ public final class FREDDX extends TimedRobot {
         wristTalon.config_kD(0, WRIST_kD, TALON_TIMEOUT);
 
         //Initialize drive
-        drive = new DifferentialDrive(driveLeftMasterTalon, driveRightMasterTalon);
+        drive = new PodDrive(DRIVE_LEFT_MASTER_NUM, DRIVE_LEFT_SLAVE_NUM, DRIVE_RIGHT_MASTER_NUM, DRIVE_RIGHT_SLAVE_NUM,
+                             REVERSE_DRIVE, DRIVE_NEUTRAL_BRAKE);
         drive.setDeadband(0);
         drive.setSafetyEnabled(true);
 
         //Initialize controllers
         cameraController = new CameraController(manipulatorJoystick);
-        robotController = new SwitchableControls(this);
+        robotController  = new SwitchableControls(this);
     }
 
     @Override
