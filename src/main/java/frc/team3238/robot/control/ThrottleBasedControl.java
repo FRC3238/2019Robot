@@ -27,7 +27,7 @@ public class ThrottleBasedControl extends FREDDXControlScheme {
         double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
         double driverThrottle      = remapThrottle(driveJoystick.getThrottle());
         double manipulatorThrottle = remapThrottle(manipulatorJoystick.getThrottle());
-        double driveThrottle = deadbandAdjust(driveJoystick.getY(), THROTTLE_DEADBAND);
+        double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND);
         double liftThrottle  = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
         drive.arcadeDrive(driveThrottle, steer);
 
