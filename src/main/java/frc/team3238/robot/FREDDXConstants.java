@@ -60,7 +60,6 @@ public final class FREDDXConstants {
     public static final int SPUDS_UP_BUTTON         = 5;
     public static final int SPUDS_DOWN_BUTTON       = 3;
     public static final int ROLLER_FORWARD_BUTTON   = 1;
-    public static final int ROLLER_BACKWARD_BUTTON  = 2;
     public static final int BREACHER_EXTEND_BUTTON  = 6;
     public static final int BREACHER_RETRACT_BUTTON = 4;
     public static final int WRIST_UP_BUTTON         = 5;
