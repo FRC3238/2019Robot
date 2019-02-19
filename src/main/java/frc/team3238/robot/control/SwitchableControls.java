@@ -7,7 +7,6 @@ import frc.team3238.robot.FREDDX;
 public class SwitchableControls extends FREDDXControlScheme {
 
     private final SendableChooser<FREDDXControlScheme> chooser;
-    private final CameraControl                        cameraController;
 
     private FREDDXControlScheme selectedControlScheme;
 
@@ -15,7 +14,6 @@ public class SwitchableControls extends FREDDXControlScheme {
         super(robot);
         ThrottleBasedControl throttleControl = new ThrottleBasedControl(robot);
         PositionBasedControl positionControl = new PositionBasedControl(robot);
-        cameraController = new CameraControl(robot);
 
         //Create the control scheme chooser
         chooser = new SendableChooser<>();
@@ -41,11 +39,9 @@ public class SwitchableControls extends FREDDXControlScheme {
     @Override
     public void teleopPeriodic() {
         //React to other control schemes only in teleop
-        cameraController.updateControls();
         selectedControlScheme.updateControls();
 
         //Let the other controllers do their  work
-        cameraController.teleopPeriodic();
         selectedControlScheme.teleopPeriodic();
     }
 

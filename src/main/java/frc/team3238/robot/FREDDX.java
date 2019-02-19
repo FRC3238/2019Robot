@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.team3238.robot.control.CameraController;
 import frc.team3238.robot.control.FREDDXControlScheme;
 import frc.team3238.robot.control.SwitchableControls;
 
@@ -19,7 +20,8 @@ public final class FREDDX extends TimedRobot {
 
     private Joystick            driveJoystick;
     private Joystick            manipulatorJoystick;
-    private FREDDXControlScheme controller;
+    private CameraController    cameraController;
+    private FREDDXControlScheme robotController;
     private DifferentialDrive   drive;
     private WPI_TalonSRX        spudsTalon;
     private WPI_TalonSRX        rollerTalon;
@@ -27,8 +29,6 @@ public final class FREDDX extends TimedRobot {
     private WPI_TalonSRX        liftTalon;
     private WPI_TalonSRX        wristTalon;
     private WPI_TalonSRX        beakTalon;
-    private Servo               cameraPanServo;
-    private Servo               cameraTiltServo;
 
     //FredX Control Loop Methods -------------------------------------------------------------
 
@@ -50,10 +50,6 @@ public final class FREDDX extends TimedRobot {
         liftTalon           = new WPI_TalonSRX(LIFT_NUM);
         wristTalon          = new WPI_TalonSRX(WRIST_NUM);
         beakTalon           = new WPI_TalonSRX(BEAK_NUM);
-
-        //Initialize servos
-        cameraPanServo  = new Servo(CAMERA_PAN_CHANNEL);
-        cameraTiltServo = new Servo(CAMERA_TILT_CHANNEL);
 
         //Apply talon reversals
         driveLeftMasterTalon.setInverted(REVERSE_DRIVE);
@@ -131,18 +127,24 @@ public final class FREDDX extends TimedRobot {
         drive.setDeadband(0);
         drive.setSafetyEnabled(true);
 
-        //Initialize controller
-        controller = new SwitchableControls(this);
+        //Initialize controllers
+        cameraController = new CameraController(manipulatorJoystick);
+        robotController = new SwitchableControls(this);
     }
 
     @Override
     public void robotPeriodic() {
-        controller.updateControls();
+        robotController.updateControls();
     }
 
     @Override
     public void teleopPeriodic() {
-        controller.teleopPeriodic();
+        //Update and move camera
+        cameraController.updateControls();
+        cameraController.move();
+
+        //Move robot
+        robotController.teleopPeriodic();
     }
 
     @Override
@@ -186,13 +188,5 @@ public final class FREDDX extends TimedRobot {
 
     public WPI_TalonSRX getBeak() {
         return beakTalon;
-    }
-
-    public Servo getCameraPanServo() {
-        return cameraPanServo;
-    }
-
-    public Servo getCameraTiltServo() {
-        return cameraTiltServo;
     }
 }
