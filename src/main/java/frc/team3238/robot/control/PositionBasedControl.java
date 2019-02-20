@@ -68,8 +68,8 @@ public class PositionBasedControl extends FREDDXControlScheme {
         //Throttle based control for the roller
         driveTalonFwdRevOrStop(roller,
                                driveJoystick.getRawButton(ROLLER_FORWARD_BUTTON),
-                               driveJoystick.getRawButton(ROLLER_BACKWARD_BUTTON),
-                               SPUD_ROLLER_SPEED);
+                        false,
+                                SPUD_ROLLER_SPEED);
 
         //Throttle based control for the beak
         driveTalonFwdRevOrStop(beak,
