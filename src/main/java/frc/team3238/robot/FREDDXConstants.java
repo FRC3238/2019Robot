@@ -134,6 +134,7 @@ public final class FREDDXConstants {
     public static final double LIFT_CARGO_LEVEL_THREE = 2;
 
     public static final int WRIST_STOW_POS          = 0; //TODO: Figure out correct values
+    public static final int WRIST_UP_POS            = 0;
     public static final int WRIST_FLAT_POS          = 0;
     public static final int WRIST_DOWN_POS          = 0;
     public static final int WRIST_FLOOR_COLLECT_POS = 0;
@@ -147,7 +148,11 @@ public final class FREDDXConstants {
     public static final int CARGO_LEVEL_THREE_BUTTON = 8;
 
     public static final int COLLECTOR_STOW_BUTTON  = 5;
+    public static final int COLLECTOR_UP_BUTTON    = 5;
     public static final int COLLECTOR_FLAT_BUTTON  = 6;
     public static final int COLLECTOR_DOWN_BUTTON  = 3;
     public static final int COLLECTOR_FLOOR_BUTTON = 4;
+
+    //Long button cycle count (number of button checks to count as a long press)
+    public static final int LONG_BUTTON_LENGTH = 25; //50 cycles per sec, thus 25 cycles ~ 0.5 sec
 }
