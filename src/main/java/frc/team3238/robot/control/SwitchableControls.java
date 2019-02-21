@@ -12,13 +12,15 @@ public class SwitchableControls extends FREDDXControlScheme {
 
     public SwitchableControls(FREDDX robot) {
         super(robot);
-        ThrottleBasedControl throttleControl = new ThrottleBasedControl(robot);
-        PositionBasedControl positionControl = new PositionBasedControl(robot);
+        ThrottleBasedControl   throttleControl = new ThrottleBasedControl(robot);
+        PositionBasedControl   positionControl = new PositionBasedControl(robot);
+        PositionButtonsControl buttonsControl  = new PositionButtonsControl(robot);
 
         //Create the control scheme chooser
         chooser = new SendableChooser<>();
         chooser.setDefaultOption(throttleControl.toString(), throttleControl);
         chooser.addOption(positionControl.toString(), positionControl);
+        chooser.addOption(buttonsControl.toString(), buttonsControl);
 
         //Display chooser
         SmartDashboard.putData("Control Scheme", chooser);

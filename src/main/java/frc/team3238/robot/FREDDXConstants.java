@@ -106,7 +106,7 @@ public final class FREDDXConstants {
     public static final int LIFT_VELOCITY     = 500;
     public static final int WRIST_VELOCITY    = 500;
 
-    //PID-F constants -------------------------------------------------------------------
+    //PID constants ---------------------------------------------------------------------
     public static final double BREACHER_kP = 0;
     public static final double BREACHER_kI = 0;
     public static final double BREACHER_kD = 0;
@@ -122,4 +122,36 @@ public final class FREDDXConstants {
     public static final double WRIST_kP = 0;
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
+
+    //Set positions for systems ---------------------------------------------------------
+    public static final double LIFT_STOW_POS          = 2; //TODO: Figure out correct values
+    public static final double LIFT_HATCH_LEVEL_ONE   = 2;
+    public static final double LIFT_HATCH_LEVEL_TWO   = 2;
+    public static final double LIFT_HATCH_LEVEL_THREE = 2;
+    public static final double LIFT_CARGO_LEVEL_ONE   = 2;
+    public static final double LIFT_CARGO_LEVEL_TWO   = 2;
+    public static final double LIFT_CARGO_LEVEL_THREE = 2;
+
+    public static final int WRIST_STOW_POS          = 0; //TODO: Figure out correct values
+    public static final int WRIST_UP_POS            = 0;
+    public static final int WRIST_FLAT_POS          = 0;
+    public static final int WRIST_DOWN_POS          = 0;
+    public static final int WRIST_FLOOR_COLLECT_POS = 0;
+
+    //Position buttons ------------------------------------------------------------------
+    public static final int HATCH_LEVEL_ONE_BUTTON   = 11;
+    public static final int HATCH_LEVEL_TWO_BUTTON   = 9;
+    public static final int HATCH_LEVEL_THREE_BUTTON = 7;
+    public static final int CARGO_LEVEL_ONE_BUTTON   = 12;
+    public static final int CARGO_LEVEL_TWO_BUTTON   = 10;
+    public static final int CARGO_LEVEL_THREE_BUTTON = 8;
+
+    public static final int COLLECTOR_STOW_BUTTON  = 5;
+    public static final int COLLECTOR_UP_BUTTON    = 5;
+    public static final int COLLECTOR_FLAT_BUTTON  = 6;
+    public static final int COLLECTOR_DOWN_BUTTON  = 3;
+    public static final int COLLECTOR_FLOOR_BUTTON = 4;
+
+    //Long button cycle count (number of button checks to count as a long press)
+    public static final int LONG_BUTTON_LENGTH = 25; //50 cycles per sec, thus 25 cycles ~ 0.5 sec
 }
