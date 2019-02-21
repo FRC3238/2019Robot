@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 /**
  * A button on a {@link Joystick}
  */
-public class BasicButton implements Button {
+public class JoystickButton implements Button {
     private final Joystick stick;
     private final int      button;
 
@@ -17,7 +17,7 @@ public class BasicButton implements Button {
      * @param stick  The joystick the button is on
      * @param button The id of the button on the joystick
      */
-    public BasicButton(Joystick stick, int button) {
+    public JoystickButton(Joystick stick, int button) {
         this.stick  = stick;
         this.button = button;
     }

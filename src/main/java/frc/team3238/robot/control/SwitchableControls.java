@@ -3,6 +3,7 @@ package frc.team3238.robot.control;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.FREDDX;
+import frc.team3238.robot.control.splitmode.SplitControlMode;
 
 public class SwitchableControls extends FREDDXControlScheme {
 
@@ -12,18 +13,17 @@ public class SwitchableControls extends FREDDXControlScheme {
 
     public SwitchableControls(FREDDX robot) {
         super(robot);
-        ThrottleBasedControl   throttleControl = new ThrottleBasedControl(robot);
-        PositionBasedControl   positionControl = new PositionBasedControl(robot);
-        PositionButtonsControl buttonsControl  = new PositionButtonsControl(robot);
+        FREDDXControlScheme globalManualControl = new FullManualControl(robot);
+        FREDDXControlScheme splitControlMode    = new SplitControlMode(robot);
 
         //Create the control scheme chooser
         chooser = new SendableChooser<>();
-        chooser.setDefaultOption(throttleControl.toString(), throttleControl);
-        chooser.addOption(positionControl.toString(), positionControl);
-        chooser.addOption(buttonsControl.toString(), buttonsControl);
+        chooser.setDefaultOption(globalManualControl.toString(), globalManualControl);
+        chooser.addOption(splitControlMode.toString(), splitControlMode);
+        //TODO: Change split mode to default once it proves itself
 
         //Display chooser
-        SmartDashboard.putData("Control Scheme", chooser);
+        SmartDashboard.putData("Current Control Scheme", chooser);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SwitchableControls extends FREDDXControlScheme {
         //React to other control schemes only in teleop
         selectedControlScheme.updateControls();
 
-        //Let the other controllers do their  work
+        //Let the controller do it's work
         selectedControlScheme.teleopPeriodic();
     }
 

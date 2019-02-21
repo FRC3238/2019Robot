@@ -12,9 +12,9 @@ import static frc.team3238.robot.FREDDXConstants.*;
  * If you're on our team then you've probably seen the motor box before. This is the same thing, but you can control the
  * entire robot at once.
  */
-public class ThrottleBasedControl extends FREDDXControlScheme {
+public class FullManualControl extends FREDDXControlScheme {
 
-    public ThrottleBasedControl(FREDDX robot) {
+    public FullManualControl(FREDDX robot) {
         super(robot);
     }
 
@@ -70,12 +70,8 @@ public class ThrottleBasedControl extends FREDDXControlScheme {
         lift.set(ControlMode.PercentOutput, liftThrottle);
     }
 
-    public static double remapThrottle(double rawThrottle) {
-        return (rawThrottle + 1) / 2;
-    }
-
     @Override
     public String toString() {
-        return "Motor Throttle Control";
+        return "Full Manual Control";
     }
 }

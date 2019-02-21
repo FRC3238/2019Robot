@@ -4,13 +4,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.FREDDX;
-import frc.team3238.robot.control.joystick.BasicButton;
+import frc.team3238.robot.control.joystick.JoystickButton;
 import frc.team3238.robot.control.joystick.Button;
-import frc.team3238.robot.control.joystick.LongButton;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 import static frc.team3238.robot.FREDDXConstants.SPUDS_MAX_EXTEND;
 
+@Deprecated(forRemoval = true)
 public class PositionButtonsControl extends FREDDXControlScheme {
 
     private static final int MANUAL_BREACHER_SPEED = 10;
@@ -21,14 +21,12 @@ public class PositionButtonsControl extends FREDDXControlScheme {
     private int    wristSetpoint    = WRIST_STOW_POS;
     private double liftSetpoint     = LIFT_STOW_POS;
 
-    private final Button liftStow;
     private final Button hatchOne;
     private final Button hatchTwo;
     private final Button hatchThree;
     private final Button cargoOne;
     private final Button cargoTwo;
     private final Button cargoThree;
-    private final Button collectorStow;
     private final Button collectorUp;
     private final Button collectorFlat;
     private final Button collectorFloor;
@@ -37,19 +35,16 @@ public class PositionButtonsControl extends FREDDXControlScheme {
     public PositionButtonsControl(FREDDX robot) {
         super(robot);
 
-        hatchOne       = new BasicButton(manipulatorJoystick, HATCH_LEVEL_ONE_BUTTON);
-        hatchTwo       = new BasicButton(manipulatorJoystick, HATCH_LEVEL_TWO_BUTTON);
-        hatchThree     = new BasicButton(manipulatorJoystick, HATCH_LEVEL_THREE_BUTTON);
-        cargoOne       = new BasicButton(manipulatorJoystick, CARGO_LEVEL_ONE_BUTTON);
-        cargoTwo       = new BasicButton(manipulatorJoystick, CARGO_LEVEL_TWO_BUTTON);
-        cargoThree     = new BasicButton(manipulatorJoystick, CARGO_LEVEL_THREE_BUTTON);
-        collectorUp    = new BasicButton(manipulatorJoystick, COLLECTOR_UP_BUTTON);
-        collectorFlat  = new BasicButton(manipulatorJoystick, COLLECTOR_FLAT_BUTTON);
-        collectorFloor = new BasicButton(manipulatorJoystick, COLLECTOR_FLOOR_BUTTON);
-        collectorDown  = new BasicButton(manipulatorJoystick, COLLECTOR_DOWN_BUTTON);
-
-        liftStow      = new LongButton(manipulatorJoystick, HATCH_LEVEL_ONE_BUTTON, LONG_BUTTON_LENGTH);
-        collectorStow = new LongButton(manipulatorJoystick, COLLECTOR_STOW_BUTTON, LONG_BUTTON_LENGTH);
+        hatchOne       = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_ONE_BUTTON);
+        hatchTwo       = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_TWO_BUTTON);
+        hatchThree     = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_THREE_BUTTON);
+        cargoOne       = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_ONE_BUTTON);
+        cargoTwo       = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_TWO_BUTTON);
+        cargoThree     = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_THREE_BUTTON);
+        collectorUp    = new JoystickButton(manipulatorJoystick, COLLECTOR_UP_BUTTON);
+        collectorFlat  = new JoystickButton(manipulatorJoystick, COLLECTOR_FLAT_BUTTON);
+        collectorFloor = new JoystickButton(manipulatorJoystick, COLLECTOR_FLOOR_BUTTON);
+        collectorDown  = new JoystickButton(manipulatorJoystick, COLLECTOR_DOWN_BUTTON);
     }
 
     @Override
@@ -62,8 +57,8 @@ public class PositionButtonsControl extends FREDDXControlScheme {
                                                      SPUDS_DOWN_BUTTON, SPUDS_UP_BUTTON,
                                                      MANUAL_SPUDS_SPEED);
 
-        updateButtons();                       //Update state for all the buttons
-        if(false)              //Long hold buttons must be checked first
+        updateButtons();   //Update state for all the buttons
+        if(false)
             setLiftSetpoint(LIFT_STOW_POS);
         else if(hatchOne.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
@@ -78,7 +73,7 @@ public class PositionButtonsControl extends FREDDXControlScheme {
         else if(cargoThree.isReleased())
             setLiftSetpoint(LIFT_CARGO_LEVEL_THREE);
 
-        if(false) //TODO: Fix longer button presses
+        if(false)
             setWristSetpoint(WRIST_STOW_POS);
         else if(collectorUp.isReleased())
             setWristSetpoint(WRIST_UP_POS);
@@ -192,9 +187,6 @@ public class PositionButtonsControl extends FREDDXControlScheme {
         collectorFlat.update();
         collectorFloor.update();
         collectorDown.update();
-
-        liftStow.update();
-        collectorStow.update();
     }
 
     @Override
