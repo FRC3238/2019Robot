@@ -1,5 +1,6 @@
 package frc.team3238.robot.control.splitmode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.FREDDX;
 import frc.team3238.robot.control.FREDDXControlScheme;
 
@@ -27,15 +28,23 @@ public class SplitControlMode extends FREDDXControlScheme {
 
     @Override
     public void updateControls() {
-        if(remapThrottle(manipulatorJoystick.getThrottle()) < 0.5)
+        if(remapThrottle(manipulatorJoystick.getThrottle()) < 0.5) {
             manipulatorScheme = manipulatorAuto;
-        else
+            SmartDashboard.putBoolean("Split Manipulator Auto", true);
+        }
+        else {
             manipulatorScheme = manipulatorManual;
+            SmartDashboard.putBoolean("Split Manipulator Auto", false);
+        }
 
-        if(remapThrottle(driveJoystick.getThrottle()) < 0.5)
+        if(remapThrottle(driveJoystick.getThrottle()) < 0.5) {
             driverScheme = driverAuto;
-        else
+            SmartDashboard.putBoolean("Split Drive Auto", true);
+        }
+        else {
             driverScheme = driverManual;
+            SmartDashboard.putBoolean("Split Drive Auto", false);
+        }
     }
 
     @Override
