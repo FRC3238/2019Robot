@@ -124,13 +124,13 @@ public final class FREDDXConstants {
     public static final double WRIST_kD = 0;
 
     //Set positions for systems ---------------------------------------------------------
-    public static final double LIFT_STOW_POS          = 2; //TODO: Figure out correct values
-    public static final double LIFT_HATCH_LEVEL_ONE   = 2;
-    public static final double LIFT_HATCH_LEVEL_TWO   = 2;
-    public static final double LIFT_HATCH_LEVEL_THREE = 2;
-    public static final double LIFT_CARGO_LEVEL_ONE   = 2;
-    public static final double LIFT_CARGO_LEVEL_TWO   = 2;
-    public static final double LIFT_CARGO_LEVEL_THREE = 2;
+    public static final double LIFT_STOW_POS          = -1020;
+    public static final double LIFT_HATCH_LEVEL_ONE   = -897;
+    public static final double LIFT_HATCH_LEVEL_TWO   = -510;
+    public static final double LIFT_HATCH_LEVEL_THREE = -133;
+    public static final double LIFT_CARGO_LEVEL_ONE   = -773;
+    public static final double LIFT_CARGO_LEVEL_TWO   = -360;
+    public static final double LIFT_CARGO_LEVEL_THREE = -43;
 
     public static final int WRIST_STOW_POS          = 0; //TODO: Figure out correct values
     public static final int WRIST_UP_POS            = 0;

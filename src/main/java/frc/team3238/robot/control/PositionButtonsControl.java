@@ -63,7 +63,7 @@ public class PositionButtonsControl extends FREDDXControlScheme {
                                                      MANUAL_SPUDS_SPEED);
 
         updateButtons();                       //Update state for all the buttons
-        if(liftStow.isReleased())              //Long hold buttons must be checked first
+        if(false)              //Long hold buttons must be checked first
             setLiftSetpoint(LIFT_STOW_POS);
         else if(hatchOne.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
@@ -78,7 +78,7 @@ public class PositionButtonsControl extends FREDDXControlScheme {
         else if(cargoThree.isReleased())
             setLiftSetpoint(LIFT_CARGO_LEVEL_THREE);
 
-        if(collectorStow.isReleased())
+        if(false) //TODO: Fix longer button presses
             setWristSetpoint(WRIST_STOW_POS);
         else if(collectorUp.isReleased())
             setWristSetpoint(WRIST_UP_POS);
@@ -110,13 +110,13 @@ public class PositionButtonsControl extends FREDDXControlScheme {
         //Put in set-points for motion-magic devices
         breachers.set(ControlMode.MotionMagic, breacherSetpoint);
         spuds.set(ControlMode.MotionMagic, spudsSetpoint);
-        lift.set(ControlMode.MotionMagic, liftSetpoint);
+        lift.set(ControlMode.Position, liftSetpoint);
         wrist.set(ControlMode.MotionMagic, wristSetpoint);
 
         //Throttle based control for the roller
         driveTalonFwdRevOrStop(roller,
                                driveJoystick.getRawButton(ROLLER_FORWARD_BUTTON),
-                               driveJoystick.getRawButton(ROLLER_BACKWARD_BUTTON),
+                               false,
                                SPUD_ROLLER_SPEED);
 
         //Throttle based control for the beak
