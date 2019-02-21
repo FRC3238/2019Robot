@@ -33,9 +33,20 @@ class DriverAutoMode extends DriverManualMode {
     }
 
     @Override
+    public void teleopPeriodic() {
+        if(isClimbing) {
+            climbingPeriodic();
+        }
+        else {
+            super.teleopPeriodic();
+        }
+    }
+
+    @Override
     protected void climbingPeriodic() {
         if(isClimbing) {
             //TODO: automate the climb somehow
+            drive.arcadeDrive(0, 0); //Keep the safety watchdog happy (TEMP)
         }
         else {
             spuds.set(ControlMode.PercentOutput, 0);
