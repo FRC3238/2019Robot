@@ -14,14 +14,14 @@ class DriverAutoMode extends DriverManualMode {
     private final Button cancelButton;
     private final Button climbButton;
 
+    private boolean isClimbing;
+
     public DriverAutoMode(FREDDX robot) {
         super(robot);
         safetyButton = new JoystickButton(driveJoystick, SAFETY_BUTTON);
         cancelButton = new JoystickButton(driveJoystick, CANCEL_BUTTON);
         climbButton  = new JoystickButton(driveJoystick, CLIMB_BUTTON);
     }
-
-    private boolean isClimbing;
 
     @Override
     public void updateControls() {
