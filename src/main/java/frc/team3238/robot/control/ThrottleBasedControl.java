@@ -25,11 +25,11 @@ public class ThrottleBasedControl extends FREDDXControlScheme {
 
     @Override
     public void teleopPeriodic() {
-        double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
+        double steer               = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
         double driverThrottle      = remapThrottle(driveJoystick.getThrottle());
         double manipulatorThrottle = remapThrottle(manipulatorJoystick.getThrottle());
-        double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND);
-        double liftThrottle  = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
+        double driveThrottle       = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND);
+        double liftThrottle        = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
         drive.arcadeDrive(driveThrottle, steer);
 
         //Run the breacher
@@ -44,14 +44,14 @@ public class ThrottleBasedControl extends FREDDXControlScheme {
                                driveJoystick.getRawButton(SPUDS_UP_BUTTON),
                                driverThrottle);
 
-        SmartDashboard.putNumber("Spud throttle", driverThrottle);
-        SmartDashboard.putBoolean("Spud up", driveJoystick.getRawButton(SPUDS_UP_BUTTON));
+        SmartDashboard.putNumber("Right Breacher Draw", breachers.getOutputCurrent());
+        SmartDashboard.putNumber("Lift draw", lift.getOutputCurrent());
         SmartDashboard.putNumber("Spud draw", spuds.getOutputCurrent());
 
         //Run the roller
         driveTalonFwdRevOrStop(roller,
                                driveJoystick.getRawButton(ROLLER_FORWARD_BUTTON),
-                        false,
+                               false,
                                driverThrottle);
 
         //Run the wrist
