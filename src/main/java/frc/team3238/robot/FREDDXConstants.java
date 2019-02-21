@@ -45,7 +45,7 @@ public final class FREDDXConstants {
     //Sensor phase adjustments ----------------------------------------------------------
     public static final boolean FLIP_BREACHER_SENSOR = false;
     public static final boolean FLIP_SPUD_SENSOR     = false;
-    public static final boolean FLIP_LIFT_SENSOR     = false;
+    public static final boolean FLIP_LIFT_SENSOR     = true;
     public static final boolean FLIP_WRIST_SENSOR    = false;
 
     //Talon configuration timeout -------------------------------------------------------
@@ -85,8 +85,8 @@ public final class FREDDXConstants {
     public static final int    BREACHER_MIN_EXTEND = 0;
     public static final int    SPUDS_MAX_EXTEND    = 4096;
     public static final int    SPUD_MIN_EXTEND     = 0;
-    public static final double LIFT_MAX_EXTEND     = 5;
-    public static final double LIFT_MIN_EXTEND     = 0;
+    public static final double LIFT_MAX_EXTEND     = -30;
+    public static final double LIFT_MIN_EXTEND     = -1023;
     public static final int    WRIST_MAX_EXTEND    = 720;
     public static final int    WRIST_MIN_EXTEND    = 0;
     public static final int    CAMERA_MAX_PAN      = 180;
@@ -106,7 +106,7 @@ public final class FREDDXConstants {
     public static final int LIFT_VELOCITY     = 500;
     public static final int WRIST_VELOCITY    = 500;
 
-    //PID-F constants -------------------------------------------------------------------
+    //PID constants ---------------------------------------------------------------------
     public static final double BREACHER_kP = 0;
     public static final double BREACHER_kI = 0;
     public static final double BREACHER_kD = 0;
@@ -115,11 +115,43 @@ public final class FREDDXConstants {
     public static final double SPUDS_kI = 0;
     public static final double SPUDS_kD = 0;
 
-    public static final double LIFT_kP = 0;
+    public static final double LIFT_kP = 12;
     public static final double LIFT_kI = 0;
     public static final double LIFT_kD = 0;
 
     public static final double WRIST_kP = 0;
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
+
+    //Set positions for systems ---------------------------------------------------------
+    public static final double LIFT_STOW_POS          = -1020;
+    public static final double LIFT_HATCH_LEVEL_ONE   = -897;
+    public static final double LIFT_HATCH_LEVEL_TWO   = -510;
+    public static final double LIFT_HATCH_LEVEL_THREE = -133;
+    public static final double LIFT_CARGO_LEVEL_ONE   = -773;
+    public static final double LIFT_CARGO_LEVEL_TWO   = -360;
+    public static final double LIFT_CARGO_LEVEL_THREE = -43;
+
+    public static final int WRIST_STOW_POS          = 0; //TODO: Figure out correct values
+    public static final int WRIST_UP_POS            = 0;
+    public static final int WRIST_FLAT_POS          = 0;
+    public static final int WRIST_DOWN_POS          = 0;
+    public static final int WRIST_FLOOR_COLLECT_POS = 0;
+
+    //Position buttons ------------------------------------------------------------------
+    public static final int HATCH_LEVEL_ONE_BUTTON   = 11;
+    public static final int HATCH_LEVEL_TWO_BUTTON   = 9;
+    public static final int HATCH_LEVEL_THREE_BUTTON = 7;
+    public static final int CARGO_LEVEL_ONE_BUTTON   = 12;
+    public static final int CARGO_LEVEL_TWO_BUTTON   = 10;
+    public static final int CARGO_LEVEL_THREE_BUTTON = 8;
+
+    public static final int COLLECTOR_STOW_BUTTON  = 5;
+    public static final int COLLECTOR_UP_BUTTON    = 5;
+    public static final int COLLECTOR_FLAT_BUTTON  = 6;
+    public static final int COLLECTOR_DOWN_BUTTON  = 3;
+    public static final int COLLECTOR_FLOOR_BUTTON = 4;
+
+    //Long button cycle count (number of button checks to count as a long press)
+    public static final int LONG_BUTTON_LENGTH = 25; //50 cycles per sec, thus 25 cycles ~ 0.5 sec
 }
