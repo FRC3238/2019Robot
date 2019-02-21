@@ -45,7 +45,7 @@ public final class FREDDXConstants {
     //Sensor phase adjustments ----------------------------------------------------------
     public static final boolean FLIP_BREACHER_SENSOR = false;
     public static final boolean FLIP_SPUD_SENSOR     = false;
-    public static final boolean FLIP_LIFT_SENSOR     = false;
+    public static final boolean FLIP_LIFT_SENSOR     = true;
     public static final boolean FLIP_WRIST_SENSOR    = false;
 
     //Talon configuration timeout -------------------------------------------------------
@@ -85,8 +85,8 @@ public final class FREDDXConstants {
     public static final int    BREACHER_MIN_EXTEND = 0;
     public static final int    SPUDS_MAX_EXTEND    = 4096;
     public static final int    SPUD_MIN_EXTEND     = 0;
-    public static final double LIFT_MAX_EXTEND     = 5;
-    public static final double LIFT_MIN_EXTEND     = 0;
+    public static final double LIFT_MAX_EXTEND     = -30;
+    public static final double LIFT_MIN_EXTEND     = -1023;
     public static final int    WRIST_MAX_EXTEND    = 720;
     public static final int    WRIST_MIN_EXTEND    = 0;
     public static final int    CAMERA_MAX_PAN      = 180;
@@ -115,7 +115,7 @@ public final class FREDDXConstants {
     public static final double SPUDS_kI = 0;
     public static final double SPUDS_kD = 0;
 
-    public static final double LIFT_kP = 0;
+    public static final double LIFT_kP = 12;
     public static final double LIFT_kI = 0;
     public static final double LIFT_kD = 0;
 

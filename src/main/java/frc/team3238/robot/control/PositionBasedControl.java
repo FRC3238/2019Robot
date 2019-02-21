@@ -12,12 +12,12 @@ public class PositionBasedControl extends FREDDXControlScheme {
     private static final int    MANUAL_BREACHER_SPEED = 10;
     private static final int    MANUAL_SPUDS_SPEED    = 10;
     private static final int    MANUAL_WRIST_SPEED    = 10;
-    private static final double MAX_MANUAL_LIFT_SPEED = 0.01;
+    private static final double MAX_MANUAL_LIFT_SPEED = 10;
 
     private int    breacherSetpoint;
     private int    spudsSetpoint;
     private int    wristSetpoint;
-    private double liftSetpoint;
+    private double liftSetpoint = -500;
 
     public PositionBasedControl(FREDDX robot) {
         super(robot);
@@ -62,7 +62,7 @@ public class PositionBasedControl extends FREDDXControlScheme {
         //Put in set-points for motion-magic devices
         breachers.set(ControlMode.MotionMagic, breacherSetpoint);
         spuds.set(ControlMode.MotionMagic, spudsSetpoint);
-        lift.set(ControlMode.MotionMagic, liftSetpoint);
+        lift.set(ControlMode.Position, liftSetpoint);
         wrist.set(ControlMode.MotionMagic, wristSetpoint);
 
         //Throttle based control for the roller
