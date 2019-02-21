@@ -46,6 +46,6 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
 
     @Override
     public String toString() {
-        return "Manipulator Manual Mode";
+        return "Manipulator Auto Mode";
     }
 }

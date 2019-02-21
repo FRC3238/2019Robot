@@ -53,4 +53,9 @@ class ManipulatorManualMode extends FREDDXControlScheme {
     public static double remapThrottle(double rawThrottle) {
         return (rawThrottle + 1) / 2;
     }
+
+    @Override
+    public String toString() {
+        return "Manipulator Manual Mode";
+    }
 }
