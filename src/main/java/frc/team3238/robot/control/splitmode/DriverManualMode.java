@@ -17,11 +17,11 @@ class DriverManualMode extends FREDDXControlScheme {
 
     public DriverManualMode(FREDDX robot) {
         super(robot);
-        spudsUp       = new JoystickButton(driveJoystick, SPUDS_UP_BUTTON);
-        spudsDown     = new JoystickButton(driveJoystick, SPUDS_DOWN_BUTTON);
-        rollerForward = new JoystickButton(driveJoystick, ROLLER_FORWARD_BUTTON);
-        breachersOut  = new JoystickButton(driveJoystick, BREACHER_EXTEND_BUTTON);
-        breachersBack = new JoystickButton(driveJoystick, BREACHER_RETRACT_BUTTON);
+        spudsUp       = new JoystickButton(driveJoystick, SPUDS_UP);
+        spudsDown     = new JoystickButton(driveJoystick, SPUDS_DOWN);
+        rollerForward = new JoystickButton(driveJoystick, ROLL_FORWARD);
+        breachersOut  = new JoystickButton(driveJoystick, BREACHER_OUT);
+        breachersBack = new JoystickButton(driveJoystick, BREACHER_IN);
     }
 
     @Override
@@ -45,8 +45,8 @@ class DriverManualMode extends FREDDXControlScheme {
         breachersOut.update();
         breachersBack.update();
 
-        driveTalonFwdRevOrStop(spuds, spudsUp.isHeld(), spudsDown.isHeld(), SPUDS_MANUAL_SPEED);
-        driveTalonFwdRevOrStop(breachers, breachersOut.isHeld(), breachersBack.isHeld(), BREACHERS_MANUAL_SPEED);
-        driveTalonFwdRevOrStop(roller, rollerForward.isHeld(), false, ROLLER_MANUAL_SPEED);
+        driveTalonFwdRevOrStop(spuds, spudsUp.isHeld(), spudsDown.isHeld(), SPUDS_SPEED);
+        driveTalonFwdRevOrStop(breachers, breachersOut.isHeld(), breachersBack.isHeld(), BREACHERS_SPEED);
+        driveTalonFwdRevOrStop(roller, rollerForward.isHeld(), false, ROLLER_SPEED);
     }
 }

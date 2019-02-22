@@ -18,9 +18,9 @@ class DriverAutoMode extends DriverManualMode {
 
     public DriverAutoMode(FREDDX robot) {
         super(robot);
-        safetyButton = new JoystickButton(driveJoystick, SAFETY_BUTTON);
-        cancelButton = new JoystickButton(driveJoystick, CANCEL_BUTTON);
-        climbButton  = new JoystickButton(driveJoystick, CLIMB_BUTTON);
+        safetyButton = new JoystickButton(driveJoystick, SAFETY);
+        cancelButton = new JoystickButton(driveJoystick, CANCEL);
+        climbButton  = new JoystickButton(driveJoystick, CLIMB);
     }
 
     @Override

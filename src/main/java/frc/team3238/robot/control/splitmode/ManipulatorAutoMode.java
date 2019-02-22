@@ -29,19 +29,19 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     public ManipulatorAutoMode(FREDDX robot) {
         super(robot);
         //Initialize all the buttons on the joystick.
-        hatchLevelOne   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_ONE_BUTTON);
-        hatchLevelTwo   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_TWO_BUTTON);
-        hatchLevelThree = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_THREE_BUTTON);
-        cargoLevelOne   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_ONE_BUTTON);
-        cargoLevelTwo   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_TWO_BUTTON);
-        cargoLevelThree = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_THREE_BUTTON);
-        stowCollector   = new JoystickButton(manipulatorJoystick, STOW_BUTTON);
-        levelCollector  = new JoystickButton(manipulatorJoystick, COLLECTOR_FLAT_BUTTON);
-        wristUp         = new JoystickButton(manipulatorJoystick, WRIST_UP_BUTTON);
-        wristDown       = new JoystickButton(manipulatorJoystick, WRIST_DOWN_BUTTON);
-        wristFloor      = new JoystickButton(manipulatorJoystick, WRIST_FLOOR_BUTTON);
+        hatchLevelOne   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_ONE);
+        hatchLevelTwo   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_TWO);
+        hatchLevelThree = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_THREE);
+        cargoLevelOne   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_ONE);
+        cargoLevelTwo   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_TWO);
+        cargoLevelThree = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_THREE);
+        stowCollector   = new JoystickButton(manipulatorJoystick, STOW);
+        levelCollector  = new JoystickButton(manipulatorJoystick, WRIST_FLAT);
+        wristUp         = new JoystickButton(manipulatorJoystick, WRIST_UP);
+        wristDown       = new JoystickButton(manipulatorJoystick, WRIST_DOWN);
+        wristFloor      = new JoystickButton(manipulatorJoystick, WRIST_FLOOR);
 
-        setLiftSetpoint(LIFT_MIN_EXTEND);
+        setLiftSetpoint(LIFT_MIN_UP);
         setWristSetpoint(WRIST_STOW_POS);
     }
 
@@ -49,7 +49,7 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     public void updateControls() {
         updateButtons();
         if(stowCollector.isReleased())
-            setLiftSetpoint(LIFT_MIN_EXTEND);
+            setLiftSetpoint(LIFT_MIN_UP);
         else if(hatchLevelOne.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
         else if(hatchLevelTwo.isReleased())
@@ -96,19 +96,19 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     }
 
     private void setLiftSetpoint(double setpoint) {
-        if(setpoint < LIFT_MIN_EXTEND)
-            liftSetpoint = LIFT_MIN_EXTEND;
-        else if(setpoint > LIFT_MAX_EXTEND)
-            liftSetpoint = LIFT_MAX_EXTEND;
+        if(setpoint < LIFT_MIN_UP)
+            liftSetpoint = LIFT_MIN_UP;
+        else if(setpoint > LIFT_MAX_UP)
+            liftSetpoint = LIFT_MAX_UP;
         else
             liftSetpoint = setpoint;
     }
 
     private void setWristSetpoint(double setpoint) {
-        if(setpoint < WRIST_MIN_EXTEND)
-            wristSetpoint = WRIST_MIN_EXTEND;
-        else if(setpoint > WRIST_MAX_EXTEND)
-            wristSetpoint = WRIST_MAX_EXTEND;
+        if(setpoint < WRIST_MIN_UP)
+            wristSetpoint = WRIST_MIN_UP;
+        else if(setpoint > WRIST_MAX_UP)
+            wristSetpoint = WRIST_MAX_UP;
         else
             wristSetpoint = setpoint;
     }

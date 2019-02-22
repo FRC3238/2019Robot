@@ -20,10 +20,10 @@ class ManipulatorManualMode extends FREDDXControlScheme {
 
     public ManipulatorManualMode(FREDDX robot) {
         super(robot);
-        wristUp     = new JoystickButton(manipulatorJoystick, WRIST_UP_BUTTON);
-        wristDown   = new JoystickButton(manipulatorJoystick, WRIST_DOWN_BUTTON);
-        beakExtend  = new JoystickButton(manipulatorJoystick, BEAK_EXTEND_BUTTON);
-        beakRetract = new JoystickButton(manipulatorJoystick, BEAK_RETRACT_BUTTON);
+        wristUp     = new JoystickButton(manipulatorJoystick, WRIST_UP);
+        wristDown   = new JoystickButton(manipulatorJoystick, WRIST_DOWN);
+        beakExtend  = new JoystickButton(manipulatorJoystick, BEAK_OPEN);
+        beakRetract = new JoystickButton(manipulatorJoystick, BEAK_CLOSE);
     }
 
     @Override

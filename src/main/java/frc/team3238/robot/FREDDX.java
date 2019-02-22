@@ -37,13 +37,13 @@ public final class FREDDX extends TimedRobot {
         manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
 
         //Initialize talons
-        WPI_TalonSRX breacherSlaveTalon = new WPI_TalonSRX(BREACHER_SLAVE_NUM);
-        spudsTalon          = new WPI_TalonSRX(SPUDS_NUM);
-        rollerTalon         = new WPI_TalonSRX(ROLLER_NUM);
-        breacherMasterTalon = new WPI_TalonSRX(BREACHER_MASTER_NUM);
-        liftTalon           = new WPI_TalonSRX(LIFT_NUM);
-        wristTalon          = new WPI_TalonSRX(WRIST_NUM);
-        beakTalon           = new WPI_TalonSRX(BEAK_NUM);
+        WPI_TalonSRX breacherSlaveTalon = new WPI_TalonSRX(BREACHER_LEFT_ID);
+        spudsTalon          = new WPI_TalonSRX(SPUDS_ID);
+        rollerTalon         = new WPI_TalonSRX(ROLLER_ID);
+        breacherMasterTalon = new WPI_TalonSRX(BREACHER_RIGHT_ID);
+        liftTalon           = new WPI_TalonSRX(LIFT_ID);
+        wristTalon          = new WPI_TalonSRX(WRIST_ID);
+        beakTalon           = new WPI_TalonSRX(BEAK_ID);
 
         //Apply talon reversals
         spudsTalon.setInverted(REVERSE_SPUDS);
@@ -55,13 +55,13 @@ public final class FREDDX extends TimedRobot {
         beakTalon.setInverted(REVERSE_BEAK);
 
         //Configure talon brake state
-        spudsTalon.setNeutralMode(SPUDS_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        rollerTalon.setNeutralMode(ROLLER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        breacherMasterTalon.setNeutralMode(BREACHER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        breacherSlaveTalon.setNeutralMode(BREACHER_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        liftTalon.setNeutralMode(LIFT_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        wristTalon.setNeutralMode(WRIST_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        beakTalon.setNeutralMode(BEAK_NEUTRAL_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        spudsTalon.setNeutralMode(SPUDS_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        rollerTalon.setNeutralMode(ROLLER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        breacherMasterTalon.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        breacherSlaveTalon.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        liftTalon.setNeutralMode(LIFT_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        wristTalon.setNeutralMode(WRIST_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        beakTalon.setNeutralMode(BEAK_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
 
         //Pair up talons
         breacherSlaveTalon.follow(breacherMasterTalon, FollowerType.PercentOutput);
@@ -94,8 +94,8 @@ public final class FREDDX extends TimedRobot {
         wristTalon.config_kD(0, WRIST_kD, TALON_TIMEOUT);
 
         //Initialize drive
-        drive = new PodDrive(DRIVE_LEFT_MASTER_NUM, DRIVE_LEFT_SLAVE_NUM, DRIVE_RIGHT_MASTER_NUM, DRIVE_RIGHT_SLAVE_NUM,
-                             REVERSE_DRIVE, DRIVE_NEUTRAL_BRAKE);
+        drive = new PodDrive(DRIVE_LEFT_MASTER_ID, DRIVE_LEFT_SLAVE_ID, DRIVE_RIGHT_MASTER_ID, DRIVE_RIGHT_SLAVE_ID,
+                             REVERSE_DRIVE, DRIVE_BRAKE);
         drive.setDeadband(0);
         drive.setSafetyEnabled(true);
 

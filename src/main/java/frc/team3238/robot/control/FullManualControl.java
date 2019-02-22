@@ -34,36 +34,36 @@ public class FullManualControl extends FREDDXControlScheme {
 
         //Run the breacher
         driveTalonFwdRevOrStop(breachers,
-                               driveJoystick.getRawButton(BREACHER_EXTEND_BUTTON),
-                               driveJoystick.getRawButton(BREACHER_RETRACT_BUTTON),
+                               driveJoystick.getRawButton(BREACHER_OUT),
+                               driveJoystick.getRawButton(BREACHER_IN),
                                driverThrottle);
 
         //Run the spuds
         driveTalonFwdRevOrStop(spuds,
-                               driveJoystick.getRawButton(SPUDS_DOWN_BUTTON),
-                               driveJoystick.getRawButton(SPUDS_UP_BUTTON),
+                               driveJoystick.getRawButton(SPUDS_DOWN),
+                               driveJoystick.getRawButton(SPUDS_UP),
                                driverThrottle);
 
         SmartDashboard.putNumber("Spud throttle", driverThrottle);
-        SmartDashboard.putBoolean("Spud up", driveJoystick.getRawButton(SPUDS_UP_BUTTON));
+        SmartDashboard.putBoolean("Spud up", driveJoystick.getRawButton(SPUDS_UP));
         SmartDashboard.putNumber("Spud draw", spuds.getOutputCurrent());
 
         //Run the roller
         driveTalonFwdRevOrStop(roller,
-                               driveJoystick.getRawButton(ROLLER_FORWARD_BUTTON),
+                               driveJoystick.getRawButton(ROLL_FORWARD),
                         false,
                                driverThrottle);
 
         //Run the wrist
         driveTalonFwdRevOrStop(wrist,
-                               manipulatorJoystick.getRawButton(WRIST_DOWN_BUTTON),
-                               manipulatorJoystick.getRawButton(WRIST_UP_BUTTON),
+                               manipulatorJoystick.getRawButton(WRIST_DOWN),
+                               manipulatorJoystick.getRawButton(WRIST_UP),
                                manipulatorThrottle);
 
         //Run the beak
         driveTalonFwdRevOrStop(beak,
-                               manipulatorJoystick.getRawButton(BEAK_EXTEND_BUTTON),
-                               manipulatorJoystick.getRawButton(BEAK_RETRACT_BUTTON),
+                               manipulatorJoystick.getRawButton(BEAK_OPEN),
+                               manipulatorJoystick.getRawButton(BEAK_CLOSE),
                                manipulatorThrottle);
 
         //Run the lift
