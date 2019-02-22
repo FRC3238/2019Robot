@@ -7,7 +7,6 @@ import frc.team3238.robot.control.joystick.JoystickButton;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
-//TODO: Not yet implemented
 class DriverManualMode extends FREDDXControlScheme {
 
     private final Button spudsUp;

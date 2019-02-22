@@ -8,9 +8,8 @@ import frc.team3238.robot.control.joystick.JoystickButton;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
-/*
-*   Used to drive the manipulators in the Manual Mode
-*
+/**
+ * Used to drive the manipulators in the Manual Mode
  */
 class ManipulatorManualMode extends FREDDXControlScheme {
 
