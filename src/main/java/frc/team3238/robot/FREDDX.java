@@ -79,18 +79,6 @@ public final class FREDDX extends TimedRobot {
         liftTalon.setSensorPhase(FLIP_LIFT_SENSOR);
         wristTalon.setSensorPhase(FLIP_WRIST_SENSOR);
 
-        //Set target velocities
-        spudsTalon.configMotionCruiseVelocity(SPUDS_VELOCITY, TALON_TIMEOUT);
-        breacherMasterTalon.configMotionCruiseVelocity(BREACHER_VELOCITY, TALON_TIMEOUT);
-        liftTalon.configMotionCruiseVelocity(LIFT_VELOCITY, TALON_TIMEOUT);
-        wristTalon.configMotionCruiseVelocity(WRIST_VELOCITY, TALON_TIMEOUT);
-
-        //Set target accelerations
-        spudsTalon.configMotionAcceleration(SPUDS_ACCELERATION, TALON_TIMEOUT);
-        breacherMasterTalon.configMotionAcceleration(BREACHER_ACCELERATION, TALON_TIMEOUT);
-        liftTalon.configMotionAcceleration(LIFT_ACCELERATION, TALON_TIMEOUT);
-        wristTalon.configMotionAcceleration(WRIST_ACCELERATION, TALON_TIMEOUT);
-
         //Putting in PID constants
         spudsTalon.config_kP(0, SPUDS_kP, TALON_TIMEOUT);
         spudsTalon.config_kI(0, SPUDS_kI, TALON_TIMEOUT);
