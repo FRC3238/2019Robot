@@ -1,6 +1,7 @@
 package frc.team3238.robot.control.splitmode;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.FREDDX;
 import frc.team3238.robot.control.FREDDXControlScheme;
 import frc.team3238.robot.control.joystick.Button;
@@ -34,18 +35,21 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
         cargoLevelOne   = new JoystickButton(manipulatorJoystick,CARGO_LEVEL_ONE_BUTTON);
         cargoLevelTwo   = new JoystickButton(manipulatorJoystick,CARGO_LEVEL_TWO_BUTTON);
         cargoLevelThree = new JoystickButton(manipulatorJoystick,CARGO_LEVEL_THREE_BUTTON);
-        stowCollector   = new JoystickButton(manipulatorJoystick,COLLECTOR_STOW_BUTTON);
+        stowCollector   = new JoystickButton(manipulatorJoystick,STOW_BUTTON);
         levelCollector  = new JoystickButton(manipulatorJoystick,COLLECTOR_FLAT_BUTTON);
         wristUp         = new JoystickButton(manipulatorJoystick, WRIST_UP_BUTTON);
         wristDown       = new JoystickButton(manipulatorJoystick, WRIST_DOWN_BUTTON);
         wristFloor      = new JoystickButton(manipulatorJoystick,WRIST_FLOOR_BUTTON);
+
+        setLiftSetpoint(LIFT_MIN_EXTEND);
+        setWristSetpoint(WRIST_STOW_POS);
     }
 
     @Override
     public void updateControls() {
         updateButtons();
         if(stowCollector.isReleased())
-            setLiftSetpoint(LIFT_STOW_POS);
+            setLiftSetpoint(LIFT_MIN_EXTEND);
         else if(hatchLevelOne.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
         else if(hatchLevelTwo.isReleased())
@@ -69,6 +73,9 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
             setWristSetpoint(WRIST_FLOOR_COLLECT_POS);
         else if(wristDown.isReleased())
             setWristSetpoint(WRIST_DOWN_POS);
+
+        SmartDashboard.putNumber("Wrist Setpoint", wristSetpoint);
+        SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
 
     }
 
