@@ -8,7 +8,6 @@ import frc.team3238.robot.control.joystick.JoystickButton;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
-//TODO: Not yet implemented
 class ManipulatorAutoMode extends FREDDXControlScheme {
 
     private static double liftSetpoint;
