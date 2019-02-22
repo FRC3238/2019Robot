@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.FREDDX;
+import frc.team3238.robot.FREDDXConstants;
 import frc.team3238.robot.control.joystick.JoystickButton;
 import frc.team3238.robot.control.joystick.Button;
 
@@ -112,7 +113,7 @@ public class PositionButtonsControl extends FREDDXControlScheme {
         driveTalonFwdRevOrStop(roller,
                                driveJoystick.getRawButton(ROLLER_FORWARD_BUTTON),
                                false,
-                               SPUD_ROLLER_SPEED);
+                               FREDDXConstants.ROLLER_MANUAL_SPEED);
 
         //Throttle based control for the beak
         driveTalonFwdRevOrStop(beak,

@@ -52,9 +52,11 @@ public final class FREDDXConstants {
     public static final int TALON_TIMEOUT = 30;
 
     //Motor speed adjustments -----------------------------------------------------------
-    public static final double SPUD_ROLLER_SPEED = 1.00;
-    public static final double BEAK_SPEED        = 1.00;
-    public static final int    CAMERA_SPEED      = 1;
+    public static final double BEAK_SPEED             = 1.00;
+    public static final int    CAMERA_SPEED           = 1;
+    public static final double SPUDS_MANUAL_SPEED     = 1;
+    public static final double BREACHERS_MANUAL_SPEED = 1;
+    public static final double ROLLER_MANUAL_SPEED    = 1;
 
     //Joystick button ids ---------------------------------------------------------------
     public static final int SPUDS_UP_BUTTON         = 5;
@@ -66,6 +68,9 @@ public final class FREDDXConstants {
     public static final int WRIST_DOWN_BUTTON       = 3;
     public static final int BEAK_EXTEND_BUTTON      = 2;
     public static final int BEAK_RETRACT_BUTTON     = 1;
+    public static final int SAFETY_BUTTON           = 7;
+    public static final int CANCEL_BUTTON           = 3;
+    public static final int CLIMB_BUTTON            = 12;
 
     //Joystick deadbands ----------------------------------------------------------------
     public static final double THROTTLE_DEADBAND = 0.2;
@@ -151,7 +156,4 @@ public final class FREDDXConstants {
     public static final int COLLECTOR_FLAT_BUTTON  = 6;
     public static final int COLLECTOR_DOWN_BUTTON  = 3;
     public static final int COLLECTOR_FLOOR_BUTTON = 4;
-
-    //Long button cycle count (number of button checks to count as a long press)
-    public static final int LONG_BUTTON_LENGTH = 25; //50 cycles per sec, thus 25 cycles ~ 0.5 sec
 }
