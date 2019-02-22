@@ -21,15 +21,15 @@ public class SwitchableControls extends FREDDXControlScheme {
         chooser.setDefaultOption(globalManualControl.toString(), globalManualControl);
         chooser.addOption(splitControlMode.toString(), splitControlMode);
         //TODO: Change split mode to default once it proves itself
-
-        //Display chooser
-        SmartDashboard.putData("Current Control Scheme", chooser);
     }
 
     @Override
     public void updateControls() {
         //Change to selected control scheme
         selectedControlScheme = chooser.getSelected();
+
+        //Display chooser
+        SmartDashboard.putData("Current Control Scheme", chooser);
 
         //Display sensor values
         SmartDashboard.putNumber("Breacher Sensor", breachers.getSelectedSensorPosition(0));
