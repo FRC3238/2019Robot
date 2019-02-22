@@ -57,6 +57,7 @@ public final class FREDDXConstants {
     public static final double SPUDS_MANUAL_SPEED     = 1;
     public static final double BREACHERS_MANUAL_SPEED = 1;
     public static final double ROLLER_MANUAL_SPEED    = 1;
+    public static final double WRIST_SPEED       = 0.6;
 
     //Joystick button ids ---------------------------------------------------------------
     public static final int SPUDS_UP_BUTTON         = 5;
@@ -66,11 +67,13 @@ public final class FREDDXConstants {
     public static final int BREACHER_RETRACT_BUTTON = 4;
     public static final int WRIST_UP_BUTTON         = 5;
     public static final int WRIST_DOWN_BUTTON       = 3;
+    public static final int WRIST_FLOOR_BUTTON      = 6;
     public static final int BEAK_EXTEND_BUTTON      = 2;
     public static final int BEAK_RETRACT_BUTTON     = 1;
     public static final int SAFETY_BUTTON           = 7;
     public static final int CANCEL_BUTTON           = 3;
     public static final int CLIMB_BUTTON            = 12;
+    public static final int STOW_BUTTON             = 4;
 
     //Joystick deadbands ----------------------------------------------------------------
     public static final double THROTTLE_DEADBAND = 0.2;
@@ -91,7 +94,7 @@ public final class FREDDXConstants {
     public static final int    SPUDS_MAX_EXTEND    = 4096;
     public static final int    SPUD_MIN_EXTEND     = 0;
     public static final double LIFT_MAX_EXTEND     = -30;
-    public static final double LIFT_MIN_EXTEND     = -1023;
+    public static final double LIFT_MIN_EXTEND     = -985;
     public static final int    WRIST_MAX_EXTEND    = 720;
     public static final int    WRIST_MIN_EXTEND    = 0;
     public static final int    CAMERA_MAX_PAN      = 180;
@@ -129,7 +132,6 @@ public final class FREDDXConstants {
     public static final double WRIST_kD = 0;
 
     //Set positions for systems ---------------------------------------------------------
-    public static final double LIFT_STOW_POS          = -1020;
     public static final double LIFT_HATCH_LEVEL_ONE   = -897;
     public static final double LIFT_HATCH_LEVEL_TWO   = -510;
     public static final double LIFT_HATCH_LEVEL_THREE = -133;
@@ -151,7 +153,6 @@ public final class FREDDXConstants {
     public static final int CARGO_LEVEL_TWO_BUTTON   = 10;
     public static final int CARGO_LEVEL_THREE_BUTTON = 8;
 
-    public static final int COLLECTOR_STOW_BUTTON  = 5;
     public static final int COLLECTOR_UP_BUTTON    = 5;
     public static final int COLLECTOR_FLAT_BUTTON  = 6;
     public static final int COLLECTOR_DOWN_BUTTON  = 3;
