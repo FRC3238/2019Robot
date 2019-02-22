@@ -54,6 +54,7 @@ public final class FREDDXConstants {
     //Motor speed adjustments -----------------------------------------------------------
     public static final double SPUD_ROLLER_SPEED = 1.00;
     public static final double BEAK_SPEED        = 1.00;
+    public static final double WRIST_SPEED       = 0.6;
     public static final int    CAMERA_SPEED      = 1;
 
     //Joystick button ids ---------------------------------------------------------------
@@ -64,8 +65,10 @@ public final class FREDDXConstants {
     public static final int BREACHER_RETRACT_BUTTON = 4;
     public static final int WRIST_UP_BUTTON         = 5;
     public static final int WRIST_DOWN_BUTTON       = 3;
+    public static final int WRIST_FLOOR_BUTTON      = 6;
     public static final int BEAK_EXTEND_BUTTON      = 2;
     public static final int BEAK_RETRACT_BUTTON     = 1;
+    public static final int STOW_BUTTON             = 4;
 
     //Joystick deadbands ----------------------------------------------------------------
     public static final double THROTTLE_DEADBAND = 0.2;

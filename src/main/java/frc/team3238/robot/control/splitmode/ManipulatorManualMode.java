@@ -34,24 +34,20 @@ class ManipulatorManualMode extends FREDDXControlScheme {
 
     @Override
     public void teleopPeriodic() {
-        double manipulatorThrottle = remapThrottle(manipulatorJoystick.getThrottle());
+        double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getThrottle(), LIFTING_DEADBAND);
         wristUp.update();
         wristDown.update();
         beakExtend.update();
         beakRetract.update();
 
         //Drive the wrist
-        driveTalonFwdRevOrStop(wrist, wristDown.isPressed(), wristUp.isPressed(),manipulatorThrottle);
+        driveTalonFwdRevOrStop(wrist, wristDown.isHeld(), wristUp.isHeld(), WRIST_SPEED);
 
         //Drive the beak
-        driveTalonFwdRevOrStop(beak, beakExtend.isPressed(), beakRetract.isPressed(),manipulatorThrottle);
+        driveTalonFwdRevOrStop(beak, beakExtend.isHeld(), beakRetract.isHeld(), BEAK_SPEED);
 
         //Drive the lift
-        lift.set(ControlMode.PercentOutput,manipulatorThrottle);
-    }
-
-    public static double remapThrottle(double rawThrottle) {
-        return (rawThrottle + 1) / 2;
+        lift.set(ControlMode.PercentOutput, manipulatorThrottle);
     }
 
     @Override
