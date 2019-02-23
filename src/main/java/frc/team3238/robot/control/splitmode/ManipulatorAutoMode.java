@@ -25,6 +25,8 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     private final Button wristUp;
     private final Button wristDown;
     private final Button wristFloor;
+    private final Button beakExtend;
+    private final Button beakRetract;
 
     public ManipulatorAutoMode(FREDDX robot) {
         super(robot);
@@ -40,6 +42,8 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
         wristUp         = new JoystickButton(manipulatorJoystick, WRIST_UP);
         wristDown       = new JoystickButton(manipulatorJoystick, WRIST_DOWN);
         wristFloor      = new JoystickButton(manipulatorJoystick, WRIST_FLOOR);
+        beakExtend  = new JoystickButton(manipulatorJoystick, BEAK_OPEN);
+        beakRetract = new JoystickButton(manipulatorJoystick, BEAK_CLOSE);
 
         setLiftSetpoint(LIFT_MIN_UP);
         setWristSetpoint(WRIST_STOW_POS);
@@ -81,7 +85,8 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     @Override
     public void teleopPeriodic() {
         lift.set(ControlMode.Position, liftSetpoint);
-        wrist.set(ControlMode.Position, wristSetpoint);
+        driveTalonFwdRevOrStop(wrist, wristUp.isHeld(), wristDown.isHeld(), WRIST_SPEED);
+        driveTalonFwdRevOrStop(beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
     }
 
     private void updateButtons() {
@@ -93,6 +98,10 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
         cargoLevelThree.update();
         stowCollector.update();
         levelCollector.update();
+        wristUp.update();
+        wristDown.update();
+        beakExtend.update();
+        beakRetract.update();
     }
 
     private void setLiftSetpoint(double setpoint) {
