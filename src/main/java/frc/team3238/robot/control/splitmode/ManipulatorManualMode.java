@@ -33,7 +33,7 @@ class ManipulatorManualMode extends FREDDXControlScheme {
 
     @Override
     public void teleopPeriodic() {
-        double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getThrottle(), LIFTING_DEADBAND);
+        double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
         wristUp.update();
         wristDown.update();
         beakExtend.update();
