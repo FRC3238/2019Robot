@@ -11,8 +11,10 @@ import static frc.team3238.robot.FREDDXConstants.*;
 
 class ManipulatorAutoMode extends FREDDXControlScheme {
 
-    private static double liftSetpoint;
-    private static double wristSetpoint;
+    private static final int WRIST_ADJUST_SPEED = 10;
+
+    private double liftSetpoint;
+    private double wristSetpoint;
 
     private final Button hatchLevelOne;
     private final Button hatchLevelTwo;
@@ -78,6 +80,11 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
         else if(wristDown.isReleased())
             setWristSetpoint(WRIST_DOWN_POS);
 
+        if(wristUp.isHeld())
+            setWristSetpoint(wristSetpoint - WRIST_ADJUST_SPEED);
+        else if(wristDown.isHeld())
+            setWristSetpoint(wristSetpoint + WRIST_ADJUST_SPEED);
+
         SmartDashboard.putNumber("Wrist Setpoint", wristSetpoint);
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
     }
@@ -85,7 +92,7 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     @Override
     public void teleopPeriodic() {
         lift.set(ControlMode.Position, liftSetpoint);
-        driveTalonFwdRevOrStop(wrist, wristUp.isHeld(), wristDown.isHeld(), WRIST_SPEED);
+        lift.set(ControlMode.Position, wristSetpoint);
         driveTalonFwdRevOrStop(beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
     }
 
@@ -114,10 +121,10 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     }
 
     private void setWristSetpoint(double setpoint) {
-        if(setpoint < WRIST_MIN_UP)
-            wristSetpoint = WRIST_MIN_UP;
-        else if(setpoint > WRIST_MAX_UP)
-            wristSetpoint = WRIST_MAX_UP;
+        if(setpoint < WRIST_MIN_EXTEND)
+            wristSetpoint = WRIST_MIN_EXTEND;
+        else if(setpoint > WRIST_MAX_EXTEND)
+            wristSetpoint = WRIST_MAX_EXTEND;
         else
             wristSetpoint = setpoint;
     }

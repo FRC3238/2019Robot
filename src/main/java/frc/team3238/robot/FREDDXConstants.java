@@ -59,8 +59,8 @@ public final class FREDDXConstants {
     public static final double SPUD_MIN_DOWN    = 0;
     public static final double LIFT_MAX_UP      = -30;
     public static final double LIFT_MIN_UP      = -985;
-    public static final double WRIST_MAX_UP     = 720;
-    public static final double WRIST_MIN_UP     = 0;
+    public static final double WRIST_MAX_EXTEND = 720;
+    public static final double WRIST_MIN_EXTEND = 0;
     public static final int    CAMERA_MAX_PAN   = 180;
     public static final int    CAMERA_MIN_PAN   = 0;
     public static final int    CAMERA_MAX_TILT  = 180;
@@ -94,7 +94,7 @@ public final class FREDDXConstants {
     public static final double LIFT_kI = 0;
     public static final double LIFT_kD = 0;
 
-    public static final double WRIST_kP = 0;
+    public static final double WRIST_kP = 0.5;
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
 
