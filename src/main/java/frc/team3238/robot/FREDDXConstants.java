@@ -18,11 +18,11 @@ public final class FREDDXConstants {
     public static final int MANIPULATOR_JOYSTICK_PORT = 1;
 
     //Button ids
-    public static final int SPUDS_UP          = 5;
-    public static final int SPUDS_DOWN        = 3;
+    public static final int SPUDS_UP          = 6;
+    public static final int SPUDS_DOWN        = 4;
     public static final int ROLL_FORWARD      = 1;
-    public static final int BREACHER_OUT      = 6;
-    public static final int BREACHER_IN       = 4;
+    public static final int BREACHER_OUT      = 5;
+    public static final int BREACHER_IN       = 3;
     public static final int WRIST_UP          = 5;
     public static final int WRIST_FLAT        = 6;
     public static final int WRIST_FLOOR       = 6;
@@ -125,7 +125,7 @@ public final class FREDDXConstants {
     public static final boolean REVERSE_DRIVE    = false;
     public static final boolean REVERSE_BREACHER = false;
     public static final boolean REVERSE_SPUDS    = false;
-    public static final boolean REVERSE_ROLLER   = false;
+    public static final boolean REVERSE_ROLLER   = true;
     public static final boolean REVERSE_LIFT     = false;
     public static final boolean REVERSE_WRIST    = false;
     public static final boolean REVERSE_BEAK     = false;

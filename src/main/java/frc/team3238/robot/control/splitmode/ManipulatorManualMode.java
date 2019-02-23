@@ -40,10 +40,10 @@ class ManipulatorManualMode extends FREDDXControlScheme {
         beakRetract.update();
 
         //Drive the wrist
-        driveTalonFwdRevOrStop(wrist, wristDown.isHeld(), wristUp.isHeld(), WRIST_SPEED);
+        driveTalonFwdRevOrStop(wrist, wristUp.isHeld(), wristDown.isHeld(), WRIST_SPEED);
 
         //Drive the beak
-        driveTalonFwdRevOrStop(beak, beakExtend.isHeld(), beakRetract.isHeld(), BEAK_SPEED);
+        driveTalonFwdRevOrStop(beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
 
         //Drive the lift
         lift.set(ControlMode.PercentOutput, manipulatorThrottle);
