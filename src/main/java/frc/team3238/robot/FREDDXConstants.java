@@ -59,8 +59,8 @@ public final class FREDDXConstants {
     public static final double SPUD_MIN_DOWN    = 0;
     public static final double LIFT_MAX_UP      = -30;
     public static final double LIFT_MIN_UP      = -985;
-    public static final double WRIST_MAX_EXTEND = 720;
-    public static final double WRIST_MIN_EXTEND = 0;
+    public static final double WRIST_MAX_EXTEND = 242;
+    public static final double WRIST_MIN_EXTEND = 198;
     public static final int    CAMERA_MAX_PAN   = 180;
     public static final int    CAMERA_MIN_PAN   = 0;
     public static final int    CAMERA_MAX_TILT  = 180;
@@ -71,13 +71,11 @@ public final class FREDDXConstants {
     public static final double LIFT_HATCH_LEVEL_TWO    = -510;
     public static final double LIFT_HATCH_LEVEL_THREE  = -133;
     public static final double LIFT_CARGO_LEVEL_ONE    = -773;
-    public static final double LIFT_CARGO_LEVEL_TWO    = -360;
+    public static final double LIFT_CARGO_LEVEL_TWO    = -376;
     public static final double LIFT_CARGO_LEVEL_THREE  = -43;
-    public static final int    WRIST_STOW_POS          = 0; //TODO: Figure out correct values
-    public static final int    WRIST_UP_POS            = 0;
-    public static final int    WRIST_FLAT_POS          = 0;
-    public static final int    WRIST_FLOOR_COLLECT_POS = 0;
-    public static final int    WRIST_DOWN_POS          = 0;
+    public static final int    WRIST_STOW_POS          = -198; //TODO: Figure out correct values
+    public static final int    WRIST_FLAT_POS          = -223;
+    public static final int    WRIST_DOWN_POS          = -242;
     public static final int    CAMERA_PAN_DEFAULT      = 90;
     public static final int    CAMERA_TILT_DEFAULT     = 120;
 
@@ -94,7 +92,7 @@ public final class FREDDXConstants {
     public static final double LIFT_kI = 0;
     public static final double LIFT_kD = 0;
 
-    public static final double WRIST_kP = 0.5;
+    public static final double WRIST_kP = 96;
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
 
@@ -134,7 +132,7 @@ public final class FREDDXConstants {
     public static final boolean FLIP_BREACHER_SENSOR = false;
     public static final boolean FLIP_SPUD_SENSOR     = false;
     public static final boolean FLIP_LIFT_SENSOR     = true;
-    public static final boolean FLIP_WRIST_SENSOR    = false;
+    public static final boolean FLIP_WRIST_SENSOR    = true;
 
     //Neutral brakes
     public static final boolean DRIVE_BRAKE    = false;

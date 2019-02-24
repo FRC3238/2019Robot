@@ -11,10 +11,8 @@ import static frc.team3238.robot.FREDDXConstants.*;
 
 class ManipulatorAutoMode extends FREDDXControlScheme {
 
-    private static final int WRIST_ADJUST_SPEED = 10;
-
     private double liftSetpoint;
-    private double wristSetpoint;
+    private int wristOption;
 
     private final Button hatchLevelOne;
     private final Button hatchLevelTwo;
@@ -26,7 +24,6 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     private final Button levelCollector;
     private final Button wristUp;
     private final Button wristDown;
-    private final Button wristFloor;
     private final Button beakExtend;
     private final Button beakRetract;
 
@@ -43,20 +40,20 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
         levelCollector  = new JoystickButton(manipulatorJoystick, WRIST_FLAT);
         wristUp         = new JoystickButton(manipulatorJoystick, WRIST_UP);
         wristDown       = new JoystickButton(manipulatorJoystick, WRIST_DOWN);
-        wristFloor      = new JoystickButton(manipulatorJoystick, WRIST_FLOOR);
         beakExtend  = new JoystickButton(manipulatorJoystick, BEAK_OPEN);
         beakRetract = new JoystickButton(manipulatorJoystick, BEAK_CLOSE);
 
         setLiftSetpoint(LIFT_MIN_UP);
-        setWristSetpoint(WRIST_STOW_POS);
+        setWristOption(0);
     }
 
     @Override
     public void updateControls() {
         updateButtons();
-        if(stowCollector.isReleased())
+        if(stowCollector.isReleased()) {
             setLiftSetpoint(LIFT_MIN_UP);
-        else if(hatchLevelOne.isReleased())
+            setWristOption(0);
+        } else if(hatchLevelOne.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
         else if(hatchLevelTwo.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_TWO);
@@ -69,30 +66,31 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
         else if(cargoLevelThree.isReleased())
             setLiftSetpoint(LIFT_CARGO_LEVEL_THREE);
 
-        if(stowCollector.isReleased())
-            setWristSetpoint(WRIST_STOW_POS);
-        else if(wristUp.isReleased())
-            setWristSetpoint(WRIST_UP_POS);
-        else if(levelCollector.isReleased())
-            setWristSetpoint(WRIST_FLAT_POS);
-        else if(wristFloor.isReleased())
-            setWristSetpoint(WRIST_FLOOR_COLLECT_POS);
-        else if(wristDown.isReleased())
-            setWristSetpoint(WRIST_DOWN_POS);
+        if(wristUp.isReleased()) {
+            setWristOption(wristOption - 1);
+        } else if(wristDown.isReleased() && liftSetpoint != LIFT_MIN_UP) {
+            setWristOption(wristOption + 1);
+        }
 
-        if(wristUp.isHeld())
-            setWristSetpoint(wristSetpoint - WRIST_ADJUST_SPEED);
-        else if(wristDown.isHeld())
-            setWristSetpoint(wristSetpoint + WRIST_ADJUST_SPEED);
-
-        SmartDashboard.putNumber("Wrist Setpoint", wristSetpoint);
+        SmartDashboard.putNumber("Wrist Option", wristOption);
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
     }
 
     @Override
     public void teleopPeriodic() {
         lift.set(ControlMode.Position, liftSetpoint);
-        lift.set(ControlMode.Position, wristSetpoint);
+        double wristSetpoint;
+        switch(wristOption) {
+            case 1:
+                wristSetpoint = WRIST_FLAT_POS;
+                break;
+            case 2:
+                wristSetpoint = WRIST_DOWN_POS;
+                break;
+            default:
+                wristSetpoint = WRIST_STOW_POS;
+        }
+        wrist.set(ControlMode.Position, wristSetpoint);
         driveTalonFwdRevOrStop(beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
     }
 
@@ -120,13 +118,13 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
             liftSetpoint = setpoint;
     }
 
-    private void setWristSetpoint(double setpoint) {
-        if(setpoint < WRIST_MIN_EXTEND)
-            wristSetpoint = WRIST_MIN_EXTEND;
-        else if(setpoint > WRIST_MAX_EXTEND)
-            wristSetpoint = WRIST_MAX_EXTEND;
+    private void setWristOption(int option) {
+        if(option < 0)
+            wristOption = 0;
+        else if(option > 2)
+            wristOption = 2;
         else
-            wristSetpoint = setpoint;
+            wristOption = option;
     }
 
     @Override

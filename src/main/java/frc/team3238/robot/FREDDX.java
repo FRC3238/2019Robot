@@ -71,7 +71,10 @@ public final class FREDDX extends TimedRobot {
         spudsTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         breacherMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         liftTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, TALON_TIMEOUT);
-        wristTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
+        wristTalon.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, TALON_TIMEOUT);
+
+        wristTalon.configAllowableClosedloopError(0, 5);
+        liftTalon.configAllowableClosedloopError(0, 5);
 
         //Set sensor phase (used to make sensor negative when motion is negative)
         spudsTalon.setSensorPhase(FLIP_SPUD_SENSOR);
