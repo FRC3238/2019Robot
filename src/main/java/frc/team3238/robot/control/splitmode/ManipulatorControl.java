@@ -77,11 +77,17 @@ public final class ManipulatorControl extends FREDDXControlScheme {
     }
 
     @Override
+    public void enteringAuto() {
+        setLiftSetpoint(lift.getSelectedSensorPosition());
+    }
+
+    @Override
     public void autoPeriodic() {
         if(stowCollector.isReleased()) {
             setLiftSetpoint(LIFT_MIN_UP);
             setWristOption(0);
-        } else if(hatchLevelOne.isReleased())
+        }
+        else if(hatchLevelOne.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
         else if(hatchLevelTwo.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_TWO);
@@ -96,7 +102,8 @@ public final class ManipulatorControl extends FREDDXControlScheme {
 
         if(wristUp.isReleased()) {
             setWristOption(wristOption - 1);
-        } else if(wristDown.isReleased() && liftSetpoint != LIFT_MIN_UP) {
+        }
+        else if(wristDown.isReleased() && (liftSetpoint != LIFT_MIN_UP || wristOption < 1)) {
             setWristOption(wristOption + 1);
         }
 

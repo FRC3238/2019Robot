@@ -9,7 +9,9 @@ public final class SplitControlMode extends FREDDXControlScheme {
     private final FREDDXControlScheme manipulator;
 
     private boolean isDriverAuto;
+    private boolean wasDriverAutoLast;
     private boolean isManipulatorAuto;
+    private boolean wasManipulatorAutoLast;
 
     public SplitControlMode() {
         driver      = new DriverControl();
@@ -30,15 +32,33 @@ public final class SplitControlMode extends FREDDXControlScheme {
         driver.updateControls();
         manipulator.updateControls();
 
-        if(isDriverAuto)
+        if(isDriverAuto) {
+            if(!wasDriverAutoLast) {
+                driver.enteringAuto();
+            }
             driver.autoPeriodic();
-        else
+        }
+        else {
+            if(wasDriverAutoLast) {
+                driver.enteringManual();
+            }
             driver.manualPeriodic();
+        }
+        wasDriverAutoLast = isDriverAuto;
 
-        if(isManipulatorAuto)
+        if(isManipulatorAuto) {
+            if(!wasManipulatorAutoLast) {
+                manipulator.enteringAuto();
+            }
             manipulator.autoPeriodic();
-        else
+        }
+        else {
+            if(wasManipulatorAutoLast) {
+                manipulator.enteringManual();
+            }
             manipulator.manualPeriodic();
+        }
+        wasManipulatorAutoLast = isManipulatorAuto;
     }
 
     @Override
