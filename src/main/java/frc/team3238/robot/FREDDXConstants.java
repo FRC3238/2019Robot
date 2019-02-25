@@ -6,6 +6,18 @@ package frc.team3238.robot;
  * @author Loren
  */
 public final class FREDDXConstants {
+    ///////////////////////////////////////////////////////////////////////////
+    //                                                                       //
+    //                           CAMERA SETTINGS                             //
+    //                                                                       //
+    ///////////////////////////////////////////////////////////////////////////
+
+    public static final int CAMERA_NUMBER        = 0;
+    public static final int CAMERA_FPS           = 30;
+    public static final int CAMERA_WIDTH         = 200;
+    public static final int CAMERA_HEIGHT        = 200;
+    public static final int CAMERA_WHITE_BALANCE = 4200;
+    public static final int CAMERA_EXPOSURE      = 25;
 
     ///////////////////////////////////////////////////////////////////////////
     //                                                                       //
@@ -67,17 +79,17 @@ public final class FREDDXConstants {
     public static final int    CAMERA_MIN_TILT  = 0;
 
     //Positions
-    public static final double LIFT_HATCH_LEVEL_ONE    = -897;
-    public static final double LIFT_HATCH_LEVEL_TWO    = -510;
-    public static final double LIFT_HATCH_LEVEL_THREE  = -133;
-    public static final double LIFT_CARGO_LEVEL_ONE    = -773;
-    public static final double LIFT_CARGO_LEVEL_TWO    = -376;
-    public static final double LIFT_CARGO_LEVEL_THREE  = -43;
-    public static final int    WRIST_STOW_POS          = -198; //TODO: Figure out correct values
-    public static final int    WRIST_FLAT_POS          = -223;
-    public static final int    WRIST_DOWN_POS          = -242;
-    public static final int    CAMERA_PAN_DEFAULT      = 90;
-    public static final int    CAMERA_TILT_DEFAULT     = 120;
+    public static final double LIFT_HATCH_LEVEL_ONE   = -897;
+    public static final double LIFT_HATCH_LEVEL_TWO   = -510;
+    public static final double LIFT_HATCH_LEVEL_THREE = -133;
+    public static final double LIFT_CARGO_LEVEL_ONE   = -773;
+    public static final double LIFT_CARGO_LEVEL_TWO   = -376;
+    public static final double LIFT_CARGO_LEVEL_THREE = -43;
+    public static final int    WRIST_STOW_POS         = -198; //TODO: Figure out correct values
+    public static final int    WRIST_FLAT_POS         = -223;
+    public static final int    WRIST_DOWN_POS         = -242;
+    public static final int    CAMERA_PAN_DEFAULT     = 90;
+    public static final int    CAMERA_TILT_DEFAULT    = 120;
 
     //PID constants
     public static final double BREACHER_kP = 3;

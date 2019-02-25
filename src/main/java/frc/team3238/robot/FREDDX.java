@@ -1,6 +1,8 @@
 package frc.team3238.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -34,6 +36,13 @@ public final class FREDDX extends TimedRobot {
         //Initialize user controls
         driveJoystick       = new Joystick(DRIVE_JOYSTICK_PORT);
         manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
+
+        //Camera streaming
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(CAMERA_NUMBER);
+        camera.setResolution(CAMERA_WIDTH, CAMERA_HEIGHT);
+        camera.setFPS(CAMERA_FPS);
+        camera.setWhiteBalanceManual(CAMERA_WHITE_BALANCE);
+        camera.setExposureManual(CAMERA_EXPOSURE);
 
         //Initialize systems
         drive = new PodDrive();
