@@ -22,9 +22,15 @@ public final class Climber {
 
         roller.setInverted(REVERSE_ROLLER);
         roller.setNeutralMode(ROLLER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        roller.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
 
         spuds.setInverted(REVERSE_SPUDS);
         spuds.setNeutralMode(SPUDS_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        spuds.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
+        spuds.configForwardSoftLimitEnable(true, TALON_TIMEOUT);
+        spuds.configForwardSoftLimitThreshold((int) SPUDS_MAX_DOWN, TALON_TIMEOUT);
+        spuds.configReverseSoftLimitEnable(true, TALON_TIMEOUT);
+        spuds.configReverseSoftLimitThreshold((int) SPUD_MIN_DOWN, TALON_TIMEOUT);
         spuds.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         spuds.setSensorPhase(FLIP_SPUD_SENSOR);
         spuds.config_kP(0, SPUDS_kP, TALON_TIMEOUT);
@@ -33,6 +39,11 @@ public final class Climber {
 
         breacherRight.setInverted(REVERSE_BREACHER);
         breacherRight.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        breacherRight.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
+        breacherRight.configForwardSoftLimitEnable(true, TALON_TIMEOUT);
+        breacherRight.configForwardSoftLimitThreshold((int) BREACHER_MAX_OUT, TALON_TIMEOUT);
+        breacherRight.configReverseSoftLimitEnable(true, TALON_TIMEOUT);
+        breacherRight.configReverseSoftLimitThreshold((int) BREACHER_MIN_OUT, TALON_TIMEOUT);
         breacherRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         breacherRight.setSensorPhase(FLIP_BREACHER_SENSOR);
         breacherRight.config_kP(0, BREACHER_kP, TALON_TIMEOUT);
@@ -41,6 +52,7 @@ public final class Climber {
 
         breacherLeft.setInverted(REVERSE_BREACHER);
         breacherLeft.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        breacherLeft.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
         breacherLeft.follow(breacherRight, FollowerType.PercentOutput);
         breacherLeft.setInverted(InvertType.OpposeMaster);
     }
