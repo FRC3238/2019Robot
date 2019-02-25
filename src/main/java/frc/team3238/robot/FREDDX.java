@@ -124,7 +124,7 @@ public final class FREDDX extends TimedRobot {
         cameraController.move();
 
         //Move robot
-        robotController.teleopPeriodic();
+        robotController.manualPeriodic();
     }
 
     @Override

@@ -77,7 +77,7 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     }
 
     @Override
-    public void teleopPeriodic() {
+    public void manualPeriodic() {
         lift.set(ControlMode.Position, liftSetpoint);
         double wristSetpoint;
         switch(wristOption) {

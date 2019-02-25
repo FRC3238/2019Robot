@@ -24,7 +24,7 @@ public class FullManualControl extends FREDDXControlScheme {
     }
 
     @Override
-    public void teleopPeriodic() {
+    public void manualPeriodic() {
         double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
         double driverThrottle      = remapThrottle(driveJoystick.getThrottle());
         double manipulatorThrottle = remapThrottle(manipulatorJoystick.getThrottle());

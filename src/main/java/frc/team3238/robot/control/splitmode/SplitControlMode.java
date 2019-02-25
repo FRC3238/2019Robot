@@ -48,12 +48,12 @@ public class SplitControlMode extends FREDDXControlScheme {
     }
 
     @Override
-    public void teleopPeriodic() {
+    public void manualPeriodic() {
         driverScheme.updateControls();
-        driverScheme.teleopPeriodic();
+        driverScheme.manualPeriodic();
 
         manipulatorScheme.updateControls();
-        manipulatorScheme.teleopPeriodic();
+        manipulatorScheme.manualPeriodic();
     }
 
     @Override

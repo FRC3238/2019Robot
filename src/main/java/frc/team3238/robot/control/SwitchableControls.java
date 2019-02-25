@@ -39,12 +39,12 @@ public class SwitchableControls extends FREDDXControlScheme {
     }
 
     @Override
-    public void teleopPeriodic() {
+    public void manualPeriodic() {
         //React to other control schemes only in teleop
         selectedControlScheme.updateControls();
 
         //Let the controller do it's work
-        selectedControlScheme.teleopPeriodic();
+        selectedControlScheme.manualPeriodic();
     }
 
     @Override

@@ -33,12 +33,12 @@ class DriverAutoMode extends DriverManualMode {
     }
 
     @Override
-    public void teleopPeriodic() {
+    public void manualPeriodic() {
         if(isClimbing) {
             climbingPeriodic();
         }
         else {
-            super.teleopPeriodic();
+            super.manualPeriodic();
         }
     }
 

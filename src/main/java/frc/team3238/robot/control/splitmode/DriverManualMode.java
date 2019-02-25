@@ -30,7 +30,7 @@ class DriverManualMode extends FREDDXControlScheme {
     }
 
     @Override
-    public void teleopPeriodic() {
+    public void manualPeriodic() {
         double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND);
         double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
         drive.arcadeDrive(driveThrottle, steer);

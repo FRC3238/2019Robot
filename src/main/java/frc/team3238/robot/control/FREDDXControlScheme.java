@@ -38,14 +38,30 @@ public abstract class FREDDXControlScheme {
     }
 
     /**
-     * Updates the state of the controls which command the robot what to do.
+     * Registers changes in controls
      */
-    public abstract void updateControls();
+    public void updateControls() {
+
+    }
 
     /**
-     * Controls the robot for teleoperation mode.
+     * Moves the robot in manual mode
      */
-    public abstract void teleopPeriodic();
+    public void manualPeriodic() {
+
+    }
+
+    /**
+     * Moves the robot using automatic features
+     */
+    public void autoPeriodic() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "FREDDX Control Scheme";
+    }
 
     /**
      * Takes a raw value as input and applies a deadband to it.
@@ -65,6 +81,10 @@ public abstract class FREDDXControlScheme {
         }
     }
 
+    public static double remapThrottle(double rawThrottle) {
+        return (-rawThrottle + 1) / 2;
+    }
+
     public static void driveTalonFwdRevOrStop(WPI_TalonSRX talon, boolean forward, boolean reverse, double throttle) {
         if(forward) {
             talon.set(ControlMode.PercentOutput, throttle);
@@ -75,14 +95,5 @@ public abstract class FREDDXControlScheme {
         else {
             talon.set(ControlMode.PercentOutput, 0);
         }
-    }
-
-    public static double remapThrottle(double rawThrottle) {
-        return (-rawThrottle + 1) / 2;
-    }
-
-    @Override
-    public String toString() {
-        return "FREDDX Control Scheme";
     }
 }
