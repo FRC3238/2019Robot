@@ -102,8 +102,7 @@ public final class FREDDX extends TimedRobot {
         wristTalon.config_kD(0, WRIST_kD, TALON_TIMEOUT);
 
         //Initialize drive
-        drive = new PodDrive(DRIVE_LEFT_MASTER_ID, DRIVE_LEFT_SLAVE_ID, DRIVE_RIGHT_MASTER_ID, DRIVE_RIGHT_SLAVE_ID,
-                             REVERSE_DRIVE, DRIVE_BRAKE);
+        drive = new PodDrive(DRIVE_LEFT_MASTER_ID, DRIVE_LEFT_SLAVE_ID, DRIVE_RIGHT_MASTER_ID, DRIVE_RIGHT_SLAVE_ID);
         drive.setDeadband(0);
         drive.setSafetyEnabled(true);
 
