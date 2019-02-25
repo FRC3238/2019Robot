@@ -15,8 +15,9 @@ import frc.team3238.robot.systems.PodDrive;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
-
 public final class FREDDX extends TimedRobot {
+
+    private static final FREDDX robot = new FREDDX();
 
     private Joystick            driveJoystick;
     private Joystick            manipulatorJoystick;
@@ -29,6 +30,10 @@ public final class FREDDX extends TimedRobot {
     private WPI_TalonSRX        liftTalon;
     private WPI_TalonSRX        wristTalon;
     private WPI_TalonSRX        beakTalon;
+
+    private FREDDX() {
+
+    }
 
     @Override
     public void robotInit() {
@@ -163,5 +168,9 @@ public final class FREDDX extends TimedRobot {
 
     public WPI_TalonSRX getBeak() {
         return beakTalon;
+    }
+
+    public static FREDDX getRobot() {
+        return robot;
     }
 }
