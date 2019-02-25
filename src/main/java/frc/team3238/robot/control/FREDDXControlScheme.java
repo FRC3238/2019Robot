@@ -77,6 +77,10 @@ public abstract class FREDDXControlScheme {
         }
     }
 
+    public static double remapThrottle(double rawThrottle) {
+        return (-rawThrottle + 1) / 2;
+    }
+
     @Override
     public String toString() {
         return "FREDDX Control Scheme";
