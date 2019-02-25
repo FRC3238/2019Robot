@@ -27,11 +27,6 @@ class ManipulatorManualMode extends FREDDXControlScheme {
     }
 
     @Override
-    public void updateControls() {
-        //Not used
-    }
-
-    @Override
     public void manualPeriodic() {
         double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
         wristUp.update();
