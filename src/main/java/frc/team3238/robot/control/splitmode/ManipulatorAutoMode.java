@@ -126,9 +126,4 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
         else
             wristOption = option;
     }
-
-    @Override
-    public String toString() {
-        return "Manipulator Auto Mode";
-    }
 }

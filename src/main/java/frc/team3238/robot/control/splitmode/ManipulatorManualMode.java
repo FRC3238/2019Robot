@@ -43,9 +43,4 @@ class ManipulatorManualMode extends FREDDXControlScheme {
         //Drive the lift
         lift.set(ControlMode.PercentOutput, manipulatorThrottle);
     }
-
-    @Override
-    public String toString() {
-        return "Manipulator Manual Mode";
-    }
 }
