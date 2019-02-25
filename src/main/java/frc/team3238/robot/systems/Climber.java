@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
-public class Climber {
+public final class Climber {
 
     //Yes they are not encapsulated on purpose
     public final WPI_TalonSRX roller;

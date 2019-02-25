@@ -36,9 +36,7 @@ public final class FREDDX extends TimedRobot {
         manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
 
         //Initialize systems
-        drive = new PodDrive(DRIVE_LEFT_MASTER_ID, DRIVE_LEFT_SLAVE_ID, DRIVE_RIGHT_MASTER_ID, DRIVE_RIGHT_SLAVE_ID);
-        drive.setDeadband(0);
-        drive.setSafetyEnabled(true);
+        drive = new PodDrive();
         manipulator = new Manipulator();
         climber     = new Climber();
 
