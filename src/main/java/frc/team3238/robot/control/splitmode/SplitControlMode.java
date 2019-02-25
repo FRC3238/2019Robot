@@ -3,54 +3,42 @@ package frc.team3238.robot.control.splitmode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.control.FREDDXControlScheme;
 
-public class SplitControlMode extends FREDDXControlScheme {
+public final class SplitControlMode extends FREDDXControlScheme {
 
-    private final FREDDXControlScheme driverManual;
-    private final FREDDXControlScheme driverAuto;
-    private final FREDDXControlScheme manipulatorManual;
-    private final FREDDXControlScheme manipulatorAuto;
+    private final FREDDXControlScheme driver;
+    private final FREDDXControlScheme manipulator;
 
-    private FREDDXControlScheme driverScheme;
-    private FREDDXControlScheme manipulatorScheme;
+    private boolean isDriverAuto;
+    private boolean isManipulatorAuto;
 
     public SplitControlMode() {
-        driverManual      = new DriverManualMode();
-        driverAuto        = new DriverAutoMode();
-        manipulatorManual = new ManipulatorManualMode();
-        manipulatorAuto   = new ManipulatorAutoMode();
-
-        driverScheme      = driverAuto;
-        manipulatorScheme = manipulatorAuto;
+        driver      = new DriverControl();
+        manipulator = new ManipulatorControl();
     }
 
     @Override
     public void updateControls() {
-        if(remapThrottle(manipulatorJoystick.getThrottle()) < 0.5) {
-            manipulatorScheme = manipulatorAuto;
-            SmartDashboard.putBoolean("Split Manipulator Auto", true);
-        }
-        else {
-            manipulatorScheme = manipulatorManual;
-            SmartDashboard.putBoolean("Split Manipulator Auto", false);
-        }
+        isDriverAuto = remapThrottle(driveJoystick.getThrottle()) < 0.5;
+        SmartDashboard.putBoolean("Split Drive Auto", isDriverAuto);
 
-        if(remapThrottle(driveJoystick.getThrottle()) < 0.5) {
-            driverScheme = driverAuto;
-            SmartDashboard.putBoolean("Split Drive Auto", true);
-        }
-        else {
-            driverScheme = driverManual;
-            SmartDashboard.putBoolean("Split Drive Auto", false);
-        }
+        isManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
+        SmartDashboard.putBoolean("Split Manipulator Auto", isManipulatorAuto);
     }
 
     @Override
     public void manualPeriodic() {
-        driverScheme.updateControls();
-        driverScheme.manualPeriodic();
+        driver.updateControls();
+        manipulator.updateControls();
 
-        manipulatorScheme.updateControls();
-        manipulatorScheme.manualPeriodic();
+        if(isDriverAuto)
+            driver.autoPeriodic();
+        else
+            driver.manualPeriodic();
+
+        if(isManipulatorAuto)
+            manipulator.autoPeriodic();
+        else
+            manipulator.manualPeriodic();
     }
 
     @Override
