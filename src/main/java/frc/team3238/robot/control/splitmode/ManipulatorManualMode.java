@@ -2,7 +2,6 @@ package frc.team3238.robot.control.splitmode;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team3238.robot.control.joystick.Button;
-import frc.team3238.robot.FREDDX;
 import frc.team3238.robot.control.FREDDXControlScheme;
 import frc.team3238.robot.control.joystick.JoystickButton;
 
@@ -18,8 +17,7 @@ class ManipulatorManualMode extends FREDDXControlScheme {
     private final Button beakExtend;
     private final Button beakRetract;
 
-    public ManipulatorManualMode(FREDDX robot) {
-        super(robot);
+    public ManipulatorManualMode() {
         wristUp     = new JoystickButton(manipulatorJoystick, WRIST_UP);
         wristDown   = new JoystickButton(manipulatorJoystick, WRIST_DOWN);
         beakExtend  = new JoystickButton(manipulatorJoystick, BEAK_OPEN);

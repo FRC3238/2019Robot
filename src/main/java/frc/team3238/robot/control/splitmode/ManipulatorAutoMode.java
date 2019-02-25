@@ -2,7 +2,6 @@ package frc.team3238.robot.control.splitmode;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3238.robot.FREDDX;
 import frc.team3238.robot.control.FREDDXControlScheme;
 import frc.team3238.robot.control.joystick.Button;
 import frc.team3238.robot.control.joystick.JoystickButton;
@@ -27,8 +26,7 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     private final Button beakExtend;
     private final Button beakRetract;
 
-    public ManipulatorAutoMode(FREDDX robot) {
-        super(robot);
+    public ManipulatorAutoMode() {
         //Initialize all the buttons on the joystick.
         hatchLevelOne   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_ONE);
         hatchLevelTwo   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_TWO);

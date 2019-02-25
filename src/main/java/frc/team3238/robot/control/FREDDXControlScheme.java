@@ -24,8 +24,8 @@ public abstract class FREDDXControlScheme {
     protected final WPI_TalonSRX      wrist;
     protected final WPI_TalonSRX      beak;
 
-    public FREDDXControlScheme(FREDDX robot) {
-        this.robot          = robot;
+    public FREDDXControlScheme() {
+        robot               = FREDDX.getRobot();
         driveJoystick       = robot.getDriverJoystick();
         manipulatorJoystick = robot.getManipulatorJoystick();
         drive               = robot.getDrive();
@@ -45,9 +45,23 @@ public abstract class FREDDXControlScheme {
     }
 
     /**
+     * Called when the current mode changes to manual
+     */
+    public void enteringManual() {
+
+    }
+
+    /**
      * Moves the robot in manual mode
      */
     public void manualPeriodic() {
+
+    }
+
+    /**
+     * Called when the current mode changes to auto
+     */
+    public void enteringAuto() {
 
     }
 

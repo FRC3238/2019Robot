@@ -1,7 +1,6 @@
 package frc.team3238.robot.control.splitmode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3238.robot.FREDDX;
 import frc.team3238.robot.control.FREDDXControlScheme;
 
 public class SplitControlMode extends FREDDXControlScheme {
@@ -14,13 +13,11 @@ public class SplitControlMode extends FREDDXControlScheme {
     private FREDDXControlScheme driverScheme;
     private FREDDXControlScheme manipulatorScheme;
 
-    public SplitControlMode(FREDDX robot) {
-        super(robot);
-
-        driverManual      = new DriverManualMode(robot);
-        driverAuto        = new DriverAutoMode(robot);
-        manipulatorManual = new ManipulatorManualMode(robot);
-        manipulatorAuto   = new ManipulatorAutoMode(robot);
+    public SplitControlMode() {
+        driverManual      = new DriverManualMode();
+        driverAuto        = new DriverAutoMode();
+        manipulatorManual = new ManipulatorManualMode();
+        manipulatorAuto   = new ManipulatorAutoMode();
 
         driverScheme      = driverAuto;
         manipulatorScheme = manipulatorAuto;

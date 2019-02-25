@@ -2,7 +2,6 @@ package frc.team3238.robot.control.splitmode;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3238.robot.FREDDX;
 import frc.team3238.robot.control.joystick.Button;
 import frc.team3238.robot.control.joystick.JoystickButton;
 
@@ -16,8 +15,7 @@ class DriverAutoMode extends DriverManualMode {
 
     private boolean isClimbing;
 
-    public DriverAutoMode(FREDDX robot) {
-        super(robot);
+    public DriverAutoMode() {
         safetyButton = new JoystickButton(driveJoystick, SAFETY);
         cancelButton = new JoystickButton(driveJoystick, CANCEL);
         climbButton  = new JoystickButton(driveJoystick, CLIMB);

@@ -2,7 +2,6 @@ package frc.team3238.robot.control;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3238.robot.FREDDX;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
@@ -13,10 +12,6 @@ import static frc.team3238.robot.FREDDXConstants.*;
  * entire robot at once.
  */
 public class FullManualControl extends FREDDXControlScheme {
-
-    public FullManualControl(FREDDX robot) {
-        super(robot);
-    }
 
     @Override
     public void updateControls() {

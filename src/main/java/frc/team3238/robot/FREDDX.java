@@ -42,7 +42,7 @@ public final class FREDDX extends TimedRobot {
 
         //Initialize controllers
         cameraController = new CameraController(manipulatorJoystick);
-        robotController  = new SwitchableControls(this);
+        robotController  = new SwitchableControls();
     }
 
     @Override

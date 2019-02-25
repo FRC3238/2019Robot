@@ -1,6 +1,5 @@
 package frc.team3238.robot.control.splitmode;
 
-import frc.team3238.robot.FREDDX;
 import frc.team3238.robot.control.FREDDXControlScheme;
 import frc.team3238.robot.control.joystick.Button;
 import frc.team3238.robot.control.joystick.JoystickButton;
@@ -15,8 +14,7 @@ class DriverManualMode extends FREDDXControlScheme {
     private final Button breachersOut;
     private final Button breachersBack;
 
-    public DriverManualMode(FREDDX robot) {
-        super(robot);
+    public DriverManualMode() {
         spudsUp       = new JoystickButton(driveJoystick, SPUDS_UP);
         spudsDown     = new JoystickButton(driveJoystick, SPUDS_DOWN);
         rollerForward = new JoystickButton(driveJoystick, ROLL_FORWARD);

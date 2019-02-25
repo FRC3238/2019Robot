@@ -2,7 +2,6 @@ package frc.team3238.robot.control;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3238.robot.FREDDX;
 import frc.team3238.robot.control.splitmode.SplitControlMode;
 
 public class SwitchableControls extends FREDDXControlScheme {
@@ -11,10 +10,9 @@ public class SwitchableControls extends FREDDXControlScheme {
 
     private FREDDXControlScheme selectedControlScheme;
 
-    public SwitchableControls(FREDDX robot) {
-        super(robot);
-        FREDDXControlScheme globalManualControl = new FullManualControl(robot);
-        FREDDXControlScheme splitControlMode    = new SplitControlMode(robot);
+    public SwitchableControls() {
+        FREDDXControlScheme globalManualControl = new FullManualControl();
+        FREDDXControlScheme splitControlMode    = new SplitControlMode();
 
         //Create the control scheme chooser
         chooser = new SendableChooser<>();
