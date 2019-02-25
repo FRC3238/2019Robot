@@ -80,11 +80,11 @@ public final class FREDDXConstants {
     public static final int    CAMERA_TILT_DEFAULT     = 120;
 
     //PID constants
-    public static final double BREACHER_kP = 0;
+    public static final double BREACHER_kP = 3;
     public static final double BREACHER_kI = 0;
     public static final double BREACHER_kD = 0;
 
-    public static final double SPUDS_kP = 0;
+    public static final double SPUDS_kP = 3;
     public static final double SPUDS_kI = 0;
     public static final double SPUDS_kD = 0;
 
