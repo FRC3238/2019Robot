@@ -25,12 +25,6 @@ public final class PodDrive extends DifferentialDrive {
                      WPI_TalonSRX rightMaster, WPI_TalonSRX rightSlave) {
         super(leftMaster, rightMaster);
 
-        //Set voltage compensation
-        leftMaster.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
-        leftSlave.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
-        rightMaster.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
-        rightSlave.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
-
         //Synchronize forward directions
         leftMaster.setInverted(REVERSE_DRIVE);
         leftSlave.setInverted(REVERSE_DRIVE);

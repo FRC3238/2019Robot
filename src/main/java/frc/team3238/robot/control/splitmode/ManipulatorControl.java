@@ -22,7 +22,6 @@ public final class ManipulatorControl extends FREDDXControlScheme {
     private final Button cargoLevelTwo;
     private final Button cargoLevelThree;
     private final Button stowCollector;
-    private final Button levelCollector;
 
     private double liftSetpoint;
     private int    wristOption;
@@ -40,7 +39,6 @@ public final class ManipulatorControl extends FREDDXControlScheme {
         cargoLevelTwo   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_TWO);
         cargoLevelThree = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_THREE);
         stowCollector   = new JoystickButton(manipulatorJoystick, STOW);
-        levelCollector  = new JoystickButton(manipulatorJoystick, WRIST_FLAT);
 
         setLiftSetpoint(LIFT_MIN_UP);
         setWristOption(0);
@@ -59,7 +57,6 @@ public final class ManipulatorControl extends FREDDXControlScheme {
         cargoLevelTwo.update();
         cargoLevelThree.update();
         stowCollector.update();
-        levelCollector.update();
     }
 
     @Override

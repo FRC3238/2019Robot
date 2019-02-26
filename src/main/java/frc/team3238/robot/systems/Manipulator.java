@@ -20,11 +20,6 @@ public final class Manipulator {
 
         lift.setInverted(REVERSE_LIFT);
         lift.setNeutralMode(LIFT_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        lift.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
-        lift.configForwardSoftLimitEnable(false, TALON_TIMEOUT);
-        lift.configForwardSoftLimitThreshold((int) LIFT_MIN_UP, TALON_TIMEOUT);
-        lift.configReverseSoftLimitEnable(false, TALON_TIMEOUT);
-        lift.configReverseSoftLimitThreshold((int) LIFT_MAX_UP, TALON_TIMEOUT);
         lift.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, TALON_TIMEOUT);
         lift.configAllowableClosedloopError(0, 5);
         lift.setSensorPhase(FLIP_LIFT_SENSOR);
@@ -34,11 +29,6 @@ public final class Manipulator {
 
         wrist.setInverted(REVERSE_WRIST);
         wrist.setNeutralMode(WRIST_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        wrist.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
-        wrist.configForwardSoftLimitEnable(true, TALON_TIMEOUT);
-        wrist.configForwardSoftLimitThreshold((int) WRIST_MAX_EXTEND, TALON_TIMEOUT);
-        wrist.configReverseSoftLimitEnable(true, TALON_TIMEOUT);
-        wrist.configReverseSoftLimitThreshold((int) WRIST_MIN_EXTEND, TALON_TIMEOUT);
         wrist.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, TALON_TIMEOUT);
         wrist.configAllowableClosedloopError(0, 5);
         wrist.setSensorPhase(FLIP_WRIST_SENSOR);

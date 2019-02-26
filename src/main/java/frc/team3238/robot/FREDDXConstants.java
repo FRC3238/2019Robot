@@ -51,6 +51,7 @@ public final class FREDDXConstants {
     public static final int CARGO_LEVEL_ONE   = 12;
     public static final int CARGO_LEVEL_TWO   = 10;
     public static final int CARGO_LEVEL_THREE = 8;
+    public static final int RESET_CAMERA      = 6;
 
     //Deadbands
     public static final double THROTTLE_DEADBAND = 0.2;
