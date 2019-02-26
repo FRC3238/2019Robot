@@ -25,7 +25,7 @@ public class CameraController {
         double povAngle = controlStick.getPOV();
         if(povAngle != -1) {
             if(povAngle != 0 && povAngle != 180)
-                incrementPan(povAngle < 180 ? CAMERA_SPEED : -CAMERA_SPEED);
+                incrementPan(povAngle < 180 ? -CAMERA_SPEED : CAMERA_SPEED);
 
             if(povAngle != 90 && povAngle != 270)
                 incrementTilt((povAngle > 270 || povAngle < 90) ? CAMERA_SPEED : -CAMERA_SPEED);

@@ -27,9 +27,9 @@ public final class Climber {
         spuds.setInverted(REVERSE_SPUDS);
         spuds.setNeutralMode(SPUDS_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         spuds.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
-        spuds.configForwardSoftLimitEnable(true, TALON_TIMEOUT);
+        spuds.configForwardSoftLimitEnable(false, TALON_TIMEOUT);
         spuds.configForwardSoftLimitThreshold((int) SPUDS_MAX_DOWN, TALON_TIMEOUT);
-        spuds.configReverseSoftLimitEnable(true, TALON_TIMEOUT);
+        spuds.configReverseSoftLimitEnable(false, TALON_TIMEOUT);
         spuds.configReverseSoftLimitThreshold((int) SPUD_MIN_DOWN, TALON_TIMEOUT);
         spuds.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         spuds.setSensorPhase(FLIP_SPUD_SENSOR);
@@ -40,9 +40,9 @@ public final class Climber {
         breacherRight.setInverted(REVERSE_BREACHER);
         breacherRight.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         breacherRight.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
-        breacherRight.configForwardSoftLimitEnable(true, TALON_TIMEOUT);
+        breacherRight.configForwardSoftLimitEnable(false, TALON_TIMEOUT);
         breacherRight.configForwardSoftLimitThreshold((int) BREACHER_MAX_OUT, TALON_TIMEOUT);
-        breacherRight.configReverseSoftLimitEnable(true, TALON_TIMEOUT);
+        breacherRight.configReverseSoftLimitEnable(false, TALON_TIMEOUT);
         breacherRight.configReverseSoftLimitThreshold((int) BREACHER_MIN_OUT, TALON_TIMEOUT);
         breacherRight.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         breacherRight.setSensorPhase(FLIP_BREACHER_SENSOR);

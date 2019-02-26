@@ -21,9 +21,9 @@ public final class Manipulator {
         lift.setInverted(REVERSE_LIFT);
         lift.setNeutralMode(LIFT_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         lift.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
-        lift.configForwardSoftLimitEnable(true, TALON_TIMEOUT);
+        lift.configForwardSoftLimitEnable(false, TALON_TIMEOUT);
         lift.configForwardSoftLimitThreshold((int) LIFT_MIN_UP, TALON_TIMEOUT);
-        lift.configReverseSoftLimitEnable(true, TALON_TIMEOUT);
+        lift.configReverseSoftLimitEnable(false, TALON_TIMEOUT);
         lift.configReverseSoftLimitThreshold((int) LIFT_MAX_UP, TALON_TIMEOUT);
         lift.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, TALON_TIMEOUT);
         lift.configAllowableClosedloopError(0, 5);

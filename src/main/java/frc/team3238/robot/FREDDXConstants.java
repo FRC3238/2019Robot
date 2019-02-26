@@ -88,7 +88,7 @@ public final class FREDDXConstants {
     public static final int    WRIST_STOW_POS         = -198; //TODO: Figure out correct values
     public static final int    WRIST_FLAT_POS         = -223;
     public static final int    WRIST_DOWN_POS         = -242;
-    public static final int    CAMERA_PAN_DEFAULT     = 90;
+    public static final int    CAMERA_PAN_DEFAULT     = 85;
     public static final int    CAMERA_TILT_DEFAULT    = 120;
 
     //PID constants
