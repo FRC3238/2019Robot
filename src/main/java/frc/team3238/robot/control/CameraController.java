@@ -2,6 +2,8 @@ package frc.team3238.robot.control;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
+import frc.team3238.robot.control.joystick.Button;
+import frc.team3238.robot.control.joystick.JoystickButton;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
@@ -14,21 +16,29 @@ public class CameraController {
     private int panAngle;
     private int tiltAngle;
 
+    private final Button resetCamera;
+
     public CameraController(Joystick stick) {
         controlStick    = stick;
         cameraPanServo  = new Servo(CAMERA_PAN_CHANNEL);
         cameraTiltServo = new Servo(CAMERA_TILT_CHANNEL);
+        resetCamera     = new JoystickButton(controlStick, RESET_CAMERA);
         homeCamera();
     }
 
     public void updateControls() {
+        resetCamera.update();
         double povAngle = controlStick.getPOV();
         if(povAngle != -1) {
             if(povAngle != 0 && povAngle != 180)
-                incrementPan(povAngle < 180 ? CAMERA_SPEED : -CAMERA_SPEED);
+                incrementPan(povAngle < 180 ? -CAMERA_SPEED : CAMERA_SPEED);
 
             if(povAngle != 90 && povAngle != 270)
-                incrementTilt((povAngle > 270 || povAngle < 90) ? CAMERA_SPEED : -CAMERA_SPEED);
+                incrementTilt((povAngle > 270 || povAngle < 90) ? -CAMERA_SPEED : CAMERA_SPEED);
+        }
+
+        if(resetCamera.isReleased()) {
+            homeCamera();
         }
     }
 

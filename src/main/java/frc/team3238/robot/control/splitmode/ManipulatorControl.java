@@ -2,18 +2,19 @@ package frc.team3238.robot.control.splitmode;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team3238.robot.FREDDX;
 import frc.team3238.robot.control.FREDDXControlScheme;
 import frc.team3238.robot.control.joystick.Button;
 import frc.team3238.robot.control.joystick.JoystickButton;
 
 import static frc.team3238.robot.FREDDXConstants.*;
+import static frc.team3238.robot.FREDDXConstants.BEAK_CLOSE;
 
-class ManipulatorAutoMode extends FREDDXControlScheme {
+public final class ManipulatorControl extends FREDDXControlScheme {
 
-    private double liftSetpoint;
-    private int wristOption;
-
+    private final Button wristUp;
+    private final Button wristDown;
+    private final Button beakExtend;
+    private final Button beakRetract;
     private final Button hatchLevelOne;
     private final Button hatchLevelTwo;
     private final Button hatchLevelThree;
@@ -21,15 +22,16 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
     private final Button cargoLevelTwo;
     private final Button cargoLevelThree;
     private final Button stowCollector;
-    private final Button levelCollector;
-    private final Button wristUp;
-    private final Button wristDown;
-    private final Button beakExtend;
-    private final Button beakRetract;
 
-    public ManipulatorAutoMode(FREDDX robot) {
-        super(robot);
+    private double liftSetpoint;
+    private int    wristOption;
+
+    public ManipulatorControl() {
         //Initialize all the buttons on the joystick.
+        wristUp         = new JoystickButton(manipulatorJoystick, WRIST_UP);
+        wristDown       = new JoystickButton(manipulatorJoystick, WRIST_DOWN);
+        beakExtend      = new JoystickButton(manipulatorJoystick, BEAK_OPEN);
+        beakRetract     = new JoystickButton(manipulatorJoystick, BEAK_CLOSE);
         hatchLevelOne   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_ONE);
         hatchLevelTwo   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_TWO);
         hatchLevelThree = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_THREE);
@@ -37,11 +39,6 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
         cargoLevelTwo   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_TWO);
         cargoLevelThree = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_THREE);
         stowCollector   = new JoystickButton(manipulatorJoystick, STOW);
-        levelCollector  = new JoystickButton(manipulatorJoystick, WRIST_FLAT);
-        wristUp         = new JoystickButton(manipulatorJoystick, WRIST_UP);
-        wristDown       = new JoystickButton(manipulatorJoystick, WRIST_DOWN);
-        beakExtend  = new JoystickButton(manipulatorJoystick, BEAK_OPEN);
-        beakRetract = new JoystickButton(manipulatorJoystick, BEAK_CLOSE);
 
         setLiftSetpoint(LIFT_MIN_UP);
         setWristOption(0);
@@ -49,11 +46,45 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
 
     @Override
     public void updateControls() {
-        updateButtons();
+        wristUp.update();
+        wristDown.update();
+        beakExtend.update();
+        beakRetract.update();
+        hatchLevelOne.update();
+        hatchLevelTwo.update();
+        hatchLevelThree.update();
+        cargoLevelOne.update();
+        cargoLevelTwo.update();
+        cargoLevelThree.update();
+        stowCollector.update();
+    }
+
+    @Override
+    public void manualPeriodic() {
+        double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
+
+        //Drive the wrist
+        driveTalonFwdRevOrStop(wrist, wristUp.isHeld(), wristDown.isHeld(), WRIST_SPEED);
+
+        //Drive the beak
+        driveTalonFwdRevOrStop(beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
+
+        //Drive the lift
+        lift.set(ControlMode.PercentOutput, manipulatorThrottle);
+    }
+
+    @Override
+    public void enteringAuto() {
+        setLiftSetpoint(lift.getSelectedSensorPosition());
+    }
+
+    @Override
+    public void autoPeriodic() {
         if(stowCollector.isReleased()) {
             setLiftSetpoint(LIFT_MIN_UP);
             setWristOption(0);
-        } else if(hatchLevelOne.isReleased())
+        }
+        else if(hatchLevelOne.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
         else if(hatchLevelTwo.isReleased())
             setLiftSetpoint(LIFT_HATCH_LEVEL_TWO);
@@ -68,16 +99,14 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
 
         if(wristUp.isReleased()) {
             setWristOption(wristOption - 1);
-        } else if(wristDown.isReleased() && liftSetpoint != LIFT_MIN_UP) {
+        }
+        else if(wristDown.isReleased() && (liftSetpoint != LIFT_MIN_UP || wristOption < 1)) {
             setWristOption(wristOption + 1);
         }
 
         SmartDashboard.putNumber("Wrist Option", wristOption);
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
-    }
 
-    @Override
-    public void teleopPeriodic() {
         lift.set(ControlMode.Position, liftSetpoint);
         double wristSetpoint;
         switch(wristOption) {
@@ -92,21 +121,6 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
         }
         wrist.set(ControlMode.Position, wristSetpoint);
         driveTalonFwdRevOrStop(beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
-    }
-
-    private void updateButtons() {
-        hatchLevelOne.update();
-        hatchLevelTwo.update();
-        hatchLevelThree.update();
-        cargoLevelOne.update();
-        cargoLevelTwo.update();
-        cargoLevelThree.update();
-        stowCollector.update();
-        levelCollector.update();
-        wristUp.update();
-        wristDown.update();
-        beakExtend.update();
-        beakRetract.update();
     }
 
     private void setLiftSetpoint(double setpoint) {
@@ -125,10 +139,5 @@ class ManipulatorAutoMode extends FREDDXControlScheme {
             wristOption = 2;
         else
             wristOption = option;
-    }
-
-    @Override
-    public String toString() {
-        return "Manipulator Auto Mode";
     }
 }

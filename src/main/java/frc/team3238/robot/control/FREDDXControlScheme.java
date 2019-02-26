@@ -24,8 +24,8 @@ public abstract class FREDDXControlScheme {
     protected final WPI_TalonSRX      wrist;
     protected final WPI_TalonSRX      beak;
 
-    public FREDDXControlScheme(FREDDX robot) {
-        this.robot          = robot;
+    public FREDDXControlScheme() {
+        robot               = FREDDX.getRobot();
         driveJoystick       = robot.getDriverJoystick();
         manipulatorJoystick = robot.getManipulatorJoystick();
         drive               = robot.getDrive();
@@ -38,14 +38,44 @@ public abstract class FREDDXControlScheme {
     }
 
     /**
-     * Updates the state of the controls which command the robot what to do.
+     * Registers changes in controls
      */
-    public abstract void updateControls();
+    public void updateControls() {
+
+    }
 
     /**
-     * Controls the robot for teleoperation mode.
+     * Called when the current mode changes to manual
      */
-    public abstract void teleopPeriodic();
+    public void enteringManual() {
+
+    }
+
+    /**
+     * Moves the robot in manual mode
+     */
+    public void manualPeriodic() {
+
+    }
+
+    /**
+     * Called when the current mode changes to auto
+     */
+    public void enteringAuto() {
+
+    }
+
+    /**
+     * Moves the robot using automatic features
+     */
+    public void autoPeriodic() {
+
+    }
+
+    @Override
+    public String toString() {
+        return "FREDDX Control Scheme";
+    }
 
     /**
      * Takes a raw value as input and applies a deadband to it.
@@ -65,6 +95,10 @@ public abstract class FREDDXControlScheme {
         }
     }
 
+    public static double remapThrottle(double rawThrottle) {
+        return (-rawThrottle + 1) / 2;
+    }
+
     public static void driveTalonFwdRevOrStop(WPI_TalonSRX talon, boolean forward, boolean reverse, double throttle) {
         if(forward) {
             talon.set(ControlMode.PercentOutput, throttle);
@@ -75,14 +109,5 @@ public abstract class FREDDXControlScheme {
         else {
             talon.set(ControlMode.PercentOutput, 0);
         }
-    }
-
-    public static double remapThrottle(double rawThrottle) {
-        return (-rawThrottle + 1) / 2;
-    }
-
-    @Override
-    public String toString() {
-        return "FREDDX Control Scheme";
     }
 }
