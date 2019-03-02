@@ -17,7 +17,7 @@ public final class FREDDXConstants {
     public static final int CAMERA_WIDTH         = 200;
     public static final int CAMERA_HEIGHT        = 200;
     public static final int CAMERA_WHITE_BALANCE = 4200;
-    public static final int CAMERA_EXPOSURE      = 25;
+    public static final int CAMERA_EXPOSURE      = 50;
 
     ///////////////////////////////////////////////////////////////////////////
     //                                                                       //
@@ -92,6 +92,9 @@ public final class FREDDXConstants {
     public static final int    CAMERA_PAN_DEFAULT     = 85;
     public static final int    CAMERA_TILT_DEFAULT    = 120;
 
+    public static final int    LIFT_BACKUP_CARGO_SHIP = -811; //height for the cargo ship placement with the backup hatch collector
+    public static final int    LIFT_BACKUP_FEEDER     = -855; //height for the feeder station with the backup hatch collector
+
     //PID constants
     public static final double BREACHER_kP = 3;
     public static final double BREACHER_kI = 0;
@@ -143,7 +146,7 @@ public final class FREDDXConstants {
 
     //Sensor phase adjust
     public static final boolean FLIP_BREACHER_SENSOR = false;
-    public static final boolean FLIP_SPUD_SENSOR     = false;
+    public static final boolean FLIP_SPUD_SENSOR     = true;
     public static final boolean FLIP_LIFT_SENSOR     = true;
     public static final boolean FLIP_WRIST_SENSOR    = true;
 
@@ -162,7 +165,7 @@ public final class FREDDXConstants {
     public static final double SPUDS_SPEED     = 1;
     public static final double BREACHERS_SPEED = 1;
     public static final double ROLLER_SPEED    = 1;
-    public static final double WRIST_SPEED     = 0.6;
+    public static final double WRIST_SPEED     = 0.75;
 
     //Talon configuration timeout
     public static final int TALON_TIMEOUT = 30;

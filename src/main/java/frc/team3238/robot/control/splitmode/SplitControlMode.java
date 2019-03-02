@@ -20,7 +20,7 @@ public final class SplitControlMode extends FREDDXControlScheme {
 
     @Override
     public void updateControls() {
-        isDriverAuto = remapThrottle(driveJoystick.getThrottle()) < 0.5;
+        isDriverAuto = false;     //remapThrottle(driveJoystick.getThrottle()) < 0.5;
         SmartDashboard.putBoolean("Split Drive Auto", isDriverAuto);
 
         isManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
