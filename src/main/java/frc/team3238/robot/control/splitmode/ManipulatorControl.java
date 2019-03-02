@@ -108,18 +108,24 @@ public final class ManipulatorControl extends FREDDXControlScheme {
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
 
         lift.set(ControlMode.Position, liftSetpoint);
-        double wristSetpoint;
-        switch(wristOption) {
-            case 1:
-                wristSetpoint = WRIST_FLAT_POS;
-                break;
-            case 2:
-                wristSetpoint = WRIST_DOWN_POS;
-                break;
-            default:
-                wristSetpoint = WRIST_STOW_POS;
-        }
-        wrist.set(ControlMode.Position, wristSetpoint);
+
+//        double wristSetpoint;
+//        switch(wristOption) {
+//            case 1:
+//                wristSetpoint = WRIST_FLAT_POS;
+//                break;
+//            case 2:
+//                wristSetpoint = WRIST_DOWN_POS;
+//                break;
+//            default:
+//                wristSetpoint = WRIST_STOW_POS;
+//        }
+//        wrist.set(ControlMode.Position, wristSetpoint);
+
+        //Drive the wrist
+        driveTalonFwdRevOrStop(wrist, wristUp.isHeld(), wristDown.isHeld(), WRIST_SPEED);
+
+        //Drive the beak
         driveTalonFwdRevOrStop(beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
     }
 
