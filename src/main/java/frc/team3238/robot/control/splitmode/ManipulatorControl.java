@@ -131,11 +131,15 @@ public final class ManipulatorControl extends FREDDXControlScheme {
 
     private void setLiftSetpoint(double setpoint) {
         if(setpoint < LIFT_MIN_UP)
-            liftSetpoint = LIFT_MIN_UP;
+            setAdjustedLiftSetpoint(LIFT_MIN_UP);
         else if(setpoint > LIFT_MAX_UP)
-            liftSetpoint = LIFT_MAX_UP;
+            setAdjustedLiftSetpoint(LIFT_MAX_UP);
         else
-            liftSetpoint = setpoint;
+            setAdjustedLiftSetpoint(setpoint);
+    }
+
+    private void setAdjustedLiftSetpoint(double setpoint) {
+        liftSetpoint = (785.0/955) * setpoint - 176;
     }
 
     private void setWristOption(int option) {
