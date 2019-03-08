@@ -4,9 +4,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.control.CameraController;
 import frc.team3238.robot.control.joystick.Button;
@@ -47,6 +49,9 @@ public final class FREDDX extends TimedRobot {
     private double liftSetpoint;
     private boolean isManipulatorAuto;
 
+    //RIO Sensors
+    private Potentiometer liftPot;
+
     @Override
     public void robotInit() {
         //Initialize user controls
@@ -85,22 +90,15 @@ public final class FREDDX extends TimedRobot {
         breachersBack = new JoystickButton(driveJoystick, BREACHER_IN);
 
         setLiftSetpoint(LIFT_MIN_UP);
+        isManipulatorAuto = false;
+
+        //Sensors
+        liftPot = new AnalogPotentiometer(LIFT_POTENTIOMETER_CHANNEL);
     }
 
     @Override
     public void robotPeriodic() {
-        boolean newIsManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
-        if(newIsManipulatorAuto != isManipulatorAuto) {
-            setLiftSetpoint(manipulator.lift.getSelectedSensorPosition());
-        }
-        isManipulatorAuto = newIsManipulatorAuto;
-        SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
-        SmartDashboard.putBoolean("Split Manipulator Auto", isManipulatorAuto);
-    }
-
-    @Override
-    public void teleopPeriodic() {
-        //Update controls
+        //Allow buttons to update
         wristUp.update();
         wristDown.update();
         beakExtend.update();
@@ -117,26 +115,41 @@ public final class FREDDX extends TimedRobot {
         rollerForward.update();
         breachersOut.update();
         breachersBack.update();
-        cameraController.updateControls();
 
-        //Move Camera
+        //Manipulator auto-mode switch
+        boolean newIsManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
+        if(newIsManipulatorAuto != isManipulatorAuto)
+            setLiftSetpoint(manipulator.lift.getSelectedSensorPosition());
+        isManipulatorAuto = newIsManipulatorAuto;
+
+        //SmartDashboard data
+        SmartDashboard.putBoolean("Manipulator Auto", isManipulatorAuto);
+        SmartDashboard.putNumber("Lift Potentiometer", liftPot.get());
+        SmartDashboard.putNumber("Wrist Potentiometer", manipulator.wrist.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Spud Encoder", climber.spuds.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Breacher Encoder", climber.breacherMaster.getSelectedSensorPosition(0));
+    }
+
+    @Override
+    public void teleopPeriodic() {
+        //Update and move camera
+        cameraController.updateControls();
         cameraController.move();
 
-        //Lift button based control
-        if(remapThrottle(manipulatorJoystick.getThrottle()) < 0.5) {
-            if (stowCollector.isReleased())
+        if(isManipulatorAuto) {
+            if(stowCollector.isReleased())
                 setLiftSetpoint(LIFT_MIN_UP);
-            else if (hatchLevelOne.isReleased())
+            else if(hatchLevelOne.isReleased())
                 setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
-            else if (hatchLevelTwo.isReleased())
+            else if(hatchLevelTwo.isReleased())
                 setLiftSetpoint(LIFT_HATCH_LEVEL_TWO);
-            else if (hatchLevelThree.isReleased())
+            else if(hatchLevelThree.isReleased())
                 setLiftSetpoint(LIFT_HATCH_LEVEL_THREE);
-            else if (cargoLevelOne.isReleased())
+            else if(cargoLevelOne.isReleased())
                 setLiftSetpoint(LIFT_CARGO_LEVEL_ONE);
-            else if (cargoLevelTwo.isReleased())
+            else if(cargoLevelTwo.isReleased())
                 setLiftSetpoint(LIFT_CARGO_LEVEL_TWO);
-            else if (cargoLevelThree.isReleased())
+            else if(cargoLevelThree.isReleased())
                 setLiftSetpoint(LIFT_CARGO_LEVEL_THREE);
 
             //Lift
@@ -146,20 +159,20 @@ public final class FREDDX extends TimedRobot {
         else {
             double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
 
-            //Drive the lift
+            //Lift
             manipulator.lift.set(ControlMode.PercentOutput, manipulatorThrottle);
         }
 
-        //Collector Controls
+        //Collector
         driveTalonFwdRevOrStop(manipulator.wrist, wristUp.isHeld(), wristDown.isHeld(), WRIST_SPEED);
-        driveTalonFwdRevOrStop(manipulator.beak, beakExtend.isHeld(), beakRetract.isHeld(), BEAK_SPEED);
+        driveTalonFwdRevOrStop(manipulator.beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
 
-        //Climb Controls
+        //Climber
         driveTalonFwdRevOrStop(climber.spuds, spudsUp.isHeld(), spudsDown.isHeld(), SPUDS_SPEED);
         driveTalonFwdRevOrStop(climber.breacherMaster, breachersOut.isHeld(), breachersBack.isHeld(), BREACHERS_SPEED);
         driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
 
-        //Drive Controls
+        //Drive
         double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND);
         double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
         drive.arcadeDrive(driveThrottle, steer);
@@ -202,7 +215,7 @@ public final class FREDDX extends TimedRobot {
      * @param deadband [0, 1) The amount of deadband to use
      * @return The deadband-adjusted value
      */
-    public static double deadbandAdjust(double rawValue, double deadband) {
+    private static double deadbandAdjust(double rawValue, double deadband) {
         if(Math.abs(rawValue) < deadband)
             return 0;
         else {
