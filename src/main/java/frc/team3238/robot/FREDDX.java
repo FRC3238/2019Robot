@@ -2,6 +2,7 @@ package frc.team3238.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.ControlType;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -122,13 +123,15 @@ public final class FREDDX extends TimedRobot {
 
         //Manipulator auto-mode switch
         boolean newIsManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
-        if(newIsManipulatorAuto != isManipulatorAuto)
-            setLiftSetpoint(manipulator.lift.getSelectedSensorPosition());
+        if(newIsManipulatorAuto && !isManipulatorAuto)
+            liftSetpoint = manipulator.liftEncoder.getPosition();
         isManipulatorAuto = newIsManipulatorAuto;
 
         //SmartDashboard data
         SmartDashboard.putBoolean("Manipulator Auto", isManipulatorAuto);
         SmartDashboard.putNumber("Lift Potentiometer", liftPot.get());
+        SmartDashboard.putNumber("Lift Encoder", manipulator.liftEncoder.getPosition());
+        SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
         SmartDashboard.putNumber("Wrist Potentiometer", manipulator.wrist.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Spud Encoder", climber.spuds.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Breacher Encoder", climber.breacherMaster.getSelectedSensorPosition(0));
@@ -157,13 +160,13 @@ public final class FREDDX extends TimedRobot {
                 setLiftSetpoint(LIFT_CARGO_LEVEL_THREE);
 
             //Lift
-            manipulator.lift.set(ControlMode.Position, liftSetpoint);
+            manipulator.liftPID.setReference(liftSetpoint, ControlType.kPosition);
         }
         else {
             double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
 
             //Lift
-            manipulator.lift.set(ControlMode.PercentOutput, manipulatorThrottle);
+            manipulator.lift.set(manipulatorThrottle);
         }
 
         //Collector
