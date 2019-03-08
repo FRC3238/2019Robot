@@ -3,29 +3,34 @@ package frc.team3238.robot.systems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
 public final class Manipulator {
 
     //Yes I chose not to encapsulate these variables.
-    public final WPI_TalonSRX lift;
-    public final WPI_TalonSRX wrist;
-    public final WPI_TalonSRX beak;
+    public final CANSparkMax      lift;
+    public final WPI_TalonSRX     wrist;
+    public final WPI_TalonSRX     beak;
+    public final CANPIDController liftPID;
+    public final CANEncoder       liftEncoder;
 
-    public Manipulator(WPI_TalonSRX lift, WPI_TalonSRX wrist, WPI_TalonSRX beak) {
-        this.lift  = lift;
-        this.wrist = wrist;
-        this.beak  = beak;
+    public Manipulator(CANSparkMax lift, WPI_TalonSRX wrist, WPI_TalonSRX beak) {
+        this.lift        = lift;
+        this.liftPID     = lift.getPIDController();
+        this.liftEncoder = lift.getEncoder();
+        this.wrist       = wrist;
+        this.beak        = beak;
 
         lift.setInverted(REVERSE_LIFT);
-        lift.setNeutralMode(LIFT_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        lift.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, TALON_TIMEOUT);
-        lift.configAllowableClosedloopError(0, 5);
-        lift.setSensorPhase(FLIP_LIFT_SENSOR);
-        lift.config_kP(0, LIFT_kP, TALON_TIMEOUT);
-        lift.config_kI(0, LIFT_kI, TALON_TIMEOUT);
-        lift.config_kD(0, LIFT_kD, TALON_TIMEOUT);
+        lift.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        liftPID.setP(LIFT_kP);
+        liftPID.setI(LIFT_kP);
+        liftPID.setD(LIFT_kD);
 
         wrist.setInverted(REVERSE_WRIST);
         wrist.setNeutralMode(WRIST_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
@@ -42,7 +47,9 @@ public final class Manipulator {
     }
 
     public Manipulator(int liftId, int wristId, int beakTalonId) {
-        this(new WPI_TalonSRX(liftId), new WPI_TalonSRX(wristId), new WPI_TalonSRX(beakTalonId));
+        this(new CANSparkMax(liftId, CANSparkMaxLowLevel.MotorType.kBrushless),
+             new WPI_TalonSRX(wristId),
+             new WPI_TalonSRX(beakTalonId));
     }
 
     public Manipulator() {
