@@ -1,6 +1,8 @@
 package frc.team3238.robot.systems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -38,7 +40,8 @@ public final class Manipulator {
 
         beak.setInverted(REVERSE_BEAK);
         beak.setNeutralMode(BEAK_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        beak.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
+        beak.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+        beak.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     }
 
     public Manipulator(int liftId, int wristId, int beakTalonId) {
