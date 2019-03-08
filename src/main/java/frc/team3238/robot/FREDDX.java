@@ -4,9 +4,12 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.control.CameraController;
 import frc.team3238.robot.control.joystick.Button;
 import frc.team3238.robot.control.joystick.JoystickButton;
@@ -46,10 +49,12 @@ public final class FREDDX extends TimedRobot {
     private Button breachersOut;
     private Button breachersBack;
 
-    //Setpoints
-    private double liftSetpoint;
-
+    //Misc data
+    private double  liftSetpoint;
     private boolean isManipulatorAuto;
+
+    //RIO Sensors
+    private Potentiometer liftPot;
 
     @Override
     public void robotInit() {
@@ -90,6 +95,9 @@ public final class FREDDX extends TimedRobot {
 
         setLiftSetpoint(LIFT_MIN_UP);
         isManipulatorAuto = false;
+
+        //Sensors
+        liftPot = new AnalogPotentiometer(LIFT_POTENTIOMETER_CHANNEL);
     }
 
     @Override
@@ -117,6 +125,13 @@ public final class FREDDX extends TimedRobot {
         if(newIsManipulatorAuto != isManipulatorAuto)
             setLiftSetpoint(manipulator.lift.getSelectedSensorPosition());
         isManipulatorAuto = newIsManipulatorAuto;
+
+        //SmartDashboard data
+        SmartDashboard.putBoolean("Manipulator Auto", isManipulatorAuto);
+        SmartDashboard.putNumber("Lift Potentiometer", liftPot.get());
+        SmartDashboard.putNumber("Wrist Potentiometer", manipulator.wrist.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Spud Encoder", climber.spuds.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Breacher Encoder", climber.breacherMaster.getSelectedSensorPosition(0));
     }
 
     @Override

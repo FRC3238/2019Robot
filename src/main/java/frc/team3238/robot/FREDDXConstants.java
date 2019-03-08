@@ -132,6 +132,9 @@ public final class FREDDXConstants {
     public static final int CAMERA_PAN_CHANNEL  = 0;
     public static final int CAMERA_TILT_CHANNEL = 1;
 
+    //Sensor channels
+    public static final int LIFT_POTENTIOMETER_CHANNEL = 0;
+
     //Direction
     public static final boolean REVERSE_DRIVE    = false;
     public static final boolean REVERSE_BREACHER = false;
