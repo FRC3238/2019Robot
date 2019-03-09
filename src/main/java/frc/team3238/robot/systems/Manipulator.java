@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import static frc.team3238.robot.FREDDXConstants.*;
@@ -27,9 +28,9 @@ public final class Manipulator {
         this.beak        = beak;
 
         lift.setInverted(REVERSE_LIFT);
-        lift.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        lift.setIdleMode(LIFT_BRAKE ? IdleMode.kBrake : IdleMode.kCoast);
         liftPID.setP(LIFT_kP);
-        liftPID.setI(LIFT_kP);
+        liftPID.setI(LIFT_kI);
         liftPID.setD(LIFT_kD);
 
         wrist.setInverted(REVERSE_WRIST);
@@ -43,7 +44,6 @@ public final class Manipulator {
 
         beak.setInverted(REVERSE_BEAK);
         beak.setNeutralMode(BEAK_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        beak.configVoltageCompSaturation(12.0, TALON_TIMEOUT);
     }
 
     public Manipulator(int liftId, int wristId, int beakTalonId) {
