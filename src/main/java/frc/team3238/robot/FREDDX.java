@@ -55,7 +55,7 @@ public final class FREDDX extends TimedRobot {
 
     @Override
     public void robotInit() {
-        //Initialize user controls
+        //Joysticks
         driveJoystick       = new Joystick(DRIVE_JOYSTICK_PORT);
         manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
 
