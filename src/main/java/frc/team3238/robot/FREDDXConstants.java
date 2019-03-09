@@ -17,7 +17,7 @@ public final class FREDDXConstants {
     public static final int CAMERA_WIDTH         = 200;
     public static final int CAMERA_HEIGHT        = 200;
     public static final int CAMERA_WHITE_BALANCE = 4200;
-    public static final int CAMERA_EXPOSURE      = 25;
+    public static final int CAMERA_EXPOSURE      = 30;
 
     ///////////////////////////////////////////////////////////////////////////
     //                                                                       //
@@ -36,8 +36,6 @@ public final class FREDDXConstants {
     public static final int BREACHER_OUT      = 5;
     public static final int BREACHER_IN       = 3;
     public static final int WRIST_UP          = 5;
-    public static final int WRIST_FLAT        = 6;
-    public static final int WRIST_FLOOR       = 6;
     public static final int WRIST_DOWN        = 3;
     public static final int BEAK_OPEN         = 2;
     public static final int BEAK_CLOSE        = 1;
@@ -70,26 +68,21 @@ public final class FREDDXConstants {
     public static final double BREACHER_MIN_OUT = 0;
     public static final double SPUDS_MAX_DOWN   = 4096;
     public static final double SPUD_MIN_DOWN    = 0;
-    public static final double LIFT_MAX_UP      = -30;
+    public static final double LIFT_MAX_UP      = -205;
     public static final double LIFT_MIN_UP      = -985;
-    public static final double WRIST_MAX_EXTEND = 242;
-    public static final double WRIST_MIN_EXTEND = 198;
     public static final int    CAMERA_MAX_PAN   = 180;
     public static final int    CAMERA_MIN_PAN   = 0;
     public static final int    CAMERA_MAX_TILT  = 180;
     public static final int    CAMERA_MIN_TILT  = 0;
 
     //Positions
-    public static final double LIFT_HATCH_LEVEL_ONE   = -897;
-    public static final double LIFT_HATCH_LEVEL_TWO   = -510;
-    public static final double LIFT_HATCH_LEVEL_THREE = -133;
-    public static final double LIFT_CARGO_LEVEL_ONE   = -773;
-    public static final double LIFT_CARGO_LEVEL_TWO   = -376;
-    public static final double LIFT_CARGO_LEVEL_THREE = -43;
-    public static final int    WRIST_STOW_POS         = -198; //TODO: Figure out correct values
-    public static final int    WRIST_FLAT_POS         = -223;
-    public static final int    WRIST_DOWN_POS         = -242;
-    public static final int    CAMERA_PAN_DEFAULT     = 85;
+    public static final double LIFT_HATCH_LEVEL_ONE   = -886;
+    public static final double LIFT_HATCH_LEVEL_TWO   = -505;
+    public static final double LIFT_HATCH_LEVEL_THREE = -262;
+    public static final double LIFT_CARGO_LEVEL_ONE   = -767;
+    public static final double LIFT_CARGO_LEVEL_TWO   = -435;
+    public static final double LIFT_CARGO_LEVEL_THREE = -205;
+    public static final int    CAMERA_PAN_DEFAULT     = 95;
     public static final int    CAMERA_TILT_DEFAULT    = 120;
 
     //PID constants
@@ -134,16 +127,16 @@ public final class FREDDXConstants {
 
     //Direction
     public static final boolean REVERSE_DRIVE    = false;
-    public static final boolean REVERSE_BREACHER = false;
-    public static final boolean REVERSE_SPUDS    = false;
-    public static final boolean REVERSE_ROLLER   = true;
+    public static final boolean REVERSE_BREACHER = true;
+    public static final boolean REVERSE_SPUDS    = true;
+    public static final boolean REVERSE_ROLLER   = false;
     public static final boolean REVERSE_LIFT     = false;
     public static final boolean REVERSE_WRIST    = false;
-    public static final boolean REVERSE_BEAK     = false;
+    public static final boolean REVERSE_BEAK     = true;
 
     //Sensor phase adjust
     public static final boolean FLIP_BREACHER_SENSOR = false;
-    public static final boolean FLIP_SPUD_SENSOR     = false;
+    public static final boolean FLIP_SPUD_SENSOR     = true;
     public static final boolean FLIP_LIFT_SENSOR     = true;
     public static final boolean FLIP_WRIST_SENSOR    = true;
 
@@ -162,7 +155,7 @@ public final class FREDDXConstants {
     public static final double SPUDS_SPEED     = 1;
     public static final double BREACHERS_SPEED = 1;
     public static final double ROLLER_SPEED    = 1;
-    public static final double WRIST_SPEED     = 0.6;
+    public static final double WRIST_SPEED     = 0.75;
 
     //Talon configuration timeout
     public static final int TALON_TIMEOUT = 30;
