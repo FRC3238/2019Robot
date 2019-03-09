@@ -127,8 +127,8 @@ public final class FREDDXConstants {
 
     //Direction
     public static final boolean REVERSE_DRIVE    = false;
-    public static final boolean REVERSE_BREACHER = false;
-    public static final boolean REVERSE_SPUDS    = false;
+    public static final boolean REVERSE_BREACHER = true;
+    public static final boolean REVERSE_SPUDS    = true;
     public static final boolean REVERSE_ROLLER   = false;
     public static final boolean REVERSE_LIFT     = false;
     public static final boolean REVERSE_WRIST    = false;

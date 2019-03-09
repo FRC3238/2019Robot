@@ -89,14 +89,13 @@ public final class FREDDX extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        isManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
+        boolean newIsManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
+        if(newIsManipulatorAuto != isManipulatorAuto) {
+            setLiftSetpoint(manipulator.lift.getSelectedSensorPosition());
+        }
+        isManipulatorAuto = newIsManipulatorAuto;
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
         SmartDashboard.putBoolean("Split Manipulator Auto", isManipulatorAuto);
-    }
-
-    @Override
-    public void teleopInit() {
-        setLiftSetpoint(manipulator.lift.getSelectedSensorPosition());
     }
 
     @Override
