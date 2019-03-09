@@ -39,9 +39,6 @@ public final class FREDDXConstants {
     public static final int WRIST_DOWN        = 3;
     public static final int BEAK_OPEN         = 2;
     public static final int BEAK_CLOSE        = 1;
-    public static final int SAFETY            = 7;
-    public static final int CANCEL            = 3;
-    public static final int CLIMB             = 12;
     public static final int STOW              = 4;
     public static final int HATCH_LEVEL_ONE   = 11;
     public static final int HATCH_LEVEL_TWO   = 9;
@@ -64,10 +61,6 @@ public final class FREDDXConstants {
     ///////////////////////////////////////////////////////////////////////////
 
     //Soft-travel limits (inclusive)
-    public static final double BREACHER_MAX_OUT = 4096;
-    public static final double BREACHER_MIN_OUT = 0;
-    public static final double SPUDS_MAX_DOWN   = 4096;
-    public static final double SPUD_MIN_DOWN    = 0;
     public static final double LIFT_MAX_UP      = -205;
     public static final double LIFT_MIN_UP      = -985;
     public static final int    CAMERA_MAX_PAN   = 180;
@@ -140,7 +133,6 @@ public final class FREDDXConstants {
     //Sensor phase adjust
     public static final boolean FLIP_BREACHER_SENSOR = false;
     public static final boolean FLIP_SPUD_SENSOR     = true;
-    public static final boolean FLIP_LIFT_SENSOR     = true;
     public static final boolean FLIP_WRIST_SENSOR    = true;
 
     //Neutral brakes
