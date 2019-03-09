@@ -2,7 +2,6 @@ package frc.team3238.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.ControlType;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -22,12 +21,12 @@ import static frc.team3238.robot.FREDDXConstants.*;
 
 public final class FREDDX extends TimedRobot {
     //Systems
-    private Joystick            driveJoystick;
-    private Joystick            manipulatorJoystick;
-    private CameraController    cameraController;
-    private DifferentialDrive   drive;
-    private Manipulator         manipulator;
-    private Climber             climber;
+    private Joystick          driveJoystick;
+    private Joystick          manipulatorJoystick;
+    private CameraController  cameraController;
+    private DifferentialDrive drive;
+    private Manipulator       manipulator;
+    private Climber           climber;
 
     //Buttons
     private Button wristUp;
@@ -47,7 +46,7 @@ public final class FREDDX extends TimedRobot {
     private Button breachersOut;
     private Button breachersBack;
 
-    private double liftSetpoint;
+    private double  liftSetpoint;
     private boolean isManipulatorAuto;
 
     //RIO Sensors
@@ -67,9 +66,9 @@ public final class FREDDX extends TimedRobot {
         camera.setExposureManual(CAMERA_EXPOSURE);
 
         //Initialize systems
-        drive = new PodDrive();
-        manipulator = new Manipulator();
-        climber     = new Climber();
+        drive            = new PodDrive();
+        manipulator      = new Manipulator();
+        climber          = new Climber();
         cameraController = new CameraController(manipulatorJoystick);
 
         //Initialize buttons
@@ -84,11 +83,11 @@ public final class FREDDX extends TimedRobot {
         cargoLevelTwo   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_TWO);
         cargoLevelThree = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_THREE);
         stowCollector   = new JoystickButton(manipulatorJoystick, STOW);
-        spudsUp       = new JoystickButton(driveJoystick, SPUDS_UP);
-        spudsDown     = new JoystickButton(driveJoystick, SPUDS_DOWN);
-        rollerForward = new JoystickButton(driveJoystick, ROLL_FORWARD);
-        breachersOut  = new JoystickButton(driveJoystick, BREACHER_OUT);
-        breachersBack = new JoystickButton(driveJoystick, BREACHER_IN);
+        spudsUp         = new JoystickButton(driveJoystick, SPUDS_UP);
+        spudsDown       = new JoystickButton(driveJoystick, SPUDS_DOWN);
+        rollerForward   = new JoystickButton(driveJoystick, ROLL_FORWARD);
+        breachersOut    = new JoystickButton(driveJoystick, BREACHER_OUT);
+        breachersBack   = new JoystickButton(driveJoystick, BREACHER_IN);
 
         setLiftSetpoint(LIFT_MIN_UP);
         isManipulatorAuto = false;
@@ -120,13 +119,13 @@ public final class FREDDX extends TimedRobot {
         //Manipulator auto-mode switch
         boolean newIsManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
         if(newIsManipulatorAuto && !isManipulatorAuto)
-            liftSetpoint = manipulator.liftEncoder.getPosition();
+            liftSetpoint = manipulator.lift.getSelectedSensorPosition();
         isManipulatorAuto = newIsManipulatorAuto;
 
         //SmartDashboard data
         SmartDashboard.putBoolean("Manipulator Auto", isManipulatorAuto);
         SmartDashboard.putNumber("Lift Potentiometer", liftPot.get());
-        SmartDashboard.putNumber("Lift Encoder", manipulator.liftEncoder.getPosition());
+        SmartDashboard.putNumber("Lift Encoder", manipulator.lift.getSelectedSensorPosition());
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
         SmartDashboard.putNumber("Wrist Potentiometer", manipulator.wrist.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Spud Encoder", climber.spuds.getSelectedSensorPosition(0));
@@ -156,14 +155,14 @@ public final class FREDDX extends TimedRobot {
                 setLiftSetpoint(LIFT_CARGO_LEVEL_THREE);
 
             //Lift
-            manipulator.liftPID.setReference(liftSetpoint, ControlType.kPosition);
+            manipulator.lift.set(ControlMode.Position, liftSetpoint);
         }
         //Lift manual control
         else {
             double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
 
             //Lift
-            manipulator.lift.set(manipulatorThrottle);
+            manipulator.lift.set(ControlMode.PercentOutput, manipulatorThrottle);
         }
 
         //Collector

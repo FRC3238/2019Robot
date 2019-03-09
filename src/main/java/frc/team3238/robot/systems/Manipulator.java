@@ -5,35 +5,27 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
 public final class Manipulator {
 
     //Yes I chose not to encapsulate these variables.
-    public final CANSparkMax      lift;
-    public final WPI_TalonSRX     wrist;
-    public final WPI_TalonSRX     beak;
-    public final CANPIDController liftPID;
-    public final CANEncoder       liftEncoder;
+    public final WPI_TalonSRX lift;
+    public final WPI_TalonSRX wrist;
+    public final WPI_TalonSRX beak;
 
-    public Manipulator(CANSparkMax lift, WPI_TalonSRX wrist, WPI_TalonSRX beak) {
-        this.lift        = lift;
-        this.liftPID     = lift.getPIDController();
-        this.liftEncoder = lift.getEncoder();
-        this.wrist       = wrist;
-        this.beak        = beak;
+    public Manipulator(WPI_TalonSRX lift, WPI_TalonSRX wrist, WPI_TalonSRX beak) {
+        this.lift  = lift;
+        this.wrist = wrist;
+        this.beak  = beak;
 
         lift.setInverted(REVERSE_LIFT);
-        lift.setIdleMode(LIFT_BRAKE ? IdleMode.kBrake : IdleMode.kCoast);
-        liftPID.setP(LIFT_kP);
-        liftPID.setI(LIFT_kI);
-        liftPID.setD(LIFT_kD);
+        lift.setNeutralMode(LIFT_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        lift.configSelectedFeedbackSensor(FeedbackDevice.Analog);
+        lift.config_kP(0, LIFT_kP);
+        lift.config_kI(0, LIFT_kI);
+        lift.config_kD(0, LIFT_kD);
 
         wrist.setInverted(REVERSE_WRIST);
         wrist.setNeutralMode(WRIST_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
@@ -51,7 +43,7 @@ public final class Manipulator {
     }
 
     public Manipulator(int liftId, int wristId, int beakTalonId) {
-        this(new CANSparkMax(liftId, CANSparkMaxLowLevel.MotorType.kBrushless),
+        this(new WPI_TalonSRX(liftId),
              new WPI_TalonSRX(wristId),
              new WPI_TalonSRX(beakTalonId));
     }
