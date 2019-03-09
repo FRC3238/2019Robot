@@ -31,7 +31,7 @@ public final class PodDrive extends DifferentialDrive {
 
         //Setup followers
         leftSlave.follow(leftMaster);
-        rightMaster.follow(rightMaster);
+        rightSlave.follow(rightMaster);
 
         //Config neutral state
         leftMaster.setIdleMode(DRIVE_BRAKE ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
