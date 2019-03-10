@@ -102,7 +102,7 @@ public final class FREDDXConstants {
     ///////////////////////////////////////////////////////////////////////////
 
     //CAN ids
-    public static final int DRIVE_LEFT_MASTER_ID  = 0;
+    public static final int DRIVE_LEFT_MASTER_ID  = 11;
     public static final int DRIVE_LEFT_SLAVE_ID   = 2;
     public static final int DRIVE_RIGHT_MASTER_ID = 1;
     public static final int DRIVE_RIGHT_SLAVE_ID  = 3;
