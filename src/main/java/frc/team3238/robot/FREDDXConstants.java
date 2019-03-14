@@ -123,12 +123,12 @@ public final class FREDDXConstants {
 
     //Direction
     public static final boolean REVERSE_DRIVE    = false;
-    public static final boolean REVERSE_BREACHER = true;
+    public static final boolean REVERSE_BREACHER = false;
     public static final boolean REVERSE_SPUDS    = true;
-    public static final boolean REVERSE_ROLLER   = false;
+    public static final boolean REVERSE_ROLLER   = true;
     public static final boolean REVERSE_LIFT     = false;
     public static final boolean REVERSE_WRIST    = false;
-    public static final boolean REVERSE_BEAK     = true;
+    public static final boolean REVERSE_BEAK     = false;
 
     //Sensor phase adjust
     public static final boolean FLIP_BREACHER_SENSOR = false;

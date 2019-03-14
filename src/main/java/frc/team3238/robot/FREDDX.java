@@ -170,7 +170,7 @@ public final class FREDDX extends TimedRobot {
         driveTalonFwdRevOrStop(manipulator.beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
 
         //Climber
-        driveTalonFwdRevOrStop(climber.spuds, spudsUp.isHeld(), spudsDown.isHeld(), SPUDS_SPEED);
+        driveTalonFwdRevOrStop(climber.spuds, spudsDown.isHeld(), spudsUp.isHeld(), SPUDS_SPEED);
         driveTalonFwdRevOrStop(climber.breacherMaster, breachersOut.isHeld(), breachersBack.isHeld(), BREACHERS_SPEED);
         driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
 

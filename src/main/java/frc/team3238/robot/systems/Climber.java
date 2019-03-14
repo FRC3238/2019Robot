@@ -1,9 +1,6 @@
 package frc.team3238.robot.systems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.FollowerType;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import static frc.team3238.robot.FREDDXConstants.*;
@@ -30,6 +27,8 @@ public final class Climber {
         spuds.config_kP(0, SPUDS_kP, TALON_TIMEOUT);
         spuds.config_kI(0, SPUDS_kI, TALON_TIMEOUT);
         spuds.config_kD(0, SPUDS_kD, TALON_TIMEOUT);
+        spuds.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+        spuds.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyOpen);
 
         breacherRight.setInverted(REVERSE_BREACHER);
         breacherRight.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
