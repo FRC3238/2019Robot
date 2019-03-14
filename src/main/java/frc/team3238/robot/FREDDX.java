@@ -43,6 +43,8 @@ public final class FREDDX extends TimedRobot {
 
     private double  liftSetpoint;
     private boolean isManipulatorAuto;
+    private boolean isBallCollected;
+    private boolean isCollectorEnabled;
 
     //RIO Sensors
     private Potentiometer liftPot;
@@ -82,6 +84,9 @@ public final class FREDDX extends TimedRobot {
 
         setLiftSetpoint(LIFT_MIN_UP);
         isManipulatorAuto = false;
+
+        isBallCollected = false;
+        isCollectorEnabled = false;
 
         //Sensors
         liftPot = new AnalogPotentiometer(LIFT_POTENTIOMETER_CHANNEL);
@@ -123,6 +128,8 @@ public final class FREDDX extends TimedRobot {
         cameraController.updateControls();
         cameraController.move();
 
+        isBallCollected = manipulator.sensorCollection.isFwdLimitSwitchClosed();
+
         if(isManipulatorAuto) {
             if(stowCollector.isReleased())
                 setLiftSetpoint(LIFT_MIN_UP);
@@ -132,6 +139,23 @@ public final class FREDDX extends TimedRobot {
                 setLiftSetpoint(LIFT_CARGO_LEVEL_TWO);
             else if(cargoLevelThree.isReleased())
                 setLiftSetpoint(LIFT_CARGO_LEVEL_THREE);
+
+            if(collectBall.isReleased()&& !isBallCollected || ejectBall.isReleased() && isBallCollected)
+                isCollectorEnabled = true;
+
+            if(isCollectorEnabled) {
+                //Collects a ball
+                if(!isBallCollected) {
+                    manipulator.collector.set(COLLECTOR_SPEED);
+                } else {
+                    //Ejects a ball
+                    while(isBallCollected)
+                        manipulator.collector.set(-COLLECTOR_SPEED);
+                }
+                //Stops the motor and disables it.
+                manipulator.collector.set(0);
+                isCollectorEnabled = false;
+            }
 
             //Lift
             manipulator.lift.set(ControlMode.Position, liftSetpoint);

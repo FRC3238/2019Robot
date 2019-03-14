@@ -15,7 +15,7 @@ public final class Manipulator {
     public Manipulator(WPI_TalonSRX lift, WPI_TalonSRX collector) {
         this.lift  = lift;
         this.collector = collector;
-        this.sensorCollection = collector.getSensorCollection();
+        sensorCollection = collector.getSensorCollection();
 
         lift.setInverted(REVERSE_LIFT);
         lift.setNeutralMode(LIFT_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
