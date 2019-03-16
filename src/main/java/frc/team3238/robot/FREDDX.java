@@ -29,17 +29,12 @@ public final class FREDDX extends TimedRobot {
     private Climber           climber;
 
     //Buttons
-    private Button wristUp;
-    private Button wristDown;
-    private Button beakExtend;
-    private Button beakRetract;
-    private Button hatchLevelOne;
-    private Button hatchLevelTwo;
-    private Button hatchLevelThree;
     private Button cargoLevelOne;
     private Button cargoLevelTwo;
     private Button cargoLevelThree;
     private Button stowCollector;
+    private Button collectBall;
+    private Button ejectBall;
     private Button spudsUp;
     private Button spudsDown;
     private Button rollerForward;
@@ -76,17 +71,12 @@ public final class FREDDX extends TimedRobot {
         cameraController = new CameraController(manipulatorJoystick);
 
         //Initialize buttons
-        wristUp         = new JoystickButton(manipulatorJoystick, WRIST_UP);
-        wristDown       = new JoystickButton(manipulatorJoystick, WRIST_DOWN);
-        beakExtend      = new JoystickButton(manipulatorJoystick, BEAK_OPEN);
-        beakRetract     = new JoystickButton(manipulatorJoystick, BEAK_CLOSE);
-        hatchLevelOne   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_ONE);
-        hatchLevelTwo   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_TWO);
-        hatchLevelThree = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_THREE);
         cargoLevelOne   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_ONE);
         cargoLevelTwo   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_TWO);
         cargoLevelThree = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_THREE);
         stowCollector   = new JoystickButton(manipulatorJoystick, STOW);
+        collectBall     = new JoystickButton(manipulatorJoystick, COLLECT_BALL);
+        ejectBall       = new JoystickButton(manipulatorJoystick, EJECT_BALL);
         spudsUp         = new JoystickButton(driveJoystick, SPUDS_UP);
         spudsDown       = new JoystickButton(driveJoystick, SPUDS_DOWN);
         rollerForward   = new JoystickButton(driveJoystick, ROLL_FORWARD);
@@ -107,17 +97,12 @@ public final class FREDDX extends TimedRobot {
     @Override
     public void robotPeriodic() {
         //Allow buttons to update
-        wristUp.update();
-        wristDown.update();
-        beakExtend.update();
-        beakRetract.update();
-        hatchLevelOne.update();
-        hatchLevelTwo.update();
-        hatchLevelThree.update();
         cargoLevelOne.update();
         cargoLevelTwo.update();
         cargoLevelThree.update();
         stowCollector.update();
+        collectBall.update();
+        ejectBall.update();
         spudsUp.update();
         spudsDown.update();
         rollerForward.update();
@@ -138,7 +123,6 @@ public final class FREDDX extends TimedRobot {
         SmartDashboard.putNumber("Lift Encoder", manipulator.lift.getSelectedSensorPosition());
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
         SmartDashboard.putNumber("Spuds Setpoint", spudsSetpoint);
-        SmartDashboard.putNumber("Wrist Potentiometer", manipulator.wrist.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Spud Encoder", climber.spuds.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Right Breacher Encoder", climber.breacherRight.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Left Breacher Encoder", climber.breacherLeft.getSelectedSensorPosition(0));
@@ -155,12 +139,6 @@ public final class FREDDX extends TimedRobot {
         if(isManipulatorAuto) {
             if(stowCollector.isReleased())
                 setLiftSetpoint(LIFT_MIN_UP);
-            else if(hatchLevelOne.isReleased())
-                setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
-            else if(hatchLevelTwo.isReleased())
-                setLiftSetpoint(LIFT_HATCH_LEVEL_TWO);
-            else if(hatchLevelThree.isReleased())
-                setLiftSetpoint(LIFT_HATCH_LEVEL_THREE);
             else if(cargoLevelOne.isReleased())
                 setLiftSetpoint(LIFT_CARGO_LEVEL_ONE);
             else if(cargoLevelTwo.isReleased())
@@ -180,8 +158,7 @@ public final class FREDDX extends TimedRobot {
         }
 
         //Collector
-        driveTalonFwdRevOrStop(manipulator.wrist, wristUp.isHeld(), wristDown.isHeld(), WRIST_SPEED);
-        driveTalonFwdRevOrStop(manipulator.beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
+        driveTalonFwdRevOrStop(manipulator.collector, collectBall.isHeld(), ejectBall.isHeld(), COLLECTOR_SPEED);
 
         //Climber
         if(spudsDown.isHeld() || spudsUp.isHeld()) {

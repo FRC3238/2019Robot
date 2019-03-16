@@ -1,9 +1,6 @@
 package frc.team3238.robot.systems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import static frc.team3238.robot.FREDDXConstants.*;
@@ -12,13 +9,13 @@ public final class Manipulator {
 
     //Yes I chose not to encapsulate these variables.
     public final WPI_TalonSRX lift;
-    public final WPI_TalonSRX wrist;
-    public final WPI_TalonSRX beak;
+    public final WPI_TalonSRX collector;
+    public SensorCollection sensorCollection;
 
-    public Manipulator(WPI_TalonSRX lift, WPI_TalonSRX wrist, WPI_TalonSRX beak) {
+    public Manipulator(WPI_TalonSRX lift, WPI_TalonSRX collector) {
         this.lift  = lift;
-        this.wrist = wrist;
-        this.beak  = beak;
+        this.collector = collector;
+        sensorCollection = collector.getSensorCollection();
 
         lift.setInverted(REVERSE_LIFT);
         lift.setNeutralMode(LIFT_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
@@ -27,28 +24,19 @@ public final class Manipulator {
         lift.config_kI(0, LIFT_kI);
         lift.config_kD(0, LIFT_kD);
 
-        wrist.setInverted(REVERSE_WRIST);
-        wrist.setNeutralMode(WRIST_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        wrist.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, TALON_TIMEOUT);
-        wrist.configAllowableClosedloopError(0, 5);
-        wrist.setSensorPhase(FLIP_WRIST_SENSOR);
-        wrist.config_kP(0, WRIST_kP, TALON_TIMEOUT);
-        wrist.config_kI(0, WRIST_kI, TALON_TIMEOUT);
-        wrist.config_kD(0, WRIST_kD, TALON_TIMEOUT);
+        collector.setInverted(REVERSE_COLLECTOR);
+        collector.setNeutralMode(COLLECTOR_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
+        collector.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyOpen);
+        collector.configReverseLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyOpen);
 
-        beak.setInverted(REVERSE_BEAK);
-        beak.setNeutralMode(BEAK_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
-        beak.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-        beak.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
     }
 
-    public Manipulator(int liftId, int wristId, int beakTalonId) {
+    public Manipulator(int liftId, int collectorId) {
         this(new WPI_TalonSRX(liftId),
-             new WPI_TalonSRX(wristId),
-             new WPI_TalonSRX(beakTalonId));
+             new WPI_TalonSRX((collectorId)));
     }
 
     public Manipulator() {
-        this(LIFT_ID, WRIST_ID, BEAK_ID);
+        this(LIFT_ID, COLLECTOR_ID);
     }
 }

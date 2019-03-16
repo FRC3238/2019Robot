@@ -35,14 +35,9 @@ public final class FREDDXConstants {
     public static final int ROLL_FORWARD      = 1;
     public static final int BREACHER_OUT      = 5;
     public static final int BREACHER_IN       = 3;
-    public static final int WRIST_UP          = 5;
-    public static final int WRIST_DOWN        = 3;
-    public static final int BEAK_OPEN         = 2;
-    public static final int BEAK_CLOSE        = 1;
+    public static final int COLLECT_BALL      = 2;
+    public static final int EJECT_BALL        = 1;
     public static final int STOW              = 4;
-    public static final int HATCH_LEVEL_ONE   = 11;
-    public static final int HATCH_LEVEL_TWO   = 9;
-    public static final int HATCH_LEVEL_THREE = 7;
     public static final int CARGO_LEVEL_ONE   = 12;
     public static final int CARGO_LEVEL_TWO   = 10;
     public static final int CARGO_LEVEL_THREE = 8;
@@ -69,9 +64,6 @@ public final class FREDDXConstants {
     public static final int    CAMERA_MIN_TILT  = 0;
 
     //Positions
-    public static final double LIFT_HATCH_LEVEL_ONE   = -886;
-    public static final double LIFT_HATCH_LEVEL_TWO   = -505;
-    public static final double LIFT_HATCH_LEVEL_THREE = -262;
     public static final double LIFT_CARGO_LEVEL_ONE   = -767;
     public static final double LIFT_CARGO_LEVEL_TWO   = -435;
     public static final double LIFT_CARGO_LEVEL_THREE = -205;
@@ -91,9 +83,6 @@ public final class FREDDXConstants {
     public static final double LIFT_kI = 0;
     public static final double LIFT_kD = 0;
 
-    public static final double WRIST_kP = 96;
-    public static final double WRIST_kI = 0;
-    public static final double WRIST_kD = 0;
 
     ///////////////////////////////////////////////////////////////////////////
     //                                                                       //
@@ -111,8 +100,7 @@ public final class FREDDXConstants {
     public static final int BREACHER_RIGHT_ID     = 7;
     public static final int BREACHER_LEFT_ID      = 6;
     public static final int LIFT_ID               = 8;
-    public static final int WRIST_ID              = 9;
-    public static final int BEAK_ID               = 10;
+    public static final int COLLECTOR_ID          = 9;
 
     //Servo channels
     public static final int CAMERA_PAN_CHANNEL  = 0;
@@ -127,14 +115,12 @@ public final class FREDDXConstants {
     public static final boolean REVERSE_SPUDS    = true;
     public static final boolean REVERSE_ROLLER   = true;
     public static final boolean REVERSE_LIFT     = false;
-    public static final boolean REVERSE_WRIST    = false;
-    public static final boolean REVERSE_BEAK     = false;
+    public static final boolean REVERSE_COLLECTOR= false;
 
     //Sensor phase adjust
     public static final boolean FLIP_RIGHT_BREACHER_SENSOR = false;
     public static final boolean FLIP_LEFT_BREACHER_SENSOR = false;
     public static final boolean FLIP_SPUD_SENSOR     = true;
-    public static final boolean FLIP_WRIST_SENSOR    = true;
 
     //Neutral brakes
     public static final boolean DRIVE_BRAKE    = false;
@@ -142,16 +128,14 @@ public final class FREDDXConstants {
     public static final boolean SPUDS_BRAKE    = true;
     public static final boolean ROLLER_BRAKE   = false;
     public static final boolean LIFT_BRAKE     = true;
-    public static final boolean WRIST_BRAKE    = true;
-    public static final boolean BEAK_BRAKE     = true;
+    public static final boolean COLLECTOR_BRAKE= false;
 
     //Manual speeds
-    public static final double BEAK_SPEED      = 1.00;
     public static final int    CAMERA_SPEED    = 1;
     public static final double SPUDS_SPEED     = 1;
     public static final double BREACHERS_SPEED = 1;
     public static final double ROLLER_SPEED    = 1;
-    public static final double WRIST_SPEED     = 0.75;
+    public static final double COLLECTOR_SPEED = 0.6;
 
     //Talon configuration timeout
     public static final int TALON_TIMEOUT = 30;
