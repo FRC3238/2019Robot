@@ -48,7 +48,10 @@ public final class FREDDX extends TimedRobot {
 
     private double  liftSetpoint;
     private double  spudsSetpoint;
+    private double  leftBreacherSetpoint;
+    private double  rightBreacherSetpoint;
     private boolean isManipulatorAuto;
+    private boolean isDriveAuto;
 
     //RIO Sensors
     private Potentiometer liftPot;
@@ -91,8 +94,11 @@ public final class FREDDX extends TimedRobot {
         breachersBack   = new JoystickButton(driveJoystick, BREACHER_IN);
 
         setLiftSetpoint(LIFT_MIN_UP);
-        spudsSetpoint     = climber.spuds.getSelectedSensorPosition(0);
-        isManipulatorAuto = false;
+        spudsSetpoint         = climber.spuds.getSelectedSensorPosition(0);
+        rightBreacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
+        leftBreacherSetpoint  = climber.breacherLeft.getSelectedSensorPosition(0);
+        isManipulatorAuto     = false;
+        isDriveAuto           = false;
 
         //Sensors
         liftPot = new AnalogPotentiometer(LIFT_POTENTIOMETER_CHANNEL);
@@ -123,16 +129,21 @@ public final class FREDDX extends TimedRobot {
         if(newIsManipulatorAuto && !isManipulatorAuto)
             liftSetpoint = manipulator.lift.getSelectedSensorPosition();
         isManipulatorAuto = newIsManipulatorAuto;
+        isDriveAuto       = remapThrottle(driveJoystick.getThrottle()) < 0.5;
 
         //SmartDashboard data
         SmartDashboard.putBoolean("Manipulator Auto", isManipulatorAuto);
+        SmartDashboard.putBoolean("Drive Auto", isDriveAuto);
         SmartDashboard.putNumber("Lift Potentiometer", liftPot.get());
         SmartDashboard.putNumber("Lift Encoder", manipulator.lift.getSelectedSensorPosition());
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
         SmartDashboard.putNumber("Spuds Setpoint", spudsSetpoint);
         SmartDashboard.putNumber("Wrist Potentiometer", manipulator.wrist.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Spud Encoder", climber.spuds.getSelectedSensorPosition(0));
-        SmartDashboard.putNumber("Breacher Encoder", climber.breacherMaster.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Right Breacher Encoder", climber.breacherRight.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Left Breacher Encoder", climber.breacherLeft.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Right Breacher Setpoint", rightBreacherSetpoint);
+        SmartDashboard.putNumber("Left Breacher Setpoint", leftBreacherSetpoint);
     }
 
     @Override
@@ -181,13 +192,39 @@ public final class FREDDX extends TimedRobot {
                 climber.spuds.set(-SPUDS_SPEED);
             }
             spudsSetpoint = climber.spuds.getSelectedSensorPosition(0);
-        } else {
-            if(remapThrottle(driveJoystick.getThrottle()) < 0.5)
+        }
+        //When driver is not telling the spuds what to do
+        else {
+            if(isDriveAuto)
                 climber.spuds.set(ControlMode.Position, spudsSetpoint);
             else
                 climber.spuds.set(ControlMode.PercentOutput, 0);
         }
-        driveTalonFwdRevOrStop(climber.breacherMaster, breachersOut.isHeld(), breachersBack.isHeld(), BREACHERS_SPEED);
+        if(breachersOut.isHeld() || breachersBack.isHeld()) {
+            if(breachersOut.isHeld()) {
+                climber.breacherRight.set(BREACHERS_SPEED);
+                climber.breacherLeft.set(-BREACHERS_SPEED);
+            }
+            //Make it stop
+            else {
+                climber.breacherRight.set(-BREACHERS_SPEED);
+                climber.breacherLeft.set(BREACHERS_SPEED);
+            }
+            rightBreacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
+            leftBreacherSetpoint  = climber.breacherLeft.getSelectedSensorPosition(0);
+        }
+        //When driver is not telling the breachers what to do
+        else {
+            if(isDriveAuto) {
+                climber.breacherRight.set(ControlMode.Position, rightBreacherSetpoint);
+                climber.breacherLeft.set(ControlMode.Position, leftBreacherSetpoint);
+            }
+            //Make it stop
+            else {
+                climber.breacherRight.set(0);
+                climber.breacherLeft.set(0);
+            }
+        }
         driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
 
         //Drive

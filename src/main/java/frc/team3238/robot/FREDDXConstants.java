@@ -80,7 +80,7 @@ public final class FREDDXConstants {
 
     //PID constants
     public static final double BREACHER_kP = 3;
-    public static final double BREACHER_kI = 0;
+    public static final double BREACHER_kI = 0.03;
     public static final double BREACHER_kD = 0;
 
     public static final double SPUDS_kP = 3;
@@ -131,7 +131,8 @@ public final class FREDDXConstants {
     public static final boolean REVERSE_BEAK     = false;
 
     //Sensor phase adjust
-    public static final boolean FLIP_BREACHER_SENSOR = false;
+    public static final boolean FLIP_RIGHT_BREACHER_SENSOR = false;
+    public static final boolean FLIP_LEFT_BREACHER_SENSOR = false;
     public static final boolean FLIP_SPUD_SENSOR     = true;
     public static final boolean FLIP_WRIST_SENSOR    = true;
 
