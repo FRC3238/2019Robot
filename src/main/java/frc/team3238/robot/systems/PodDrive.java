@@ -29,10 +29,10 @@ public final class PodDrive extends DifferentialDrive {
         rightMaster.setInverted(REVERSE_DRIVE);
         rightSlave.setInverted(REVERSE_DRIVE);
 
-        leftMaster.setSmartCurrentLimit(30);
-        leftSlave.setSmartCurrentLimit(30);
-        rightMaster.setSmartCurrentLimit(30);
-        rightSlave.setSmartCurrentLimit(30);
+        leftMaster.setSmartCurrentLimit(80);
+        leftSlave.setSmartCurrentLimit(80);
+        rightMaster.setSmartCurrentLimit(80);
+        rightSlave.setSmartCurrentLimit(80);
 
         //Setup followers
         leftSlave.follow(leftMaster);
