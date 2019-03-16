@@ -181,6 +181,8 @@ public final class FREDDX extends TimedRobot {
                 climber.spuds.set(-SPUDS_SPEED);
             }
             spudsSetpoint = climber.spuds.getSelectedSensorPosition(0);
+        } else {
+            climber.spuds.set(ControlMode.PercentOutput, 0);
         }
         driveTalonFwdRevOrStop(climber.breacherMaster, breachersOut.isHeld(), breachersBack.isHeld(), BREACHERS_SPEED);
         driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
