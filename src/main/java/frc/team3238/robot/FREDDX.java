@@ -47,6 +47,7 @@ public final class FREDDX extends TimedRobot {
     private Button breachersBack;
 
     private double  liftSetpoint;
+    private double  spudsSetpoint;
     private boolean isManipulatorAuto;
 
     //RIO Sensors
@@ -90,6 +91,7 @@ public final class FREDDX extends TimedRobot {
         breachersBack   = new JoystickButton(driveJoystick, BREACHER_IN);
 
         setLiftSetpoint(LIFT_MIN_UP);
+        spudsSetpoint     = climber.spuds.getSelectedSensorPosition(0);
         isManipulatorAuto = false;
 
         //Sensors
@@ -127,6 +129,7 @@ public final class FREDDX extends TimedRobot {
         SmartDashboard.putNumber("Lift Potentiometer", liftPot.get());
         SmartDashboard.putNumber("Lift Encoder", manipulator.lift.getSelectedSensorPosition());
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
+        SmartDashboard.putNumber("Spuds Setpoint", spudsSetpoint);
         SmartDashboard.putNumber("Wrist Potentiometer", manipulator.wrist.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Spud Encoder", climber.spuds.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Breacher Encoder", climber.breacherMaster.getSelectedSensorPosition(0));
@@ -170,7 +173,15 @@ public final class FREDDX extends TimedRobot {
         driveTalonFwdRevOrStop(manipulator.beak, beakRetract.isHeld(), beakExtend.isHeld(), BEAK_SPEED);
 
         //Climber
-        driveTalonFwdRevOrStop(climber.spuds, spudsDown.isHeld(), spudsUp.isHeld(), SPUDS_SPEED);
+        if(spudsDown.isHeld() || spudsUp.isHeld()) {
+            if(spudsDown.isHeld()) {
+                climber.spuds.set(SPUDS_SPEED);
+            }
+            else {
+                climber.spuds.set(-SPUDS_SPEED);
+            }
+            spudsSetpoint = climber.spuds.getSelectedSensorPosition(0);
+        }
         driveTalonFwdRevOrStop(climber.breacherMaster, breachersOut.isHeld(), breachersBack.isHeld(), BREACHERS_SPEED);
         driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
 

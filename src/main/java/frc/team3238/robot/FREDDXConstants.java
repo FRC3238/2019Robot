@@ -84,7 +84,7 @@ public final class FREDDXConstants {
     public static final double BREACHER_kD = 0;
 
     public static final double SPUDS_kP = 3;
-    public static final double SPUDS_kI = 0;
+    public static final double SPUDS_kI = 0.03;
     public static final double SPUDS_kD = 0;
 
     public static final double LIFT_kP = 12;
