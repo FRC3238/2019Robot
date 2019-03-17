@@ -4,11 +4,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.control.CameraController;
 import frc.team3238.robot.control.joystick.Button;
@@ -47,9 +45,6 @@ public final class FREDDX extends TimedRobot {
     private double  rightBreacherSetpoint;
     private boolean isManipulatorAuto;
     private boolean isDriveAuto;
-
-    //RIO Sensors
-    private Potentiometer liftPot;
 
     @Override
     public void robotInit() {
@@ -90,8 +85,6 @@ public final class FREDDX extends TimedRobot {
         isManipulatorAuto     = false;
         isDriveAuto           = false;
 
-        //Sensors
-        liftPot = new AnalogPotentiometer(LIFT_POTENTIOMETER_CHANNEL);
     }
 
     @Override
@@ -119,7 +112,6 @@ public final class FREDDX extends TimedRobot {
         //SmartDashboard data
         SmartDashboard.putBoolean("Manipulator Auto", isManipulatorAuto);
         SmartDashboard.putBoolean("Drive Auto", isDriveAuto);
-        SmartDashboard.putNumber("Lift Potentiometer", liftPot.get());
         SmartDashboard.putNumber("Lift Encoder", manipulator.lift.getSelectedSensorPosition());
         SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
         SmartDashboard.putNumber("Spuds Setpoint", spudsSetpoint);

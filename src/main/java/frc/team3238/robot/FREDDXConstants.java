@@ -56,12 +56,12 @@ public final class FREDDXConstants {
     ///////////////////////////////////////////////////////////////////////////
 
     //Soft-travel limits (inclusive)
-    public static final double LIFT_MAX_UP      = -205;
-    public static final double LIFT_MIN_UP      = -985;
-    public static final int    CAMERA_MAX_PAN   = 180;
-    public static final int    CAMERA_MIN_PAN   = 0;
-    public static final int    CAMERA_MAX_TILT  = 180;
-    public static final int    CAMERA_MIN_TILT  = 0;
+    public static final double LIFT_MAX_UP     = -205;
+    public static final double LIFT_MIN_UP     = -985;
+    public static final int    CAMERA_MAX_PAN  = 180;
+    public static final int    CAMERA_MIN_PAN  = 0;
+    public static final int    CAMERA_MAX_TILT = 180;
+    public static final int    CAMERA_MIN_TILT = 0;
 
     //Positions
     public static final double LIFT_CARGO_LEVEL_ONE   = -767;
@@ -106,29 +106,26 @@ public final class FREDDXConstants {
     public static final int CAMERA_PAN_CHANNEL  = 0;
     public static final int CAMERA_TILT_CHANNEL = 1;
 
-    //Sensor channels
-    public static final int LIFT_POTENTIOMETER_CHANNEL = 0;
-
     //Direction
-    public static final boolean REVERSE_DRIVE    = false;
-    public static final boolean REVERSE_BREACHER = false;
-    public static final boolean REVERSE_SPUDS    = true;
-    public static final boolean REVERSE_ROLLER   = true;
-    public static final boolean REVERSE_LIFT     = false;
-    public static final boolean REVERSE_COLLECTOR= false;
+    public static final boolean REVERSE_DRIVE     = false;
+    public static final boolean REVERSE_BREACHER  = false;
+    public static final boolean REVERSE_SPUDS     = true;
+    public static final boolean REVERSE_ROLLER    = true;
+    public static final boolean REVERSE_LIFT      = false;
+    public static final boolean REVERSE_COLLECTOR = false;
 
     //Sensor phase adjust
     public static final boolean FLIP_RIGHT_BREACHER_SENSOR = false;
-    public static final boolean FLIP_LEFT_BREACHER_SENSOR = true;
-    public static final boolean FLIP_SPUD_SENSOR     = true;
+    public static final boolean FLIP_LEFT_BREACHER_SENSOR  = true;
+    public static final boolean FLIP_SPUD_SENSOR           = true;
 
     //Neutral brakes
-    public static final boolean DRIVE_BRAKE    = false;
-    public static final boolean BREACHER_BRAKE = true;
-    public static final boolean SPUDS_BRAKE    = true;
-    public static final boolean ROLLER_BRAKE   = false;
-    public static final boolean LIFT_BRAKE     = true;
-    public static final boolean COLLECTOR_BRAKE= false;
+    public static final boolean DRIVE_BRAKE     = false;
+    public static final boolean BREACHER_BRAKE  = true;
+    public static final boolean SPUDS_BRAKE     = true;
+    public static final boolean ROLLER_BRAKE    = false;
+    public static final boolean LIFT_BRAKE      = true;
+    public static final boolean COLLECTOR_BRAKE = false;
 
     //Manual speeds
     public static final int    CAMERA_SPEED    = 1;
@@ -136,6 +133,9 @@ public final class FREDDXConstants {
     public static final double BREACHERS_SPEED = 1;
     public static final double ROLLER_SPEED    = 1;
     public static final double COLLECTOR_SPEED = 0.6;
+
+    //Current limits (amps)
+    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 80;
 
     //Talon configuration timeout
     public static final int TALON_TIMEOUT = 30;
