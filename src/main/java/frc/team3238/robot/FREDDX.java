@@ -19,37 +19,36 @@ import static frc.team3238.robot.FREDDXConstants.*;
 
 public final class FREDDX extends TimedRobot {
     //Systems
-    private Joystick            driveJoystick;
-    private Joystick            manipulatorJoystick;
-    private CameraController    cameraController;
-    private DifferentialDrive   drive;
-    private Manipulator         manipulator;
-    private Climber             climber;
+    private Joystick          driveJoystick;
+    private Joystick          manipulatorJoystick;
+    private CameraController  cameraController;
+    private DifferentialDrive drive;
+    private Manipulator       manipulator;
+    private Climber           climber;
 
     //Buttons
-    private Button wristUp;
-    private Button wristDown;
-    private Button beakExtend;
-    private Button beakRetract;
-    private Button hatchLevelOne;
-    private Button hatchLevelTwo;
-    private Button hatchLevelThree;
     private Button cargoLevelOne;
     private Button cargoLevelTwo;
     private Button cargoLevelThree;
     private Button stowCollector;
+    private Button collectBall;
+    private Button ejectBall;
     private Button spudsUp;
     private Button spudsDown;
     private Button rollerForward;
     private Button breachersOut;
     private Button breachersBack;
 
-    private double liftSetpoint;
+    private double  liftSetpoint;
+    private double  spudsSetpoint;
+    private double  leftBreacherSetpoint;
+    private double  rightBreacherSetpoint;
     private boolean isManipulatorAuto;
+    private boolean isDriveAuto;
 
     @Override
     public void robotInit() {
-        //Initialize user controls
+        //Joysticks
         driveJoystick       = new Joystick(DRIVE_JOYSTICK_PORT);
         manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
 
@@ -61,82 +60,82 @@ public final class FREDDX extends TimedRobot {
         camera.setExposureManual(CAMERA_EXPOSURE);
 
         //Initialize systems
-        drive = new PodDrive();
-        manipulator = new Manipulator();
-        climber     = new Climber();
+        drive            = new PodDrive();
+        manipulator      = new Manipulator();
+        climber          = new Climber();
         cameraController = new CameraController(manipulatorJoystick);
 
         //Initialize buttons
-        wristUp         = new JoystickButton(manipulatorJoystick, WRIST_UP);
-        wristDown       = new JoystickButton(manipulatorJoystick, WRIST_DOWN);
-        beakExtend      = new JoystickButton(manipulatorJoystick, BEAK_OPEN);
-        beakRetract     = new JoystickButton(manipulatorJoystick, BEAK_CLOSE);
-        hatchLevelOne   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_ONE);
-        hatchLevelTwo   = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_TWO);
-        hatchLevelThree = new JoystickButton(manipulatorJoystick, HATCH_LEVEL_THREE);
         cargoLevelOne   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_ONE);
         cargoLevelTwo   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_TWO);
         cargoLevelThree = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_THREE);
         stowCollector   = new JoystickButton(manipulatorJoystick, STOW);
-        spudsUp       = new JoystickButton(driveJoystick, SPUDS_UP);
-        spudsDown     = new JoystickButton(driveJoystick, SPUDS_DOWN);
-        rollerForward = new JoystickButton(driveJoystick, ROLL_FORWARD);
-        breachersOut  = new JoystickButton(driveJoystick, BREACHER_OUT);
-        breachersBack = new JoystickButton(driveJoystick, BREACHER_IN);
+        collectBall     = new JoystickButton(manipulatorJoystick, COLLECT_BALL);
+        ejectBall       = new JoystickButton(manipulatorJoystick, EJECT_BALL);
+        spudsUp         = new JoystickButton(driveJoystick, SPUDS_UP);
+        spudsDown       = new JoystickButton(driveJoystick, SPUDS_DOWN);
+        rollerForward   = new JoystickButton(driveJoystick, ROLL_FORWARD);
+        breachersOut    = new JoystickButton(driveJoystick, BREACHER_OUT);
+        breachersBack   = new JoystickButton(driveJoystick, BREACHER_IN);
 
         setLiftSetpoint(LIFT_MIN_UP);
+        spudsSetpoint         = climber.spuds.getSelectedSensorPosition(0);
+        rightBreacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
+        leftBreacherSetpoint  = climber.breacherLeft.getSelectedSensorPosition(0);
+        isManipulatorAuto     = false;
+        isDriveAuto           = false;
+
     }
 
     @Override
     public void robotPeriodic() {
-        boolean newIsManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
-        if(newIsManipulatorAuto != isManipulatorAuto) {
-            setLiftSetpoint(manipulator.lift.getSelectedSensorPosition());
-        }
-        isManipulatorAuto = newIsManipulatorAuto;
-        SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
-        SmartDashboard.putBoolean("Split Manipulator Auto", isManipulatorAuto);
-    }
-
-    @Override
-    public void teleopPeriodic() {
-        //Update controls
-        wristUp.update();
-        wristDown.update();
-        beakExtend.update();
-        beakRetract.update();
-        hatchLevelOne.update();
-        hatchLevelTwo.update();
-        hatchLevelThree.update();
+        //Allow buttons to update
         cargoLevelOne.update();
         cargoLevelTwo.update();
         cargoLevelThree.update();
         stowCollector.update();
+        collectBall.update();
+        ejectBall.update();
         spudsUp.update();
         spudsDown.update();
         rollerForward.update();
         breachersOut.update();
         breachersBack.update();
-        cameraController.updateControls();
 
-        //Move Camera
+        //Manipulator auto-mode switch
+        boolean newIsManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
+        if(newIsManipulatorAuto && !isManipulatorAuto)
+            liftSetpoint = manipulator.lift.getSelectedSensorPosition();
+        isManipulatorAuto = newIsManipulatorAuto;
+        isDriveAuto       = remapThrottle(driveJoystick.getThrottle()) < 0.5;
+
+        //SmartDashboard data
+        SmartDashboard.putBoolean("Manipulator Auto", isManipulatorAuto);
+        SmartDashboard.putBoolean("Drive Auto", isDriveAuto);
+        SmartDashboard.putNumber("Lift Encoder", manipulator.lift.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Lift Setpoint", liftSetpoint);
+        SmartDashboard.putNumber("Spuds Setpoint", spudsSetpoint);
+        SmartDashboard.putNumber("Spud Encoder", climber.spuds.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Right Breacher Encoder", climber.breacherRight.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Left Breacher Encoder", climber.breacherLeft.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("Right Breacher Setpoint", rightBreacherSetpoint);
+        SmartDashboard.putNumber("Left Breacher Setpoint", leftBreacherSetpoint);
+    }
+
+    @Override
+    public void teleopPeriodic() {
+        //Update and move camera
+        cameraController.updateControls();
         cameraController.move();
 
-        //Lift button based control
-        if(remapThrottle(manipulatorJoystick.getThrottle()) < 0.5) {
-            if (stowCollector.isReleased())
+        if(isManipulatorAuto) {
+            if(stowCollector.isReleased())
                 setLiftSetpoint(LIFT_MIN_UP);
-            else if (hatchLevelOne.isReleased())
-                setLiftSetpoint(LIFT_HATCH_LEVEL_ONE);
-            else if (hatchLevelTwo.isReleased())
-                setLiftSetpoint(LIFT_HATCH_LEVEL_TWO);
-            else if (hatchLevelThree.isReleased())
-                setLiftSetpoint(LIFT_HATCH_LEVEL_THREE);
-            else if (cargoLevelOne.isReleased())
+            else if(cargoLevelOne.isReleased())
                 setLiftSetpoint(LIFT_CARGO_LEVEL_ONE);
-            else if (cargoLevelTwo.isReleased())
+            else if(cargoLevelTwo.isReleased())
                 setLiftSetpoint(LIFT_CARGO_LEVEL_TWO);
-            else if (cargoLevelThree.isReleased())
+            else if(cargoLevelThree.isReleased())
                 setLiftSetpoint(LIFT_CARGO_LEVEL_THREE);
 
             //Lift
@@ -146,20 +145,58 @@ public final class FREDDX extends TimedRobot {
         else {
             double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
 
-            //Drive the lift
+            //Lift
             manipulator.lift.set(ControlMode.PercentOutput, manipulatorThrottle);
         }
 
-        //Collector Controls
-        driveTalonFwdRevOrStop(manipulator.wrist, wristUp.isHeld(), wristDown.isHeld(), WRIST_SPEED);
-        driveTalonFwdRevOrStop(manipulator.beak, beakExtend.isHeld(), beakRetract.isHeld(), BEAK_SPEED);
+        //Collector
+        driveTalonFwdRevOrStop(manipulator.collector, collectBall.isHeld(), ejectBall.isHeld(), COLLECTOR_SPEED);
 
-        //Climb Controls
-        driveTalonFwdRevOrStop(climber.spuds, spudsUp.isHeld(), spudsDown.isHeld(), SPUDS_SPEED);
-        driveTalonFwdRevOrStop(climber.breacherMaster, breachersOut.isHeld(), breachersBack.isHeld(), BREACHERS_SPEED);
+        //Climber
+        if(spudsDown.isHeld() || spudsUp.isHeld()) {
+            if(spudsDown.isHeld()) {
+                climber.spuds.set(SPUDS_SPEED);
+            }
+            else {
+                climber.spuds.set(-SPUDS_SPEED);
+            }
+            spudsSetpoint = climber.spuds.getSelectedSensorPosition(0);
+        }
+        //When driver is not telling the spuds what to do
+        else {
+            if(isDriveAuto)
+                climber.spuds.set(ControlMode.Position, spudsSetpoint);
+            else
+                climber.spuds.set(ControlMode.PercentOutput, 0);
+        }
+        if(breachersOut.isHeld() || breachersBack.isHeld()) {
+            if(breachersOut.isHeld()) {
+                climber.breacherRight.set(BREACHERS_SPEED);
+                climber.breacherLeft.set(-BREACHERS_SPEED);
+            }
+            //Make it stop
+            else {
+                climber.breacherRight.set(-BREACHERS_SPEED);
+                climber.breacherLeft.set(BREACHERS_SPEED);
+            }
+            rightBreacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
+            leftBreacherSetpoint  = climber.breacherLeft.getSelectedSensorPosition(0);
+        }
+        //When driver is not telling the breachers what to do
+        else {
+            if(isDriveAuto) {
+                climber.breacherRight.set(ControlMode.Position, rightBreacherSetpoint);
+                climber.breacherLeft.set(ControlMode.Position, leftBreacherSetpoint);
+            }
+            //Make it stop
+            else {
+                climber.breacherRight.set(0);
+                climber.breacherLeft.set(0);
+            }
+        }
         driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
 
-        //Drive Controls
+        //Drive
         double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND);
         double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
         drive.arcadeDrive(driveThrottle, steer);
@@ -202,7 +239,7 @@ public final class FREDDX extends TimedRobot {
      * @param deadband [0, 1) The amount of deadband to use
      * @return The deadband-adjusted value
      */
-    public static double deadbandAdjust(double rawValue, double deadband) {
+    private static double deadbandAdjust(double rawValue, double deadband) {
         if(Math.abs(rawValue) < deadband)
             return 0;
         else {
