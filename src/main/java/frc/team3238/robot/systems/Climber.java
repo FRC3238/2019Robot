@@ -31,6 +31,7 @@ public final class Climber {
         spuds.config_kD(0, SPUDS_kD, TALON_TIMEOUT);
         spuds.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
         spuds.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyOpen);
+        spuds.setSelectedSensorPosition(0);
 
         breacherRight.setInverted(REVERSE_BREACHER);
         breacherRight.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
@@ -39,6 +40,7 @@ public final class Climber {
         breacherRight.config_kP(0, BREACHER_kP, TALON_TIMEOUT);
         breacherRight.config_kI(0, BREACHER_kI, TALON_TIMEOUT);
         breacherRight.config_kD(0, BREACHER_kD, TALON_TIMEOUT);
+        breacherRight.setSelectedSensorPosition(0);
 
         breacherLeft.setInverted(REVERSE_BREACHER);
         breacherLeft.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
@@ -47,6 +49,7 @@ public final class Climber {
         breacherLeft.config_kP(0, BREACHER_kP, TALON_TIMEOUT);
         breacherLeft.config_kI(0, BREACHER_kI, TALON_TIMEOUT);
         breacherLeft.config_kD(0, BREACHER_kD, TALON_TIMEOUT);
+        breacherLeft.setSelectedSensorPosition(0);
     }
 
     public Climber(int rollerTalonId, int spudsTalonId, int breacherLeftTalonId, int breacherRightTalonId) {
