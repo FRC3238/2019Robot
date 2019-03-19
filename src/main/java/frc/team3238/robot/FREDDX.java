@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.control.CameraController;
@@ -17,7 +16,7 @@ import frc.team3238.robot.systems.PodDrive;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
-public final class FREDDX extends TimedRobot {
+public final class FREDDX extends TimedTeleopRobot {
     //Systems
     private Joystick          driveJoystick;
     private Joystick          manipulatorJoystick;
@@ -78,11 +77,10 @@ public final class FREDDX extends TimedRobot {
         breachersBack   = new JoystickButton(driveJoystick, BREACHER_IN);
 
         setLiftSetpoint(LIFT_MIN_UP);
-        spudsSetpoint         = climber.spuds.getSelectedSensorPosition(0);
-        breacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
-        isManipulatorAuto     = false;
-        isDriveAuto           = false;
-
+        spudsSetpoint     = climber.spuds.getSelectedSensorPosition(0);
+        breacherSetpoint  = climber.breacherRight.getSelectedSensorPosition(0);
+        isManipulatorAuto = false;
+        isDriveAuto       = false;
     }
 
     @Override
@@ -120,7 +118,13 @@ public final class FREDDX extends TimedRobot {
     }
 
     @Override
-    public void teleopPeriodic() {
+    public void enabledBegin() {
+        //Only turns on the brakes that are enabled in the configs
+        climber.useBrakes();
+    }
+
+    @Override
+    public void enabledPeriodic() {
         //Update and move camera
         cameraController.updateControls();
         cameraController.move();
@@ -199,8 +203,8 @@ public final class FREDDX extends TimedRobot {
     }
 
     @Override
-    public void autonomousPeriodic() {
-        teleopPeriodic();
+    public void disabledBegin() {
+        climber.disableBrakes();
     }
 
     private void setLiftSetpoint(double setpoint) {

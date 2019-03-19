@@ -73,7 +73,7 @@ public final class FREDDXConstants {
     //PID constants
     public static final double BREACHER_kP = 3;
     public static final double BREACHER_kI = 0.03;
-    public static final double BREACHER_kD = 0;
+    public static final double BREACHER_kD = 300;
 
     public static final double SPUDS_kP = 3;
     public static final double SPUDS_kI = 0.03;
@@ -83,6 +83,25 @@ public final class FREDDXConstants {
     public static final double LIFT_kI = 0;
     public static final double LIFT_kD = 0;
 
+
+    ///////////////////////////////////////////////////////////////////////////
+    //                                                                       //
+    //                          BRAKE SETTINGS                               //
+    //                                                                       //
+    ///////////////////////////////////////////////////////////////////////////
+
+    //Drive
+    public static final boolean USE_DRIVE_BRAKES = false;
+
+    //Manipulator systems
+    public static final boolean USE_COLLECTOR_BRAKES = true;
+    public static final boolean USE_LIFT_BRAKES      = true;
+
+    //Climbing systems
+    public static final boolean USE_BREACHER_BRAKES          = true;
+    public static final boolean USE_ROLLER_BRAKES            = true;
+    public static final boolean USE_SPUDS_BRAKES             = true;
+    public static final boolean DISABLE_BRAKES_WHEN_DISABLED = true;
 
     ///////////////////////////////////////////////////////////////////////////
     //                                                                       //
@@ -118,14 +137,6 @@ public final class FREDDXConstants {
     public static final boolean FLIP_RIGHT_BREACHER_SENSOR = false;
     public static final boolean FLIP_LEFT_BREACHER_SENSOR  = true;
     public static final boolean FLIP_SPUD_SENSOR           = true;
-
-    //Neutral brakes
-    public static final boolean DRIVE_BRAKE     = false;
-    public static final boolean BREACHER_BRAKE  = true;
-    public static final boolean SPUDS_BRAKE     = true;
-    public static final boolean ROLLER_BRAKE    = false;
-    public static final boolean LIFT_BRAKE      = true;
-    public static final boolean COLLECTOR_BRAKE = false;
 
     //Manual speeds
     public static final int    CAMERA_SPEED    = 1;

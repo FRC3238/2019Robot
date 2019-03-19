@@ -13,17 +13,26 @@ public final class Climber {
     public final WPI_TalonSRX breacherRight;
     public final WPI_TalonSRX breacherLeft;
 
-    public Climber(WPI_TalonSRX roller, WPI_TalonSRX spuds, WPI_TalonSRX breacherLeft, WPI_TalonSRX breacherRight) {
-        this.roller        = roller;
-        this.spuds         = spuds;
-        this.breacherRight = breacherRight;
-        this.breacherLeft  = breacherLeft;
+    public Climber() {
+        this.roller        = new WPI_TalonSRX(ROLLER_ID);
+        this.spuds         = new WPI_TalonSRX(SPUDS_ID);
+        this.breacherRight = new WPI_TalonSRX(BREACHER_RIGHT_ID);
+        this.breacherLeft  = new WPI_TalonSRX(BREACHER_LEFT_ID);
+
+        //Erase previous configs
+        roller.configFactoryDefault();
+        spuds.configFactoryDefault();
+        breacherRight.configFactoryDefault();
+        breacherLeft.configFactoryDefault();
+
+        //Turn on the brakes if they need to be on
+        if(!DISABLE_BRAKES_WHEN_DISABLED)
+            useBrakes();
+
 
         roller.setInverted(REVERSE_ROLLER);
-        roller.setNeutralMode(ROLLER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
 
         spuds.setInverted(REVERSE_SPUDS);
-        spuds.setNeutralMode(SPUDS_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         spuds.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, TALON_TIMEOUT);
         spuds.setSensorPhase(FLIP_SPUD_SENSOR);
         spuds.config_kP(0, SPUDS_kP, TALON_TIMEOUT);
@@ -34,7 +43,6 @@ public final class Climber {
         spuds.setSelectedSensorPosition(0);
 
         breacherRight.setInverted(REVERSE_BREACHER);
-        breacherRight.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         breacherRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TALON_TIMEOUT);
         breacherRight.setSensorPhase(FLIP_RIGHT_BREACHER_SENSOR);
         breacherRight.config_kP(0, BREACHER_kP, TALON_TIMEOUT);
@@ -43,7 +51,6 @@ public final class Climber {
         breacherRight.setSelectedSensorPosition(0);
 
         breacherLeft.setInverted(REVERSE_BREACHER);
-        breacherLeft.setNeutralMode(BREACHER_BRAKE ? NeutralMode.Brake : NeutralMode.Coast);
         breacherLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TALON_TIMEOUT);
         breacherLeft.setSensorPhase(FLIP_LEFT_BREACHER_SENSOR);
         breacherLeft.config_kP(0, BREACHER_kP, TALON_TIMEOUT);
@@ -52,12 +59,22 @@ public final class Climber {
         breacherLeft.setSelectedSensorPosition(0);
     }
 
-    public Climber(int rollerTalonId, int spudsTalonId, int breacherLeftTalonId, int breacherRightTalonId) {
-        this(new WPI_TalonSRX(rollerTalonId), new WPI_TalonSRX(spudsTalonId), new WPI_TalonSRX(breacherLeftTalonId),
-             new WPI_TalonSRX(breacherRightTalonId));
+    public void useBrakes() {
+        if(USE_ROLLER_BRAKES)
+            roller.setNeutralMode(NeutralMode.Brake);
+        if(USE_SPUDS_BRAKES)
+            spuds.setNeutralMode(NeutralMode.Brake);
+        if(USE_BREACHER_BRAKES) {
+            breacherRight.setNeutralMode(NeutralMode.Brake);
+            breacherLeft.setNeutralMode(NeutralMode.Brake);
+        }
     }
 
-    public Climber() {
-        this(ROLLER_ID, SPUDS_ID, BREACHER_LEFT_ID, BREACHER_RIGHT_ID);
+    public void disableBrakes() {
+        roller.setNeutralMode(NeutralMode.Coast);
+        spuds.setNeutralMode(NeutralMode.Coast);
+        breacherRight.setNeutralMode(NeutralMode.Coast);
+        breacherLeft.setNeutralMode(NeutralMode.Coast);
     }
+
 }
