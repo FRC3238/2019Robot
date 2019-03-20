@@ -39,10 +39,10 @@ public final class PodDrive extends DifferentialDrive {
         rightSlave.follow(rightMaster);
 
         //Config neutral state
-        leftMaster.setIdleMode(DRIVE_BRAKE ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
-        leftSlave.setIdleMode(DRIVE_BRAKE ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
-        rightMaster.setIdleMode(DRIVE_BRAKE ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
-        rightSlave.setIdleMode(DRIVE_BRAKE ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
+        leftMaster.setIdleMode(USE_DRIVE_BRAKES ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
+        leftSlave.setIdleMode(USE_DRIVE_BRAKES ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
+        rightMaster.setIdleMode(USE_DRIVE_BRAKES ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
+        rightSlave.setIdleMode(USE_DRIVE_BRAKES ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
 
         //Extra configuration
         setDeadband(0);

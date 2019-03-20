@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.control.CameraController;
@@ -17,7 +16,7 @@ import frc.team3238.robot.systems.PodDrive;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
-public final class FREDDX extends TimedRobot {
+public final class FREDDX extends TimedTeleopRobot {
     //Systems
     private Joystick          driveJoystick;
     private Joystick          manipulatorJoystick;
@@ -41,8 +40,7 @@ public final class FREDDX extends TimedRobot {
 
     private double  liftSetpoint;
     private double  spudsSetpoint;
-    private double  leftBreacherSetpoint;
-    private double  rightBreacherSetpoint;
+    private double  breacherSetpoint;
     private boolean isManipulatorAuto;
     private boolean isDriveAuto;
 
@@ -79,12 +77,10 @@ public final class FREDDX extends TimedRobot {
         breachersBack   = new JoystickButton(driveJoystick, BREACHER_IN);
 
         setLiftSetpoint(LIFT_MIN_UP);
-        spudsSetpoint         = climber.spuds.getSelectedSensorPosition(0);
-        rightBreacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
-        leftBreacherSetpoint  = climber.breacherLeft.getSelectedSensorPosition(0);
-        isManipulatorAuto     = false;
-        isDriveAuto           = false;
-
+        spudsSetpoint     = climber.spuds.getSelectedSensorPosition(0);
+        breacherSetpoint  = climber.breacherRight.getSelectedSensorPosition(0);
+        isManipulatorAuto = false;
+        isDriveAuto       = false;
     }
 
     @Override
@@ -107,7 +103,14 @@ public final class FREDDX extends TimedRobot {
         if(newIsManipulatorAuto && !isManipulatorAuto)
             liftSetpoint = manipulator.lift.getSelectedSensorPosition();
         isManipulatorAuto = newIsManipulatorAuto;
-        isDriveAuto       = remapThrottle(driveJoystick.getThrottle()) < 0.5;
+
+        //Driver auto-mode switch
+        var newIsDriveAuto       = remapThrottle(driveJoystick.getThrottle()) < 0.5;
+        if(newIsDriveAuto && !isManipulatorAuto) {
+            spudsSetpoint = climber.spuds.getSelectedSensorPosition(0);
+            breacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
+        }
+        isDriveAuto = newIsDriveAuto;
 
         //SmartDashboard data
         SmartDashboard.putBoolean("Manipulator Auto", isManipulatorAuto);
@@ -118,12 +121,17 @@ public final class FREDDX extends TimedRobot {
         SmartDashboard.putNumber("Spud Encoder", climber.spuds.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Right Breacher Encoder", climber.breacherRight.getSelectedSensorPosition(0));
         SmartDashboard.putNumber("Left Breacher Encoder", climber.breacherLeft.getSelectedSensorPosition(0));
-        SmartDashboard.putNumber("Right Breacher Setpoint", rightBreacherSetpoint);
-        SmartDashboard.putNumber("Left Breacher Setpoint", leftBreacherSetpoint);
+        SmartDashboard.putNumber("Breacher Setpoint", breacherSetpoint);
     }
 
     @Override
-    public void teleopPeriodic() {
+    public void enabledBegin() {
+        //Only turns on the brakes that are enabled in the configs
+        climber.useBrakes();
+    }
+
+    @Override
+    public void enabledPeriodic() {
         //Update and move camera
         cameraController.updateControls();
         cameraController.move();
@@ -171,22 +179,21 @@ public final class FREDDX extends TimedRobot {
         }
         if(breachersOut.isHeld() || breachersBack.isHeld()) {
             if(breachersOut.isHeld()) {
-                climber.breacherRight.set(BREACHERS_SPEED);
+                climber.breacherRight.set(-BREACHERS_SPEED);
                 climber.breacherLeft.set(-BREACHERS_SPEED);
             }
             //Make it stop
             else {
-                climber.breacherRight.set(-BREACHERS_SPEED);
+                climber.breacherRight.set(BREACHERS_SPEED);
                 climber.breacherLeft.set(BREACHERS_SPEED);
             }
-            rightBreacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
-            leftBreacherSetpoint  = climber.breacherLeft.getSelectedSensorPosition(0);
+            breacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
         }
         //When driver is not telling the breachers what to do
         else {
             if(isDriveAuto) {
-                climber.breacherRight.set(ControlMode.Position, rightBreacherSetpoint);
-                climber.breacherLeft.set(ControlMode.Position, leftBreacherSetpoint);
+                climber.breacherRight.set(ControlMode.Position, breacherSetpoint);
+                climber.breacherLeft.set(ControlMode.Position, breacherSetpoint);
             }
             //Make it stop
             else {
@@ -203,8 +210,8 @@ public final class FREDDX extends TimedRobot {
     }
 
     @Override
-    public void autonomousPeriodic() {
-        teleopPeriodic();
+    public void disabledBegin() {
+        climber.disableBrakes();
     }
 
     private void setLiftSetpoint(double setpoint) {
