@@ -115,7 +115,7 @@ public final class FREDDXConstants {
     public static final boolean REVERSE_COLLECTOR = false;
 
     //Sensor phase adjust
-    public static final boolean FLIP_RIGHT_BREACHER_SENSOR = false;
+    public static final boolean FLIP_RIGHT_BREACHER_SENSOR = true;
     public static final boolean FLIP_LEFT_BREACHER_SENSOR  = true;
     public static final boolean FLIP_SPUD_SENSOR           = true;
 

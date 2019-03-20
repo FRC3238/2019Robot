@@ -168,12 +168,12 @@ public final class FREDDX extends TimedRobot {
         }
         if(breachersOut.isHeld() || breachersBack.isHeld()) {
             if(breachersOut.isHeld()) {
-                climber.breacherRight.set(BREACHERS_SPEED);
+                climber.breacherRight.set(-BREACHERS_SPEED);
                 climber.breacherLeft.set(-BREACHERS_SPEED);
             }
             //Make it stop
             else {
-                climber.breacherRight.set(-BREACHERS_SPEED);
+                climber.breacherRight.set(BREACHERS_SPEED);
                 climber.breacherLeft.set(BREACHERS_SPEED);
             }
             breacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
