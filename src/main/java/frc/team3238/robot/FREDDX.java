@@ -103,7 +103,14 @@ public final class FREDDX extends TimedTeleopRobot {
         if(newIsManipulatorAuto && !isManipulatorAuto)
             liftSetpoint = manipulator.lift.getSelectedSensorPosition();
         isManipulatorAuto = newIsManipulatorAuto;
-        isDriveAuto       = remapThrottle(driveJoystick.getThrottle()) < 0.5;
+
+        //Driver auto-mode switch
+        var newIsDriveAuto       = remapThrottle(driveJoystick.getThrottle()) < 0.5;
+        if(newIsDriveAuto && !isManipulatorAuto) {
+            spudsSetpoint = climber.spuds.getSelectedSensorPosition(0);
+            breacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
+        }
+        isDriveAuto = newIsDriveAuto;
 
         //SmartDashboard data
         SmartDashboard.putBoolean("Manipulator Auto", isManipulatorAuto);

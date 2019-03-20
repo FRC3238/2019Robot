@@ -44,6 +44,7 @@ public final class Climber {
 
         breacherRight.setInverted(!REVERSE_BREACHER);
         breacherRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TALON_TIMEOUT);
+        breacherRight.configAllowableClosedloopError(0, 75);
         breacherRight.setSensorPhase(FLIP_RIGHT_BREACHER_SENSOR);
         breacherRight.config_kP(0, BREACHER_kP, TALON_TIMEOUT);
         breacherRight.config_kI(0, BREACHER_kI, TALON_TIMEOUT);
@@ -52,6 +53,7 @@ public final class Climber {
 
         breacherLeft.setInverted(REVERSE_BREACHER);
         breacherLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TALON_TIMEOUT);
+        breacherRight.configAllowableClosedloopError(0, 75);
         breacherLeft.setSensorPhase(FLIP_LEFT_BREACHER_SENSOR);
         breacherLeft.config_kP(0, BREACHER_kP, TALON_TIMEOUT);
         breacherLeft.config_kI(0, BREACHER_kI, TALON_TIMEOUT);
