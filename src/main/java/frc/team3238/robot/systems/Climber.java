@@ -42,7 +42,7 @@ public final class Climber {
         spuds.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.NormallyOpen);
         spuds.setSelectedSensorPosition(0);
 
-        breacherRight.setInverted(REVERSE_BREACHER);
+        breacherRight.setInverted(!REVERSE_BREACHER);
         breacherRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, TALON_TIMEOUT);
         breacherRight.setSensorPhase(FLIP_RIGHT_BREACHER_SENSOR);
         breacherRight.config_kP(0, BREACHER_kP, TALON_TIMEOUT);
@@ -76,5 +76,4 @@ public final class Climber {
         breacherRight.setNeutralMode(NeutralMode.Coast);
         breacherLeft.setNeutralMode(NeutralMode.Coast);
     }
-
 }
