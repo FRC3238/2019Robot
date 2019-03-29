@@ -163,10 +163,10 @@ public final class FREDDX extends TimedTeleopRobot {
         //Climber
         if(spudsDown.isHeld() || spudsUp.isHeld()) {
             if(spudsDown.isHeld()) {
-                climber.spuds.set(SPUDS_SPEED);
+                climber.spuds.set(-SPUDS_SPEED);
             }
             else {
-                climber.spuds.set(-SPUDS_SPEED);
+                climber.spuds.set(SPUDS_SPEED);
             }
             spudsSetpoint = climber.spuds.getSelectedSensorPosition(0);
         }
@@ -204,8 +204,8 @@ public final class FREDDX extends TimedTeleopRobot {
         driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
 
         //Drive
-        double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND);
-        double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND);
+        double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND) * NEO_DRIVE_SCALING;
+        double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND) * NEO_DRIVE_SCALING;
         drive.arcadeDrive(driveThrottle, steer);
     }
 
