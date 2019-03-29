@@ -92,6 +92,7 @@ public final class FREDDXConstants {
 
     //Drive
     public static final boolean USE_DRIVE_BRAKES = false;
+    public static final double NEO_DRIVE_SCALING = 0.6;
 
     //Manipulator systems
     public static final boolean USE_COLLECTOR_BRAKES = true;
@@ -142,11 +143,11 @@ public final class FREDDXConstants {
     public static final int    CAMERA_SPEED    = 1;
     public static final double SPUDS_SPEED     = 1;
     public static final double BREACHERS_SPEED = 1;
-    public static final double ROLLER_SPEED    = 1;
-    public static final double COLLECTOR_SPEED = 0.6;
+    public static final double ROLLER_SPEED    = -0.25;
+    public static final double COLLECTOR_SPEED = 0.8;
 
     //Current limits (amps)
-    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 80;
+    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
 
     //Talon configuration timeout
     public static final int TALON_TIMEOUT = 30;

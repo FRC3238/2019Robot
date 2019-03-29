@@ -34,7 +34,7 @@ public class CameraController {
                 incrementPan(povAngle < 180 ? -CAMERA_SPEED : CAMERA_SPEED);
 
             if(povAngle != 90 && povAngle != 270)
-                incrementTilt((povAngle > 270 || povAngle < 90) ? -CAMERA_SPEED : CAMERA_SPEED);
+                incrementTilt((povAngle > 270 || povAngle < 90) ? CAMERA_SPEED : -CAMERA_SPEED);
         }
 
         if(resetCamera.isReleased()) {
