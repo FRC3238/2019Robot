@@ -105,9 +105,9 @@ public final class FREDDX extends TimedTeleopRobot {
         isManipulatorAuto = newIsManipulatorAuto;
 
         //Driver auto-mode switch
-        var newIsDriveAuto       = remapThrottle(driveJoystick.getThrottle()) < 0.5;
+        var newIsDriveAuto = remapThrottle(driveJoystick.getThrottle()) < 0.5;
         if(newIsDriveAuto && !isManipulatorAuto) {
-            spudsSetpoint = climber.spuds.getSelectedSensorPosition(0);
+            spudsSetpoint    = climber.spuds.getSelectedSensorPosition(0);
             breacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
         }
         isDriveAuto = newIsDriveAuto;
@@ -255,21 +255,5 @@ public final class FREDDX extends TimedTeleopRobot {
             else
                 return (rawValue - deadband) / (1 - deadband);
         }
-    }
-
-    /**
-     * Keeps a value within an absolute bound.
-     *
-     * @param rawValue The raw value input
-     * @param absBound The max absolute value of the output
-     * @return The input but bounded
-     */
-    public static double captureInBounds(double rawValue, double absBound) {
-        if(rawValue > absBound)
-            return absBound;
-        else if(rawValue < -absBound)
-            return -absBound;
-        else
-            return rawValue;
     }
 }

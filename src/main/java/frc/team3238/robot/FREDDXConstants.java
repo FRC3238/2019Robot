@@ -139,14 +139,14 @@ public final class FREDDXConstants {
     public static final boolean FLIP_SPUD_SENSOR           = false;
 
     //Manual speeds
-    public static final int    CAMERA_SPEED    = 1;
-    public static final double SPUDS_SPEED     = 1;
-    public static final double BREACHERS_SPEED = 1;
-    public static final double ROLLER_SPEED    = 0.5;
-    public static final double COLLECTOR_SPEED = 0.8;
+    public static final int    CAMERA_SPEED                 = 1;
+    public static final double SPUDS_SPEED                  = 1;
+    public static final double BREACHERS_SPEED              = 1;
+    public static final double ROLLER_SPEED                 = 0.5;
+    public static final double COLLECTOR_SPEED              = 0.8;
     public static final double DRIVE_FULL_ACCELERATION_TIME = 0.25; //Time is in seconds
-    public static final double DRIVE_MAX_DRIVE_POWER = 0.8;
-    public static final double DRIVE_MAX_TURN_POWER = 0.6;
+    public static final double DRIVE_MAX_DRIVE_POWER        = 0.8;
+    public static final double DRIVE_MAX_TURN_POWER         = 0.6;
 
 
     //Current limits (amps)
