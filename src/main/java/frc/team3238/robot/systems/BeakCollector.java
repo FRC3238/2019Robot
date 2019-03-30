@@ -31,7 +31,7 @@ public class BeakCollector implements PeriodicMechanism{
         wrist.setNeutralMode(USE_WRIST_BRAKES ? NeutralMode.Brake : NeutralMode.Coast);
         wrist.setInverted(REVERSE_WRIST);
 
-        var manipulatorJoystick = new Joystick(DRIVE_JOYSTICK_PORT);
+        var manipulatorJoystick = new Joystick(MANIPULATOR_JOYSTICK_PORT);
 
         openBeak  = new JoystickButton(manipulatorJoystick, EJECT_BALL);
         closeBeak = new JoystickButton(manipulatorJoystick, COLLECT_BALL);
@@ -46,7 +46,7 @@ public class BeakCollector implements PeriodicMechanism{
         wristUp.update();
         wristDown.update();
 
-        Utility.driveTalonFwdRevOrStop(beak, openBeak.isHeld(), closeBeak.isHeld(), BEAK_SPEED);
+        Utility.driveTalonFwdRevOrStop(beak, closeBeak.isHeld(), openBeak.isHeld(), BEAK_SPEED);
         Utility.driveTalonFwdRevOrStop(wrist, wristUp.isHeld(), wristDown.isHeld(), WRIST_SPEED);
     }
 }

@@ -128,7 +128,7 @@ public final class FREDDXConstants {
     public static final int COLLECTOR_ID          = 10;
 
     //Collector Choice
-    public static final CollectorType COLLECTOR_CHOICE = CollectorType.BALL_COLLECTOR;
+    public static final CollectorType COLLECTOR_CHOICE = CollectorType.BEAK_COLLECTOR;
 
 
     //Servo channels
@@ -155,7 +155,7 @@ public final class FREDDXConstants {
     public static final double BREACHERS_SPEED              = 1;
     public static final double ROLLER_SPEED                 = 0.5;
     public static final double COLLECTOR_SPEED              = 0.8;
-    public static final double WRIST_SPEED                  = 0.65;
+    public static final double WRIST_SPEED                  = 0.75;
     public static final double BEAK_SPEED                   = 1;
     public static final double DRIVE_FULL_ACCELERATION_TIME = 0.25; //Time is in seconds
     public static final double DRIVE_MAX_DRIVE_POWER        = 0.8;
