@@ -71,9 +71,9 @@ public final class FREDDXConstants {
     public static final int    CAMERA_TILT_DEFAULT    = 120;
 
     //PID constants
-    public static final double BREACHER_kP = 0.5;
-    public static final double BREACHER_kI = 0.015;
-    public static final double BREACHER_kD = 5;
+    public static final double BREACHER_kP = 3;
+    public static final double BREACHER_kI = 0;
+    public static final double BREACHER_kD = 0;
 
     public static final double SPUDS_kP = 3;
     public static final double SPUDS_kI = 0.03;
@@ -92,7 +92,6 @@ public final class FREDDXConstants {
 
     //Drive
     public static final boolean USE_DRIVE_BRAKES = false;
-    public static final double NEO_DRIVE_SCALING = 0.6;
 
     //Manipulator systems
     public static final boolean USE_COLLECTOR_BRAKES = true;
@@ -130,21 +129,25 @@ public final class FREDDXConstants {
     public static final boolean REVERSE_DRIVE     = false;
     public static final boolean REVERSE_BREACHER  = false;
     public static final boolean REVERSE_SPUDS     = true;
-    public static final boolean REVERSE_ROLLER    = true;
+    public static final boolean REVERSE_ROLLER    = false;
     public static final boolean REVERSE_LIFT      = false;
     public static final boolean REVERSE_COLLECTOR = false;
 
     //Sensor phase adjust
     public static final boolean FLIP_RIGHT_BREACHER_SENSOR = true;
     public static final boolean FLIP_LEFT_BREACHER_SENSOR  = true;
-    public static final boolean FLIP_SPUD_SENSOR           = true;
+    public static final boolean FLIP_SPUD_SENSOR           = false;
 
     //Manual speeds
     public static final int    CAMERA_SPEED    = 1;
     public static final double SPUDS_SPEED     = 1;
     public static final double BREACHERS_SPEED = 1;
-    public static final double ROLLER_SPEED    = -0.25;
+    public static final double ROLLER_SPEED    = 0.5;
     public static final double COLLECTOR_SPEED = 0.8;
+    public static final double DRIVE_FULL_ACCELERATION_TIME = 0.25; //Time is in seconds
+    public static final double DRIVE_SENSITIVITY_ADJUST = 0.6;
+    public static final double MAX_TURN_POWER = 0.90;
+
 
     //Current limits (amps)
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;

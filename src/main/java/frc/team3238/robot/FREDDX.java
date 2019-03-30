@@ -204,8 +204,10 @@ public final class FREDDX extends TimedTeleopRobot {
         driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
 
         //Drive
-        double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND) * NEO_DRIVE_SCALING;
-        double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND) * NEO_DRIVE_SCALING;
+        double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND) * DRIVE_SENSITIVITY_ADJUST;
+        double steer         = captureInBounds(
+                deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND) * DRIVE_SENSITIVITY_ADJUST,
+                MAX_TURN_POWER);
         drive.arcadeDrive(driveThrottle, steer);
     }
 
@@ -255,5 +257,21 @@ public final class FREDDX extends TimedTeleopRobot {
             else
                 return (rawValue - deadband) / (1 - deadband);
         }
+    }
+
+    /**
+     * Keeps a value within an absolute bound.
+     *
+     * @param rawValue The raw value input
+     * @param absBound The max absolute value of the output
+     * @return The input but bounded
+     */
+    public static double captureInBounds(double rawValue, double absBound) {
+        if(rawValue > absBound)
+            return absBound;
+        else if(rawValue < -absBound)
+            return -absBound;
+        else
+            return rawValue;
     }
 }

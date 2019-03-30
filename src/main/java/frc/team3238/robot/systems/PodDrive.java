@@ -44,6 +44,13 @@ public final class PodDrive extends DifferentialDrive {
         rightMaster.setIdleMode(USE_DRIVE_BRAKES ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
         rightSlave.setIdleMode(USE_DRIVE_BRAKES ? CANSparkMax.IdleMode.kBrake : CANSparkMax.IdleMode.kCoast);
 
+        //Set fastest acceleration
+        leftMaster.setOpenLoopRampRate(DRIVE_FULL_ACCELERATION_TIME);
+        leftSlave.setOpenLoopRampRate(DRIVE_FULL_ACCELERATION_TIME);
+        rightMaster.setOpenLoopRampRate(DRIVE_FULL_ACCELERATION_TIME);
+        rightSlave.setOpenLoopRampRate(DRIVE_FULL_ACCELERATION_TIME);
+
+
         //Extra configuration
         setDeadband(0);
         setSafetyEnabled(true);
