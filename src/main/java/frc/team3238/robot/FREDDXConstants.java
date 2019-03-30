@@ -145,8 +145,8 @@ public final class FREDDXConstants {
     public static final double ROLLER_SPEED    = 0.5;
     public static final double COLLECTOR_SPEED = 0.8;
     public static final double DRIVE_FULL_ACCELERATION_TIME = 0.25; //Time is in seconds
-    public static final double DRIVE_SENSITIVITY_ADJUST = 0.6;
-    public static final double MAX_TURN_POWER = 0.90;
+    public static final double DRIVE_MAX_DRIVE_POWER = 0.8;
+    public static final double DRIVE_MAX_TURN_POWER = 0.6;
 
 
     //Current limits (amps)

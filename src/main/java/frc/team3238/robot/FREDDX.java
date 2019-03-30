@@ -151,7 +151,7 @@ public final class FREDDX extends TimedTeleopRobot {
         }
         //Lift manual control
         else {
-            double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
+            double manipulatorThrottle = deadbandAdjust(-manipulatorJoystick.getY(), LIFTING_DEADBAND);
 
             //Lift
             manipulator.lift.set(ControlMode.PercentOutput, manipulatorThrottle);
@@ -204,10 +204,8 @@ public final class FREDDX extends TimedTeleopRobot {
         driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
 
         //Drive
-        double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND) * DRIVE_SENSITIVITY_ADJUST;
-        double steer         = captureInBounds(
-                deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND) * DRIVE_SENSITIVITY_ADJUST,
-                MAX_TURN_POWER);
+        double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND) * DRIVE_MAX_DRIVE_POWER;
+        double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND) * DRIVE_MAX_TURN_POWER;
         drive.arcadeDrive(driveThrottle, steer);
     }
 

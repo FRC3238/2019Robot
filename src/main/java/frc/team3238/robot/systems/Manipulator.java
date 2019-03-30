@@ -10,12 +10,10 @@ public final class Manipulator {
     //Yes I chose not to encapsulate these variables.
     public final WPI_TalonSRX     lift;
     public final WPI_TalonSRX     collector;
-    public       SensorCollection sensorCollection;
 
     public Manipulator(WPI_TalonSRX lift, WPI_TalonSRX collector) {
         this.lift        = lift;
         this.collector   = collector;
-        sensorCollection = collector.getSensorCollection();
 
         lift.setInverted(REVERSE_LIFT);
         lift.setNeutralMode(USE_LIFT_BRAKES ? NeutralMode.Brake : NeutralMode.Coast);
