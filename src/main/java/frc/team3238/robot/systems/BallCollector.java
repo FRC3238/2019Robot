@@ -17,7 +17,7 @@ public class BallCollector implements PeriodicMechanism {
     private final Button ejectBall;
 
     public BallCollector() {
-        roller = new WPI_TalonSRX(WRIST_ID);
+        roller = new WPI_TalonSRX(COLLECTOR_ID);
         roller.setInverted(REVERSE_COLLECTOR);
         roller.setNeutralMode(USE_COLLECTOR_BRAKES ? NeutralMode.Brake : NeutralMode.Coast);
 
