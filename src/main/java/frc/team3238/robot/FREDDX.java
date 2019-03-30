@@ -58,12 +58,18 @@ public final class FREDDX extends TimedTeleopRobot {
         manipulator      = new Manipulator();
         climber          = new Climber();
         cameraController = new CameraController(manipulatorJoystick);
-        if(COLLECTOR_CHOICE == CollectorType.BALL_COLLECTOR)
+        if(COLLECTOR_CHOICE == CollectorType.BALL_COLLECTOR) {
             collector = new BallCollector();
-        else if(COLLECTOR_CHOICE == CollectorType.BEAK_COLLECTOR)
+            SmartDashboard.putString("Collector Type", "Ball");
+        }
+        else if(COLLECTOR_CHOICE == CollectorType.BEAK_COLLECTOR) {
             collector = new BeakCollector();
-        else
+            SmartDashboard.putString("Collector Type", "Beak");
+        }
+        else {
             collector = new BowtieCollector(); //A bowtie collector does nothing
+            SmartDashboard.putString("Collector Type", "Bowtie");
+        }
 
         //Initialize buttons
         cargoLevelOne   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_ONE);
