@@ -1,5 +1,7 @@
 package frc.team3238.robot;
 
+import frc.team3238.robot.systems.CollectorType;
+
 /**
  * A central configuration page for all constants used by FreddX
  *
@@ -37,6 +39,8 @@ public final class FREDDXConstants {
     public static final int BREACHER_IN       = 3;
     public static final int COLLECT_BALL      = 2;
     public static final int EJECT_BALL        = 1;
+    public static final int WRIST_UP          = 5;
+    public static final int WRIST_DOWN        = 3;
     public static final int STOW              = 4;
     public static final int CARGO_LEVEL_ONE   = 12;
     public static final int CARGO_LEVEL_TWO   = 10;
@@ -96,6 +100,7 @@ public final class FREDDXConstants {
     //Manipulator systems
     public static final boolean USE_COLLECTOR_BRAKES = true;
     public static final boolean USE_LIFT_BRAKES      = true;
+    public static final boolean USE_WRIST_BRAKES     = true;
 
     //Climbing systems
     public static final boolean USE_BREACHER_BRAKES          = true;
@@ -119,7 +124,12 @@ public final class FREDDXConstants {
     public static final int BREACHER_RIGHT_ID     = 7;
     public static final int BREACHER_LEFT_ID      = 6;
     public static final int LIFT_ID               = 8;
-    public static final int COLLECTOR_ID          = 9;
+    public static final int WRIST_ID              = 9;
+    public static final int COLLECTOR_ID          = 10;
+
+    //Collector Choice
+    public static final CollectorType COLLECTOR_CHOICE = CollectorType.BALL_COLLECTOR;
+
 
     //Servo channels
     public static final int CAMERA_PAN_CHANNEL  = 0;
@@ -132,6 +142,7 @@ public final class FREDDXConstants {
     public static final boolean REVERSE_ROLLER    = false;
     public static final boolean REVERSE_LIFT      = false;
     public static final boolean REVERSE_COLLECTOR = false;
+    public static final boolean REVERSE_WRIST     = false;
 
     //Sensor phase adjust
     public static final boolean FLIP_RIGHT_BREACHER_SENSOR = true;
@@ -144,10 +155,11 @@ public final class FREDDXConstants {
     public static final double BREACHERS_SPEED              = 1;
     public static final double ROLLER_SPEED                 = 0.5;
     public static final double COLLECTOR_SPEED              = 0.8;
+    public static final double WRIST_SPEED                  = 0.65;
+    public static final double BEAK_SPEED                   = 1;
     public static final double DRIVE_FULL_ACCELERATION_TIME = 0.25; //Time is in seconds
     public static final double DRIVE_MAX_DRIVE_POWER        = 0.8;
     public static final double DRIVE_MAX_TURN_POWER         = 0.6;
-
 
     //Current limits (amps)
     public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
