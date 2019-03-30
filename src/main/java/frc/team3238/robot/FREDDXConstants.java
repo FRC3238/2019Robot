@@ -72,7 +72,7 @@ public final class FREDDXConstants {
 
     //PID constants
     public static final double BREACHER_kP = 3;
-    public static final double BREACHER_kI = 0;
+    public static final double BREACHER_kI = 0.03;
     public static final double BREACHER_kD = 0;
 
     public static final double SPUDS_kP = 3;
