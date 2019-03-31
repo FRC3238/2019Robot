@@ -1,7 +1,6 @@
 package frc.team3238.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
@@ -10,9 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team3238.robot.control.CameraController;
 import frc.team3238.robot.control.joystick.Button;
 import frc.team3238.robot.control.joystick.JoystickButton;
-import frc.team3238.robot.systems.Climber;
-import frc.team3238.robot.systems.Manipulator;
-import frc.team3238.robot.systems.PodDrive;
+import frc.team3238.robot.systems.*;
 
 import static frc.team3238.robot.FREDDXConstants.*;
 
@@ -24,14 +21,13 @@ public final class FREDDX extends TimedTeleopRobot {
     private DifferentialDrive drive;
     private Manipulator       manipulator;
     private Climber           climber;
+    private PeriodicMechanism collector;
 
     //Buttons
     private Button cargoLevelOne;
     private Button cargoLevelTwo;
     private Button cargoLevelThree;
     private Button stowCollector;
-    private Button collectBall;
-    private Button ejectBall;
     private Button spudsUp;
     private Button spudsDown;
     private Button rollerForward;
@@ -62,14 +58,24 @@ public final class FREDDX extends TimedTeleopRobot {
         manipulator      = new Manipulator();
         climber          = new Climber();
         cameraController = new CameraController(manipulatorJoystick);
+        if(COLLECTOR_CHOICE == CollectorType.BALL_COLLECTOR) {
+            collector = new BallCollector();
+            SmartDashboard.putString("Collector Type", "Ball");
+        }
+        else if(COLLECTOR_CHOICE == CollectorType.BEAK_COLLECTOR) {
+            collector = new BeakCollector();
+            SmartDashboard.putString("Collector Type", "Beak");
+        }
+        else {
+            collector = new BowtieCollector(); //A bowtie collector does nothing
+            SmartDashboard.putString("Collector Type", "Bowtie");
+        }
 
         //Initialize buttons
         cargoLevelOne   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_ONE);
         cargoLevelTwo   = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_TWO);
         cargoLevelThree = new JoystickButton(manipulatorJoystick, CARGO_LEVEL_THREE);
         stowCollector   = new JoystickButton(manipulatorJoystick, STOW);
-        collectBall     = new JoystickButton(manipulatorJoystick, COLLECT_BALL);
-        ejectBall       = new JoystickButton(manipulatorJoystick, EJECT_BALL);
         spudsUp         = new JoystickButton(driveJoystick, SPUDS_UP);
         spudsDown       = new JoystickButton(driveJoystick, SPUDS_DOWN);
         rollerForward   = new JoystickButton(driveJoystick, ROLL_FORWARD);
@@ -90,8 +96,6 @@ public final class FREDDX extends TimedTeleopRobot {
         cargoLevelTwo.update();
         cargoLevelThree.update();
         stowCollector.update();
-        collectBall.update();
-        ejectBall.update();
         spudsUp.update();
         spudsDown.update();
         rollerForward.update();
@@ -99,15 +103,15 @@ public final class FREDDX extends TimedTeleopRobot {
         breachersBack.update();
 
         //Manipulator auto-mode switch
-        boolean newIsManipulatorAuto = remapThrottle(manipulatorJoystick.getThrottle()) < 0.5;
+        boolean newIsManipulatorAuto = Utility.remapThrottleSlider(manipulatorJoystick.getThrottle()) < 0.5;
         if(newIsManipulatorAuto && !isManipulatorAuto)
             liftSetpoint = manipulator.lift.getSelectedSensorPosition();
         isManipulatorAuto = newIsManipulatorAuto;
 
         //Driver auto-mode switch
-        var newIsDriveAuto       = remapThrottle(driveJoystick.getThrottle()) < 0.5;
+        var newIsDriveAuto = Utility.remapThrottleSlider(driveJoystick.getThrottle()) < 0.5;
         if(newIsDriveAuto && !isManipulatorAuto) {
-            spudsSetpoint = climber.spuds.getSelectedSensorPosition(0);
+            spudsSetpoint    = climber.spuds.getSelectedSensorPosition(0);
             breacherSetpoint = climber.breacherRight.getSelectedSensorPosition(0);
         }
         isDriveAuto = newIsDriveAuto;
@@ -151,14 +155,14 @@ public final class FREDDX extends TimedTeleopRobot {
         }
         //Lift manual control
         else {
-            double manipulatorThrottle = deadbandAdjust(manipulatorJoystick.getY(), LIFTING_DEADBAND);
+            double manipulatorThrottle = Utility.applyDeadband(-manipulatorJoystick.getY(), LIFTING_DEADBAND);
 
             //Lift
             manipulator.lift.set(ControlMode.PercentOutput, manipulatorThrottle);
         }
 
         //Collector
-        driveTalonFwdRevOrStop(manipulator.collector, collectBall.isHeld(), ejectBall.isHeld(), COLLECTOR_SPEED);
+        collector.periodic();
 
         //Climber
         if(spudsDown.isHeld() || spudsUp.isHeld()) {
@@ -201,11 +205,11 @@ public final class FREDDX extends TimedTeleopRobot {
                 climber.breacherLeft.set(0);
             }
         }
-        driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
+        Utility.driveTalonFwdRevOrStop(climber.roller, rollerForward.isHeld(), false, ROLLER_SPEED);
 
         //Drive
-        double driveThrottle = deadbandAdjust(-driveJoystick.getY(), THROTTLE_DEADBAND) * NEO_DRIVE_SCALING;
-        double steer         = deadbandAdjust(driveJoystick.getTwist(), STEERING_DEADBAND) * NEO_DRIVE_SCALING;
+        double driveThrottle = Utility.applyDeadband(-driveJoystick.getY(), THROTTLE_DEADBAND) * DRIVE_MAX_DRIVE_POWER;
+        double steer         = Utility.applyDeadband(driveJoystick.getTwist(), STEERING_DEADBAND) * DRIVE_MAX_TURN_POWER;
         drive.arcadeDrive(driveThrottle, steer);
     }
 
@@ -221,39 +225,5 @@ public final class FREDDX extends TimedTeleopRobot {
             liftSetpoint = LIFT_MAX_UP;
         else
             liftSetpoint = setpoint;
-    }
-
-    private static double remapThrottle(double rawThrottle) {
-        return (-rawThrottle + 1) / 2;
-    }
-
-    private static void driveTalonFwdRevOrStop(WPI_TalonSRX talon, boolean forward, boolean reverse, double throttle) {
-        if(forward) {
-            talon.set(ControlMode.PercentOutput, throttle);
-        }
-        else if(reverse) {
-            talon.set(ControlMode.PercentOutput, -throttle);
-        }
-        else {
-            talon.set(ControlMode.PercentOutput, 0);
-        }
-    }
-
-    /**
-     * Takes a raw value as input and applies a deadband to it.
-     *
-     * @param rawValue [-1, 1] The raw value
-     * @param deadband [0, 1) The amount of deadband to use
-     * @return The deadband-adjusted value
-     */
-    private static double deadbandAdjust(double rawValue, double deadband) {
-        if(Math.abs(rawValue) < deadband)
-            return 0;
-        else {
-            if(rawValue < 0)
-                return (rawValue + deadband) / (1 - deadband);
-            else
-                return (rawValue - deadband) / (1 - deadband);
-        }
     }
 }
